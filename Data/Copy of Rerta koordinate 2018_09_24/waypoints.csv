@@ -1,0 +1,264 @@
+X,Y,ele,time,magvar,geoidheight,name,cmt,desc,src,link1_href,link1_text,link1_type,link2_href,link2_text,link2_type,sym,type,fix,sat,hdop,vdop,pdop,ageofdgpsdata,dgpsid,gpxx_WaypointExtension
+101.254152982,0.934539959,48.912,,,,A-E-150M- OPco,A-E-150M- OPco,A-E-150M- OPco,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252626972,0.935297012,39.54,,,,A-E-150M-BCv 1,A-E-150M-BCv 1,A-E-150M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252548015,0.935148988,39.78,,,,A-E-150M-BCv 2,A-E-150M-BCv 2,A-E-150M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25275203,0.935060978,39.78,,,,A-E-150M-BCv 3,A-E-150M-BCv 3,A-E-150M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252841968,0.935261976,39.54,,,,A-E-150M-BCveg,A-E-150M-BCveg,A-E-150M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252693022,0.935191987,39.78,,,,A-E-150M-Buffe,A-E-150M-Buffe,A-E-150M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254137978,0.934700975,49.153,,,,A-E-150M-OPC 1,A-E-150M-OPC 1,A-E-150M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254216013,0.934396042,46.75,,,,A-E-150M-OPC 2,A-E-150M-OPC 2,A-E-150M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254330007,0.934577007,47.23,,,,A-E-150M-OPC 3,A-E-150M-OPC 3,A-E-150M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254016021,0.934474999,49.874,,,,A-E-150M-OPCve,A-E-150M-OPCve,A-E-150M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253068028,0.935195005,42.183,,,,A-E-150M-OPE 1,A-E-150M-OPE 1,A-E-150M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253016982,0.934914965,41.943,,,,A-E-150M-OPE 2,A-E-150M-OPE 2,A-E-150M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253194008,0.934880013,41.222,,,,A-E-150M-OPE 3,A-E-150M-OPE 3,A-E-150M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25312997,0.934990989,41.703,,,,A-E-150M-OPedg,A-E-150M-OPedg,A-E-150M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253257962,0.93507397,41.943,,,,A-E-150M-OPEve,A-E-150M-OPEve,A-E-150M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254275022,0.936232014,39.059,,,,A-E-350M-BCv 1,A-E-350M-BCv 1,A-E-350M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254064972,0.936031016,39.059,,,,A-E-350M-BCv 2,A-E-350M-BCv 2,A-E-350M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253946032,0.936238971,39.059,,,,A-E-350M-BCv 3,A-E-350M-BCv 3,A-E-350M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254155999,0.936381966,38.819,,,,A-E-350M-BCveg,A-E-350M-BCveg,A-E-350M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254236968,0.935993968,28.244,,,,A-E-350M-Buf 1,A-E-350M-Buf 1,A-E-350M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254126998,0.936239976,39.299,,,,A-E-350M-Buffe,A-E-350M-Buffe,A-E-350M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255442034,0.935164997,42.424,,,,A-E-350M-OPC 1,A-E-350M-OPC 1,A-E-350M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25554597,0.934860986,46.029,,,,A-E-350M-OPC 2,A-E-350M-OPC 2,A-E-350M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255656024,0.935069025,46.269,,,,A-E-350M-OPC 3,A-E-350M-OPC 3,A-E-350M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255476987,0.935026025,44.106,,,,A-E-350M-OPcor,A-E-350M-OPcor,A-E-350M-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25537104,0.934965005,42.664,,,,A-E-350M-OPCve,A-E-350M-OPCve,A-E-350M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254522037,0.93538804,42.183,,,,A-E-350M-OPE 1,A-E-350M-OPE 1,A-E-350M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254713982,0.935507985,39.54,,,,A-E-350M-OPE 2,A-E-350M-OPE 2,A-E-350M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254542992,0.935721975,42.664,,,,A-E-350M-OPE 3,A-E-350M-OPE 3,A-E-350M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25458004,0.935517037,40.982,,,,A-E-350M-OPedg,A-E-350M-OPedg,A-E-350M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254392033,0.935584009,40.982,,,,A-E-350M-OPEve,A-E-350M-OPEve,A-E-350M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25293199,0.936248023,41.462,,,,A-W-250M-BCv 1,A-W-250M-BCv 1,A-W-250M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252835011,0.936045013,40.261,,,,A-W-250M-BCv 2,A-W-250M-BCv 2,A-W-250M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253016982,0.935935965,40.02,,,,A-W-250M-BCv 3,A-W-250M-BCv 3,A-W-250M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253102981,0.936098993,38.098,,,,A-W-250M-BCveg,A-W-250M-BCveg,A-W-250M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252797963,0.936164958,43.625,,,,A-W-250M-Buf 1,A-W-250M-Buf 1,A-W-250M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25296996,0.936079966,35.935,,,,A-W-250M-Buffe,A-W-250M-Buffe,A-W-250M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251689959,0.936758984,53.959,,,,A-W-250M-OPC 1,A-W-250M-OPC 1,A-W-250M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251422996,0.936638033,56.363,,,,A-W-250M-OPC 2,A-W-250M-OPC 2,A-W-250M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251507988,0.936842971,56.122,,,,A-W-250M-OPC 3,A-W-250M-OPC 3,A-W-250M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251545036,0.936713973,53.479,,,,A-W-250M-OPcor,A-W-250M-OPcor,A-W-250M-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25161997,0.93659604,54.2,,,,A-W-250M-OPCve,A-W-250M-OPCve,A-W-250M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252407031,0.936213993,45.548,,,,A-W-250M-OPE 1,A-W-250M-OPE 1,A-W-250M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252488,0.936463019,46.029,,,,A-W-250M-OPE 2,A-W-250M-OPE 2,A-W-250M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252683969,0.936337039,45.067,,,,A-W-250M-OPE 3,A-W-250M-OPE 3,A-W-250M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252572993,0.936230002,44.827,,,,A-W-250M-OPedg,A-W-250M-OPedg,A-W-250M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252615992,0.936121959,43.865,,,,A-W-250M-OPEve,A-W-250M-OPEve,A-W-250M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251698006,0.93456896,68.379,,,,A-W-50M-BCveg1,A-W-50M-BCveg1,A-W-50M-BCveg1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251827003,0.934792003,43.145,,,,A-W-50M-BCveg2,A-W-50M-BCveg2,A-W-50M-BCveg2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251615025,0.934856962,35.694,,,,A-W-50M-BCveg3,A-W-50M-BCveg3,A-W-50M-BCveg3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251554005,0.934626963,35.454,,,,A-W-50M-BCveg4,A-W-50M-BCveg4,A-W-50M-BCveg4,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251496002,0.934792003,39.299,,,,A-W-50M-Buff 1,A-W-50M-Buff 1,A-W-50M-Buff 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251675962,0.934701981,34.493,,,,A-W-50M-Buffer,A-W-50M-Buffer,A-W-50M-Buffer,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.250492521,0.935177654,,,,,A-W-50m-OPcore,A-W-50m-OPcore,A-W-50m-OPcore,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.250670971,0.935278991,48.672,,,,A-W-50M-OPCv 1,A-W-50M-OPCv 1,A-W-50M-OPCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.250365032,0.935133984,53.479,,,,A-W-50M-OPCv 2,A-W-50M-OPCv 2,A-W-50M-OPCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.250459999,0.935332971,51.556,,,,A-W-50M-OPCv 3,A-W-50M-OPCv 3,A-W-50M-OPCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.250563012,0.935094003,46.269,,,,A-W-50M-OPCveg,A-W-50M-OPCveg,A-W-50M-OPCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251246976,0.934908008,41.222,,,,A-W-50M-OPedge,A-W-50M-OPedge,A-W-50M-OPedge,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251178999,0.935024014,42.424,,,,A-W-50M-OPEv 1,A-W-50M-OPEv 1,A-W-50M-OPEv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251114961,0.934826033,42.424,,,,A-W-50M-OPEv 2,A-W-50M-OPEv 2,A-W-50M-OPEv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251303973,0.934751015,41.703,,,,A-W-50M-OPEv 3,A-W-50M-OPEv 3,A-W-50M-OPEv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.251363987,0.934959976,41.222,,,,A-W-50M-OPEveg,A-W-50M-OPEveg,A-W-50M-OPEveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.278478941,0.949286493,49.874,,,,A01,14-11-16 10:38:33AM,14-11-16 10:38:33AM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.278678933,0.95076967,31.609,,,,A02,14-11-16 10:43:25AM,14-11-16 10:43:25AM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255016988,0.937528023,40.501,,,,B-E-150M-BCv 1,B-E-150M-BCv 1,B-E-150M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25521698,0.937445965,41.462,,,,B-E-150M-BCv 2,B-E-150M-BCv 2,B-E-150M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255314965,0.937617039,41.222,,,,B-E-150M-BCv 3,B-E-150M-BCv 3,B-E-150M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255098041,0.93772701,40.741,,,,B-E-150M-BCveg,B-E-150M-BCveg,B-E-150M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255366011,0.93746298,41.222,,,,B-E-150M-Buf 1,B-E-150M-Buf 1,B-E-150M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255121008,0.937631037,32.089,,,,B-E-150M-Buffe,B-E-150M-Buffe,B-E-150M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256459011,0.937161986,55.882,,,,B-E-150M-OPC 1,B-E-150M-OPC 1,B-E-150M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256655985,0.937120998,56.363,,,,B-E-150M-OPC 2,B-E-150M-OPC 2,B-E-150M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256631007,0.936886976,56.603,,,,B-E-150M-OPC 3,B-E-150M-OPC 3,B-E-150M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256534196,0.937089734,,,,,B-E-150m-OPcor,B-E-150m-OPcor,B-E-150m-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256378964,0.936990995,55.642,,,,B-E-150M-OPCve,B-E-150M-OPCve,B-E-150M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255669016,0.937257037,40.741,,,,B-E-150M-OPE 1,B-E-150M-OPE 1,B-E-150M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255478999,0.937327025,40.261,,,,B-E-150M-OPE 2,B-E-150M-OPE 2,B-E-150M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255556028,0.93755099,40.982,,,,B-E-150M-OPE 3,B-E-150M-OPE 3,B-E-150M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255587041,0.93738704,40.982,,,,B-E-150M-OPedg,B-E-150M-OPedg,B-E-150M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255743029,0.937488964,40.982,,,,B-E-150M-OPEve,B-E-150M-OPEve,B-E-150M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255628029,0.939234998,40.982,,,,B-E-350M-BCv 1,B-E-350M-BCv 1,B-E-350M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255812012,0.939166015,40.501,,,,B-E-350M-BCv 2,B-E-350M-BCv 2,B-E-350M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255909996,0.939371958,40.261,,,,B-E-350M-BCv 3,B-E-350M-BCv 3,B-E-350M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255715033,0.939460974,41.462,,,,B-E-350M-BCveg,B-E-350M-BCveg,B-E-350M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255956013,0.939224018,39.54,,,,B-E-350M-Buf 1,B-E-350M-Buf 1,B-E-350M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255737999,0.939265005,41.222,,,,B-E-350M-Buffe,B-E-350M-Buffe,B-E-350M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256922027,0.938804001,44.346,,,,B-E-350M-OPC 1,B-E-350M-OPC 1,B-E-350M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257119002,0.938639967,52.517,,,,B-E-350M-OPC 2,B-E-350M-OPC 2,B-E-350M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257281024,0.93886896,55.642,,,,B-E-350M-OPC 3,B-E-350M-OPC 3,B-E-350M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25709,0.938808024,46.029,,,,B-E-350M-OPcor,B-E-350M-OPcor,B-E-350M-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257038033,0.93900701,47.711,,,,B-E-350M-OPCve,B-E-350M-OPCve,B-E-350M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25613899,0.939230975,40.982,,,,B-E-350M-OPE 1,B-E-350M-OPE 1,B-E-350M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256357003,0.939117987,45.067,,,,B-E-350M-OPE 2,B-E-350M-OPE 2,B-E-350M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256260024,0.938952025,44.346,,,,B-E-350M-OPE 3,B-E-350M-OPE 3,B-E-350M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256196992,0.939069036,40.982,,,,B-E-350M-OPedg,B-E-350M-OPedg,B-E-350M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256047962,0.93897298,41.222,,,,B-E-350M-OPEve,B-E-350M-OPEve,B-E-350M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255121008,0.93878204,43.865,,,,B-W-250M-BCv 1,B-W-250M-BCv 1,B-W-250M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254851026,0.93869797,42.664,,,,B-W-250M-BCv 2,B-W-250M-BCv 2,B-W-250M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254913975,0.938883964,42.183,,,,B-W-250M-BCv 3,B-W-250M-BCv 3,B-W-250M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255035009,0.938565033,43.145,,,,B-W-250M-BCveg,B-W-250M-BCveg,B-W-250M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254757987,0.938883964,36.656,,,,B-W-250M-Buf 1,B-W-250M-Buf 1,B-W-250M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25496896,0.938732,43.385,,,,B-W-250M-Buffe,B-W-250M-Buffe,B-W-250M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25403597,0.939517971,42.664,,,,B-W-250M-OPC 1,B-W-250M-OPC 1,B-W-250M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253770012,0.939404983,44.587,,,,B-W-250M-OPC 2,B-W-250M-OPC 2,B-W-250M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253832961,0.939604975,44.827,,,,B-W-250M-OPC 3,B-W-250M-OPC 3,B-W-250M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253856765,0.939437253,,,,,B-W-250m-OPcor,B-W-250m-OPcor,B-W-250m-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253912002,0.939267017,43.625,,,,B-W-250M-OPCve,B-W-250M-OPCve,B-W-250M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254719011,0.939015979,39.299,,,,B-W-250M-OPE 1,B-W-250M-OPE 1,B-W-250M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254448025,0.938938027,41.222,,,,B-W-250M-OPE 2,B-W-250M-OPE 2,B-W-250M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254522037,0.939114969,40.02,,,,B-W-250M-OPE 3,B-W-250M-OPE 3,B-W-250M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25457501,0.938959988,37.857,,,,B-W-250M-OPedg,B-W-250M-OPedg,B-W-250M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254636031,0.938802995,38.578,,,,B-W-250M-OPEve,B-W-250M-OPEve,B-W-250M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254430003,0.936895022,37.617,,,,B-W-50M-BCveg1,B-W-50M-BCveg1,B-W-50M-BCveg1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25451399,0.937102977,38.098,,,,B-W-50M-BCveg2,B-W-50M-BCveg2,B-W-50M-BCveg2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254233029,0.937002981,36.896,,,,B-W-50M-BCveg3,B-W-50M-BCveg3,B-W-50M-BCveg3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254330007,0.937213032,37.136,,,,B-W-50M-BCveg4,B-W-50M-BCveg4,B-W-50M-BCveg4,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254206039,0.937165003,41.462,,,,B-W-50M-Buff 1,B-W-50M-Buff 1,B-W-50M-Buff 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254403014,0.937041035,38.098,,,,B-W-50M-Buffer,B-W-50M-Buffer,B-W-50M-Buffer,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252999967,0.937843015,50.835,,,,B-W-50M-OPcore,B-W-50M-OPcore,B-W-50M-OPcore,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253111027,0.937884003,50.835,,,,B-W-50M-OPCv 1,B-W-50M-OPCv 1,B-W-50M-OPCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252928972,0.937992968,51.796,,,,B-W-50M-OPCv 2,B-W-50M-OPCv 2,B-W-50M-OPCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.252848003,0.93779197,52.277,,,,B-W-50M-OPCv 3,B-W-50M-OPCv 3,B-W-50M-OPCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253029974,0.937650986,51.075,,,,B-W-50M-OPCveg,B-W-50M-OPCveg,B-W-50M-OPCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253966987,0.937313028,41.222,,,,B-W-50M-OPedge,B-W-50M-OPedge,B-W-50M-OPedge,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254072012,0.937313028,39.78,,,,B-W-50M-OPEv 1,B-W-50M-OPEv 1,B-W-50M-OPEv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.253905967,0.937459962,41.222,,,,B-W-50M-OPEv 2,B-W-50M-OPEv 2,B-W-50M-OPEv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25382198,0.937206997,41.943,,,,B-W-50M-OPEv 3,B-W-50M-OPEv 3,B-W-50M-OPEv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254061032,0.937199034,40.501,,,,B-W-50M-OPEveg,B-W-50M-OPEveg,B-W-50M-OPEveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25608501,0.941092009,45.548,,,,C-E-150M-BCv 1,C-E-150M-BCv 1,C-E-150M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256306963,0.941030988,50.114,,,,C-E-150M-BCv 2,C-E-150M-BCv 2,C-E-150M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25638701,0.941283032,51.075,,,,C-E-150M-BCv 3,C-E-150M-BCv 3,C-E-150M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256166985,0.941284038,45.067,,,,C-E-150M-BCveg,C-E-150M-BCveg,C-E-150M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256452976,0.941135008,49.874,,,,C-E-150M-Buf 1,C-E-150M-Buf 1,C-E-150M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256201016,0.941173984,49.633,,,,C-E-150M-Buffe,C-E-150M-Buffe,C-E-150M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25738496,0.940885982,46.75,,,,C-E-150M-OPC 1,C-E-150M-OPC 1,C-E-150M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257620994,0.940850023,46.029,,,,C-E-150M-OPC 2,C-E-150M-OPC 2,C-E-150M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257629963,0.941120004,45.548,,,,C-E-150M-OPC 3,C-E-150M-OPC 3,C-E-150M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25756165,0.941003161,,,,,C-E-150m-OPcor,C-E-150m-OPcor,C-E-150m-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25737004,0.941132996,45.548,,,,C-E-150M-OPCve,C-E-150M-OPCve,C-E-150M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256609969,0.941240033,52.517,,,,C-E-150M-OPE 1,C-E-150M-OPE 1,C-E-150M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256809961,0.941204997,51.075,,,,C-E-150M-OPE 2,C-E-150M-OPE 2,C-E-150M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256771991,0.94100601,47.711,,,,C-E-150M-OPE 3,C-E-150M-OPE 3,C-E-150M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25672698,0.941123022,48.672,,,,C-E-150M-OPedg,C-E-150M-OPedg,C-E-150M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25657401,0.941002993,49.153,,,,C-E-150M-OPEve,C-E-150M-OPEve,C-E-150M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256278967,0.942786997,38.578,,,,C-E-350M-BCv 1,C-E-350M-BCv 1,C-E-350M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25644099,0.942772999,40.741,,,,C-E-350M-BCv 2,C-E-350M-BCv 2,C-E-350M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25647896,0.942965029,42.904,,,,C-E-350M-BCv 3,C-E-350M-BCv 3,C-E-350M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256236974,0.943009034,42.904,,,,C-E-350M-BCveg,C-E-350M-BCveg,C-E-350M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256554984,0.942880036,42.424,,,,C-E-350M-Buf 1,C-E-350M-Buf 1,C-E-350M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256351974,0.942910966,41.462,,,,C-E-350M-Buffe,C-E-350M-Buffe,C-E-350M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257698024,0.94297098,45.067,,,,C-E-350M-OPC 1,C-E-350M-OPC 1,C-E-350M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257902961,0.942911971,43.385,,,,C-E-350M-OPC 2,C-E-350M-OPC 2,C-E-350M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257931041,0.942698987,44.346,,,,C-E-350M-OPC 3,C-E-350M-OPC 3,C-E-350M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257826015,0.942777023,44.587,,,,C-E-350m-OPcor,C-E-350m-OPcor,C-E-350m-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257661982,0.942740981,44.827,,,,C-E-350M-OPCve,C-E-350M-OPCve,C-E-350M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256727986,0.942971986,41.703,,,,C-E-350M-OPE 1,C-E-350M-OPE 1,C-E-350M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256953962,0.942747016,40.982,,,,C-E-350M-OPE 2,C-E-350M-OPE 2,C-E-350M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256907023,0.942966035,41.462,,,,C-E-350M-OPE 3,C-E-350M-OPE 3,C-E-350M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25685296,0.942897974,41.462,,,,C-E-350M-OPedg,C-E-350M-OPedg,C-E-350M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256704014,0.942736035,42.183,,,,C-E-350M-OPEve,C-E-350M-OPEve,C-E-350M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255954001,0.941997003,34.012,,,,C-W-250M-BCv 1,C-W-250M-BCv 1,C-W-250M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255710004,0.942015024,35.454,,,,C-W-250M-BCv 2,C-W-250M-BCv 2,C-W-250M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255733976,0.942270001,35.214,,,,C-W-250M-BCv 3,C-W-250M-BCv 3,C-W-250M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255976968,0.942247035,34.493,,,,C-W-250M-BCveg,C-W-250M-BCveg,C-W-250M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255577989,0.942155002,34.733,,,,C-W-250M-Buf 1,C-W-250M-Buf 1,C-W-250M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255843025,0.942112003,34.733,,,,C-W-250M-Buffe,C-W-250M-Buffe,C-W-250M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254611975,0.942162964,34.252,,,,C-W-250M-OPC 1,C-W-250M-OPC 1,C-W-250M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254446013,0.942204036,36.415,,,,C-W-250M-OPC 2,C-W-250M-OPC 2,C-W-250M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254431009,0.942422971,38.338,,,,C-W-250M-OPC 3,C-W-250M-OPC 3,C-W-250M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254512062,0.942321047,,,,,C-W-250M-OPcor,C-W-250M-OPcor,C-W-250M-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254641982,0.942420959,34.973,,,,C-W-250M-OPCve,C-W-250M-OPCve,C-W-250M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255461983,0.94230596,36.175,,,,C-W-250M-OPE 1,C-W-250M-OPE 1,C-W-250M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255229972,0.942323981,36.175,,,,C-W-250M-OPE 2,C-W-250M-OPE 2,C-W-250M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255225027,0.942092976,36.175,,,,C-W-250M-OPE 3,C-W-250M-OPE 3,C-W-250M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255346984,0.942162964,35.694,,,,C-W-250M-OPedg,C-W-250M-OPedg,C-W-250M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255463995,0.942042014,36.175,,,,C-W-250M-OPEve,C-W-250M-OPEve,C-W-250M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255747974,0.940281982,40.02,,,,C-W-50M-BCveg1,C-W-50M-BCveg1,C-W-50M-BCveg1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255797008,0.94050603,39.059,,,,C-W-50M-BCveg2,C-W-50M-BCveg2,C-W-50M-BCveg2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255519986,0.940274019,40.501,,,,C-W-50M-BCveg3,C-W-50M-BCveg3,C-W-50M-BCveg3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255592993,0.94050603,40.261,,,,C-W-50M-BCveg4,C-W-50M-BCveg4,C-W-50M-BCveg4,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255441029,0.940409973,40.261,,,,C-W-50M-Buff 1,C-W-50M-Buff 1,C-W-50M-Buff 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255658958,0.940386001,39.78,,,,C-W-50M-Buffer,C-W-50M-Buffer,C-W-50M-Buffer,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254277034,0.940692024,35.454,,,,C-W-50m-OPcore,C-W-50m-OPcore,C-W-50m-OPcore,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254336964,0.940555986,34.733,,,,C-W-50M-OPCv 1,C-W-50M-OPCv 1,C-W-50M-OPCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254092967,0.940616,36.656,,,,C-W-50M-OPCv 2,C-W-50M-OPCv 2,C-W-50M-OPCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254115012,0.940809036,38.338,,,,C-W-50M-OPCv 3,C-W-50M-OPCv 3,C-W-50M-OPCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254336964,0.940790009,35.694,,,,C-W-50M-OPCveg,C-W-50M-OPCveg,C-W-50M-OPCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255164007,0.94044501,41.703,,,,C-W-50M-OPedge,C-W-50M-OPedge,C-W-50M-OPedge,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255287975,0.940314,41.462,,,,C-W-50M-OPEv 1,C-W-50M-OPEv 1,C-W-50M-OPEv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255036015,0.940332022,41.222,,,,C-W-50M-OPEv 2,C-W-50M-OPEv 2,C-W-50M-OPEv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25506904,0.940596974,41.462,,,,C-W-50M-OPEv 3,C-W-50M-OPEv 3,C-W-50M-OPEv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255323011,0.940548023,41.462,,,,C-W-50M-OPEveg,C-W-50M-OPEveg,C-W-50M-OPEveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256024996,0.944646019,43.145,,,,D-E-150M-BCv 1,D-E-150M-BCv 1,D-E-150M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256197998,0.944589023,45.067,,,,D-E-150M-BCv 2,D-E-150M-BCv 2,D-E-150M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256253989,0.944801001,42.424,,,,D-E-150M-BCv 3,D-E-150M-BCv 3,D-E-150M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256051986,0.944842994,42.904,,,,D-E-150M-BCveg,D-E-150M-BCveg,D-E-150M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256367983,0.944704022,38.338,,,,D-E-150M-Buf 1,D-E-150M-Buf 1,D-E-150M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256152987,0.94471802,42.904,,,,D-E-150M-Buffe,D-E-150M-Buffe,D-E-150M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257497026,0.94439297,45.548,,,,D-E-150M-OPC 1,D-E-150M-OPC 1,D-E-150M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257696012,0.944370003,46.75,,,,D-E-150M-OPC 2,D-E-150M-OPC 2,D-E-150M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257749991,0.944563961,44.587,,,,D-E-150M-OPC 3,D-E-150M-OPC 3,D-E-150M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257651001,0.944481986,45.307,,,,D-E-150m-OPcor,D-E-150m-OPcor,D-E-150m-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257529967,0.944614001,44.827,,,,D-E-150M-OPCve,D-E-150M-OPCve,D-E-150M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256504022,0.94450797,37.857,,,,D-E-150M-OPE 1,D-E-150M-OPE 1,D-E-150M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256707031,0.94453102,37.617,,,,D-E-150M-OPE 2,D-E-150M-OPE 2,D-E-150M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256719017,0.944733024,37.136,,,,D-E-150M-OPE 3,D-E-150M-OPE 3,D-E-150M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256580967,0.944635961,37.377,,,,D-E-150M-OPedg,D-E-150M-OPedg,D-E-150M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256480971,0.944723971,36.896,,,,D-E-150M-OPEve,D-E-150M-OPEve,D-E-150M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257130988,0.946246041,35.694,,,,D-E-350M-BCv 1,D-E-350M-BCv 1,D-E-350M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257332992,0.946133975,36.415,,,,D-E-350M-BCv 2,D-E-350M-BCv 2,D-E-350M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257458972,0.946332039,36.415,,,,D-E-350M-BCv 3,D-E-350M-BCv 3,D-E-350M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257270966,0.946413008,34.973,,,,D-E-350M-BCveg,D-E-350M-BCveg,D-E-350M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257482022,0.946244029,39.299,,,,D-E-350M-Buf 1,D-E-350M-Buf 1,D-E-350M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257274989,0.946262972,35.454,,,,D-E-350M-Buffe,D-E-350M-Buffe,D-E-350M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.258534035,0.945549002,45.067,,,,D-E-350M-OPC 1,D-E-350M-OPC 1,D-E-350M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.258728998,0.945435008,42.424,,,,D-E-350M-OPC 2,D-E-350M-OPC 2,D-E-350M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.258816002,0.945650004,39.54,,,,D-E-350M-OPC 3,D-E-350M-OPC 3,D-E-350M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.258673007,0.945605999,42.664,,,,D-E-350M-OPcor,D-E-350M-OPcor,D-E-350M-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.258617016,0.945762992,42.183,,,,D-E-350M-OPCve,D-E-350M-OPCve,D-E-350M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257674973,0.946266996,43.625,,,,D-E-350M-OPE 1,D-E-350M-OPE 1,D-E-350M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257810006,0.945970025,47.711,,,,D-E-350M-OPE 2,D-E-350M-OPE 2,D-E-350M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257876977,0.946173035,48.672,,,,D-E-350M-OPE 3,D-E-350M-OPE 3,D-E-350M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257742029,0.94611302,46.75,,,,D-E-350M-OPedg,D-E-350M-OPedg,D-E-350M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.257609008,0.946077984,42.183,,,,D-E-350M-OPEve,D-E-350M-OPEve,D-E-350M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25621099,0.945647992,43.385,,,,D-W-250M-BCv 1,D-W-250M-BCv 1,D-W-250M-BCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255992977,0.945751006,43.865,,,,D-W-250M-BCv 2,D-W-250M-BCv 2,D-W-250M-BCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25612298,0.945937,43.625,,,,D-W-250M-BCv 3,D-W-250M-BCv 3,D-W-250M-BCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256351974,0.945855025,43.385,,,,D-W-250M-BCveg,D-W-250M-BCveg,D-W-250M-BCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255917959,0.945834992,43.385,,,,D-W-250M-Buf 1,D-W-250M-Buf 1,D-W-250M-Buf 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.256146031,0.945795011,43.865,,,,D-W-250M-Buffe,D-W-250M-Buffe,D-W-250M-Buffe,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254998967,0.94620497,41.703,,,,D-W-250M-OPC 1,D-W-250M-OPC 1,D-W-250M-OPC 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254779026,0.946285017,42.424,,,,D-W-250M-OPC 2,D-W-250M-OPC 2,D-W-250M-OPC 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254887991,0.946529014,41.703,,,,D-W-250M-OPC 3,D-W-250M-OPC 3,D-W-250M-OPC 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254939204,0.946374116,,,,,D-W-250m-OPcor,D-W-250m-OPcor,D-W-250m-OPcor,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255095024,0.946386019,40.982,,,,D-W-250M-OPCve,D-W-250M-OPCve,D-W-250M-OPCve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255832966,0.946060969,44.346,,,,D-W-250M-OPE 1,D-W-250M-OPE 1,D-W-250M-OPE 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255667005,0.946170017,42.183,,,,D-W-250M-OPE 2,D-W-250M-OPE 2,D-W-250M-OPE 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25557296,0.945949992,43.385,,,,D-W-250M-OPE 3,D-W-250M-OPE 3,D-W-250M-OPE 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255731964,0.946015036,43.865,,,,D-W-250M-OPedg,D-W-250M-OPedg,D-W-250M-OPedg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255779993,0.945839016,44.346,,,,D-W-250M-OPEve,D-W-250M-OPEve,D-W-250M-OPEve,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255607996,0.943737002,42.904,,,,D-W-50M-BCveg1,D-W-50M-BCveg1,D-W-50M-BCveg1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255607996,0.94396499,43.385,,,,D-W-50M-BCveg2,D-W-50M-BCveg2,D-W-50M-BCveg2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255415967,0.943968007,42.664,,,,D-W-50M-BCveg3,D-W-50M-BCveg3,D-W-50M-BCveg3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255396018,0.94376198,42.424,,,,D-W-50M-BCveg4,D-W-50M-BCveg4,D-W-50M-BCveg4,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255293004,0.943858037,43.385,,,,D-W-50M-Buff 1,D-W-50M-Buff 1,D-W-50M-Buff 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255451003,0.943831969,43.385,,,,D-W-50M-Buffer,D-W-50M-Buffer,D-W-50M-Buffer,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254144013,0.944026345,,,,,D-W-50m-OPcore,D-W-50m-OPcore,D-W-50m-OPcore,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254230011,0.943892989,37.617,,,,D-W-50M-OPCv 1,D-W-50M-OPCv 1,D-W-50M-OPCv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254037982,0.943958033,37.617,,,,D-W-50M-OPCv 2,D-W-50M-OPCv 2,D-W-50M-OPCv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254058015,0.94415199,37.617,,,,D-W-50M-OPCv 3,D-W-50M-OPCv 3,D-W-50M-OPCv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254264964,0.944085019,37.377,,,,D-W-50M-OPCveg,D-W-50M-OPCveg,D-W-50M-OPCveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255016988,0.94390003,44.106,,,,D-W-50M-OPedge,D-W-50M-OPedge,D-W-50M-OPedge,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.25510701,0.943783019,43.865,,,,D-W-50M-OPEv 1,D-W-50M-OPEv 1,D-W-50M-OPEv 1,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254895031,0.943797017,44.106,,,,D-W-50M-OPEv 2,D-W-50M-OPEv 2,D-W-50M-OPEv 2,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.254911963,0.944002038,43.865,,,,D-W-50M-OPEv 3,D-W-50M-OPEv 3,D-W-50M-OPEv 3,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.255137017,0.943983011,43.625,,,,D-W-50M-OPEveg,D-W-50M-OPEveg,D-W-50M-OPEveg,,,,,,,,"Navaid, Red",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.279054023,0.94965253,50.114,,,,H01,15-11-16 8:47:48AM,15-11-16 8:47:48AM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.280848086,0.949481456,43.625,,,,H02,15-11-16 8:59:25AM,15-11-16 8:59:25AM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.280591516,0.948639158,47.951,,,,I01,14-11-16 12:25:13PM,14-11-16 12:25:13PM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.278896444,0.948880725,51.796,,,,I02,14-11-16 12:26:54PM,14-11-16 12:26:54PM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.281658197,0.952033661,52.037,,,,R01,14-11-16 12:21:47PM,14-11-16 12:21:47PM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      
+101.281397268,0.950421989,52.998,,,,R02,14-11-16 12:23:19PM,14-11-16 12:23:19PM,,,,,,,,"Navaid, Green",,,,,,,,,        <gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>      

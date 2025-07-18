@@ -1,0 +1,715 @@
+﻿timepoint,date,river,treatment,side,transect,point,point.label,start.time,end.time,surveyors,canopy.openness.to.river,canopy.openness.right,canopy.openness.from.river,canopy.openness.left
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,6,19,11,14
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,16,23,31,19
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,21,34,38,26
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,23,29,18,22
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,25,21,18,17
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,30,9,27,20
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,32,21,29,34
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,43,13,27,21
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,44,17,23,41
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m- BufferCore,08:30,08:10,Rio dan Falchdian,44,14,28,22
+baseline,23/11/2017,PLPE,A,East,350m,OP.core,A-East-350m- OpCore,10:02,10:35,Rio dan Falchdian,26,15,22,29
+baseline,23/11/2017,PLPE,A,East,350m,OP.core,A-East-350m- OpCore,10:02,10:35,Rio dan Falchdian,27,34,20,41
+baseline,23/11/2017,PLPE,A,East,350m,OP.core,A-East-350m- OpCore,10:02,10:35,Rio dan Falchdian,31,33,43,25
+baseline,23/11/2017,PLPE,A,East,350m,OP.core,A-East-350m- OpCore,10:02,10:35,Rio dan Falchdian,42,32,52,36
+baseline,23/11/2017,PLPE,A,East,350m,OP.core,A-East-350m- OpCore,10:02,10:35,Rio dan Falchdian,69,41,28,23
+baseline,23/11/2017,PLPE,A,East,350m,OP.edge,A-East-350m- OpEdge,09:16,09:40,Rio dan Falchdian,18,22,16,50
+baseline,23/11/2017,PLPE,A,East,350m,OP.edge,A-East-350m- OpEdge,09:16,09:40,Rio dan Falchdian,30,21,26,19
+baseline,23/11/2017,PLPE,A,East,350m,OP.edge,A-East-350m- OpEdge,09:16,09:40,Rio dan Falchdian,32,26,29,17
+baseline,23/11/2017,PLPE,A,East,350m,OP.edge,A-East-350m- OpEdge,09:16,09:40,Rio dan Falchdian,39,27,24,18
+baseline,23/11/2017,PLPE,A,East,350m,OP.edge,A-East-350m- OpEdge,09:16,09:40,Rio dan Falchdian,41,19,23,17
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,12,18,21,4
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,14,19,17,10
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,15,22,26,8
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,16,20,17,14
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,20,26,23,10
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,23,15,17,24
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,24,16,35,12
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,36,17,14,9
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,78,14,9,7
+baseline,16/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:18,11:46,Rio dan Falchdian,81,22,14,12
+baseline,22/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,10:48,11:43,"Adit, Eko",20,13,25,8
+baseline,22/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,08:33,09:43,"Adit, Eko",64,14,28,21
+baseline,23/11/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,10:32,11:28,"Adit, Eko",15,7,8,8
+baseline,23/11/2017,PLPE,A,East,350m,buffer.core,A-East-350m-BufferCore,08:40,09:36,"Adit, Eko",33,16,24,22
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,10,26,17,9
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,10,8,28,13
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,11,14,29,7
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,12,15,30,8
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,13,37,48,6
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,19,10,24,23
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,27,32,18,8
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,28,33,19,9
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,35,16,11,36
+baseline,23/11/2017,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,10:55,11:43,Rio dan Falchdian,45,18,17,73
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,6,3,8,10
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,9,8,11,9
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,10,10,8,18
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,13,22,9,8
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,21,14,11,19
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,22,9,6,27
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,25,34,23,28
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,28,30,25,26
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,29,31,22,31
+baseline,29/11/2017,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,08:21,09:29,Adit Dan Eko,35,23,18,37
+baseline,16/11/2017,PLPE,A,East,150m,OP.core,A-East-150m-OpCore,12:30,13:00,Rio dan Falchdian,10,34,19,11
+baseline,16/11/2017,PLPE,A,East,150m,OP.core,A-East-150m-OpCore,12:30,13:00,Rio dan Falchdian,12,26,37,7
+baseline,16/11/2017,PLPE,A,East,150m,OP.core,A-East-150m-OpCore,12:30,13:00,Rio dan Falchdian,14,17,21,15
+baseline,16/11/2017,PLPE,A,East,150m,OP.core,A-East-150m-OpCore,12:30,13:00,Rio dan Falchdian,22,19,31,28
+baseline,16/11/2017,PLPE,A,East,150m,OP.core,A-East-150m-OpCore,12:30,13:00,Rio dan Falchdian,23,19,14,23
+baseline,22/11/2017,PLPE,A,West,250m,OP.core,A-West-250m-Opcore,11:59,12:04,"Adit, Eko",35,20,26,28
+baseline,22/11/2017,PLPE,A,West,50m,OP.core,A-West-50m-Opcore,10:13,10:18,"Adit, Eko",20,12,23,9
+baseline,23/11/2017,PLPE,A,West,50m,OP.core,A-West-50m-OpCore,14:52,15:27,Rio dan Falchdian,6,8,14,4
+baseline,23/11/2017,PLPE,A,West,50m,OP.core,A-West-50m-OpCore,14:52,15:27,Rio dan Falchdian,7,5,9,5
+baseline,23/11/2017,PLPE,A,West,50m,OP.core,A-West-50m-OpCore,14:52,15:27,Rio dan Falchdian,8,11,4,14
+baseline,23/11/2017,PLPE,A,West,50m,OP.core,A-West-50m-OpCore,14:52,15:27,Rio dan Falchdian,9,3,5,4
+baseline,23/11/2017,PLPE,A,West,50m,OP.core,A-West-50m-OpCore,14:52,15:27,Rio dan Falchdian,42,26,34,22
+baseline,23/11/2017,PLPE,A,East,150m,OP.core,A-East-150m-OPcore,11:43,11:54,"Adit, Eko",7,31,15,17
+baseline,23/11/2017,PLPE,A,East,350m,OP.core,A-East-350m-OPcore,09:51,10:02,"Adit, Eko",29,35,24,27
+baseline,29/11/2017,PLPE,A,West,250m,OP.core,A-West-250m-OpCore,10:53,11:21,Adit Dan Eko,14,12,16,31
+baseline,29/11/2017,PLPE,A,West,250m,OP.core,A-West-250m-OpCore,10:53,11:21,Adit Dan Eko,17,27,12,13
+baseline,29/11/2017,PLPE,A,West,250m,OP.core,A-West-250m-OpCore,10:53,11:21,Adit Dan Eko,20,15,10,13
+baseline,29/11/2017,PLPE,A,West,250m,OP.core,A-West-250m-OpCore,10:53,11:21,Adit Dan Eko,28,10,13,12
+baseline,29/11/2017,PLPE,A,West,250m,OP.core,A-West-250m-OpCore,10:53,11:21,Adit Dan Eko,38,24,21,42
+baseline,16/11/2017,PLPE,A,East,150m,OP.edge,A-East-150m-OpEdge,11:51,12:25,Rio dan Falchdian,13,35,9,20
+baseline,16/11/2017,PLPE,A,East,150m,OP.edge,A-East-150m-OpEdge,11:51,12:25,Rio dan Falchdian,15,25,36,14
+baseline,16/11/2017,PLPE,A,East,150m,OP.edge,A-East-150m-OpEdge,11:51,12:25,Rio dan Falchdian,15,37,14,29
+baseline,16/11/2017,PLPE,A,East,150m,OP.edge,A-East-150m-OpEdge,11:51,12:25,Rio dan Falchdian,17,34,26,19
+baseline,16/11/2017,PLPE,A,East,150m,OP.edge,A-East-150m-OpEdge,11:51,12:25,Rio dan Falchdian,24,31,20,24
+baseline,22/11/2017,PLPE,A,West,250m,OP.edge,A-West-250m-Opedge,11:45,11:50,"Adit, Eko",31,34,14,10
+baseline,22/11/2017,PLPE,A,West,50m,OP.edge,A-West-50m-OPedge,09:45,10:04,"Adit, Eko",26,19,32,22
+baseline,23/11/2017,PLPE,A,West,50m,OP.edge,A-West-50m-OpEdge,14:11,14:46,Rio dan Falchdian,11,11,9,14
+baseline,23/11/2017,PLPE,A,West,50m,OP.edge,A-West-50m-OpEdge,14:11,14:46,Rio dan Falchdian,12,5,6,9
+baseline,23/11/2017,PLPE,A,West,50m,OP.edge,A-West-50m-OpEdge,14:11,14:46,Rio dan Falchdian,15,15,8,16
+baseline,23/11/2017,PLPE,A,West,50m,OP.edge,A-West-50m-OpEdge,14:11,14:46,Rio dan Falchdian,25,6,8,57
+baseline,23/11/2017,PLPE,A,West,50m,OP.edge,A-West-50m-OpEdge,14:11,14:46,Rio dan Falchdian,26,10,13,7
+baseline,23/11/2017,PLPE,A,East,150m,OP.edge,A-East-150m-OPedge,11:31,11:38,"Adit, Eko",23,18,26,52
+baseline,23/11/2017,PLPE,A,East,350m,OP.edge,A-East-350m-OPedge,09:39,09:46,"Adit, Eko",31,29,28,34
+baseline,29/11/2017,PLPE,A,West,250m,OP.edge,A-West-250m-OpEdge,10:04,10:49,Adit Dan Eko,14,25,17,14
+baseline,29/11/2017,PLPE,A,West,250m,OP.edge,A-West-250m-OpEdge,10:04,10:49,Adit Dan Eko,15,26,18,15
+baseline,29/11/2017,PLPE,A,West,250m,OP.edge,A-West-250m-OpEdge,10:04,10:49,Adit Dan Eko,17,23,11,15
+baseline,29/11/2017,PLPE,A,West,250m,OP.edge,A-West-250m-OpEdge,10:04,10:49,Adit Dan Eko,19,24,15,11
+baseline,29/11/2017,PLPE,A,West,250m,OP.edge,A-West-250m-OpEdge,10:04,10:49,Adit Dan Eko,29,25,42,53
+baseline,22/11/2017,PLPE,B,West,50m,OP.edge,B-West-50m- Opedge,14:52,14:57,"Adit, Eko",13,33,24,16
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,9,64,23,15
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,11,14,16,25
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,14,28,11,16
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,15,24,28,17
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,17,14,25,22
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,18,11,28,17
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,20,22,14,17
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,22,26,17,28
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,24,11,19,23
+baseline,15/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:11,15:07,Rio dan Falchdian,25,18,26,32
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,7,15,36,22
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,8,30,22,12
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,11,7,13,10
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,18,9,24,10
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,22,11,18,20
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,23,17,32,33
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,23,15,17,20
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,24,21,20,17
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,27,14,38,34
+baseline,15/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,10:15,11:05,Rio dan Falchdian,31,36,19,40
+baseline,21/11/2017,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,14:14,15:07,"Adit, Eko",26,15,18,23
+baseline,21/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,08:35,09:28,"Adit, Eko",21,35,17,32
+baseline,22/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,14:15,14:50,"Adit, Eko",28,57,19,78
+baseline,23/11/2017,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,14:16,15:02,"Adit, Eko",9,5,9,6
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,9,54,29,15
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,11,26,13,43
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,11,51,25,16
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,15,20,18,11
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,15,24,28,17
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,16,25,29,18
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,16,31,25,18
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,21,25,35,19
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,21,16,30,6
+baseline,25/11/2017,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,09:11,10:13,Rio dan Falchdian,24,17,25,31
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,18,13,10,22
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,20,13,11,18
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,27,18,17,35
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,27,18,17,35
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,29,21,62,63
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,31,30,12,19
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,33,21,16,35
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,34,22,17,36
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,66,32,21,39
+baseline,29/11/2017,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,08:08,09:14,Rio dan Falchdian,67,33,22,40
+baseline,15/11/2017,PLPE,B,East,150m,OP.core,B-East-150m-OpCore,08:38,09:28,Rio dan Falchdian,11,19,16,32
+baseline,15/11/2017,PLPE,B,East,150m,OP.core,B-East-150m-OpCore,08:38,09:28,Rio dan Falchdian,16,8,12,18
+baseline,15/11/2017,PLPE,B,East,150m,OP.core,B-East-150m-OpCore,08:38,09:28,Rio dan Falchdian,17,29,23,9
+baseline,15/11/2017,PLPE,B,East,150m,OP.core,B-East-150m-OpCore,08:38,09:28,Rio dan Falchdian,20,24,34,18
+baseline,15/11/2017,PLPE,B,East,150m,OP.core,B-East-150m-OpCore,08:38,09:28,Rio dan Falchdian,43,26,21,14
+baseline,15/11/2017,PLPE,B,West,250m,OP.core,B-West-250m-OpCore,14:12,15:15,Rio dan Falchdian,18,12,35,26
+baseline,15/11/2017,PLPE,B,West,250m,OP.core,B-West-250m-OpCore,14:12,15:15,Rio dan Falchdian,24,21,35,26
+baseline,15/11/2017,PLPE,B,West,250m,OP.core,B-West-250m-OpCore,14:12,15:15,Rio dan Falchdian,27,16,19,32
+baseline,15/11/2017,PLPE,B,West,250m,OP.core,B-West-250m-OpCore,14:12,15:15,Rio dan Falchdian,37,18,15,10
+baseline,15/11/2017,PLPE,B,West,250m,OP.core,B-West-250m-OpCore,14:12,15:15,Rio dan Falchdian,43,22,26,30
+baseline,21/11/2017,PLPE,B,East,350m,OP.core,B-East-350m-OpCore,11:00,11:36,Rio dan Falchdian,16,35,18,14
+baseline,21/11/2017,PLPE,B,East,350m,OP.core,B-East-350m-OpCore,11:00,11:36,Rio dan Falchdian,16,21,28,13
+baseline,21/11/2017,PLPE,B,East,350m,OP.core,B-East-350m-OpCore,11:00,11:36,Rio dan Falchdian,17,7,21,22
+baseline,21/11/2017,PLPE,B,East,350m,OP.core,B-East-350m-OpCore,11:00,11:36,Rio dan Falchdian,19,24,27,11
+baseline,21/11/2017,PLPE,B,East,350m,OP.core,B-East-350m-OpCore,11:00,11:36,Rio dan Falchdian,28,21,33,17
+baseline,21/11/2017,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,15:18,15:23,"Adit, Eko",15,27,17,23
+baseline,21/11/2017,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,09:36,09:39,"Adit, Eko",15,27,17,23
+baseline,22/11/2017,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,15:06,15:20,"Adit, Eko",25,11,16,22
+baseline,23/11/2017,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,15:17,15:24,"Adit, Eko",38,25,11,23
+baseline,29/11/2017,PLPE,B,West,50m,OP.core,B-West-50m-OpCore,10:15,10:50,Rio dan Falchdian,17,16,13,16
+baseline,29/11/2017,PLPE,B,West,50m,OP.core,B-West-50m-OpCore,10:15,10:50,Rio dan Falchdian,20,15,29,5
+baseline,29/11/2017,PLPE,B,West,50m,OP.core,B-West-50m-OpCore,10:15,10:50,Rio dan Falchdian,28,26,21,19
+baseline,29/11/2017,PLPE,B,West,50m,OP.core,B-West-50m-OpCore,10:15,10:50,Rio dan Falchdian,32,25,23,37
+baseline,29/11/2017,PLPE,B,West,50m,OP.core,B-West-50m-OpCore,10:15,10:50,Rio dan Falchdian,33,20,26,29
+baseline,15/11/2017,PLPE,B,East,150m,OP.edge,B-East-150m-OpEdge,15:09,15:42,Rio dan Falchdian,8,48,22,13
+baseline,15/11/2017,PLPE,B,East,150m,OP.edge,B-East-150m-OpEdge,15:09,15:42,Rio dan Falchdian,9,24,11,41
+baseline,15/11/2017,PLPE,B,East,150m,OP.edge,B-East-150m-OpEdge,15:09,15:42,Rio dan Falchdian,27,22,39,19
+baseline,15/11/2017,PLPE,B,East,150m,OP.edge,B-East-150m-OpEdge,15:09,15:42,Rio dan Falchdian,28,31,26,24
+baseline,15/11/2017,PLPE,B,East,150m,OP.edge,B-East-150m-OpEdge,15:09,15:42,Rio dan Falchdian,48,26,16,42
+baseline,15/11/2017,PLPE,B,West,250m,OP.edge,B-West-250m-OpEdge,11:08,11:58,Rio dan Falchdian,21,22,7,13
+baseline,15/11/2017,PLPE,B,West,250m,OP.edge,B-West-250m-OpEdge,11:08,11:58,Rio dan Falchdian,31,42,19,14
+baseline,15/11/2017,PLPE,B,West,250m,OP.edge,B-West-250m-OpEdge,11:08,11:58,Rio dan Falchdian,38,31,29,41
+baseline,15/11/2017,PLPE,B,West,250m,OP.edge,B-West-250m-OpEdge,11:08,11:58,Rio dan Falchdian,39,18,15,28
+baseline,15/11/2017,PLPE,B,West,250m,OP.edge,B-West-250m-OpEdge,11:08,11:58,Rio dan Falchdian,57,29,22,26
+baseline,21/11/2017,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,15:10,15:15,"Adit, Eko",21,28,24,34
+baseline,21/11/2017,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,09:31,09:36,"Adit, Eko",29,16,26,34
+baseline,23/11/2017,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,15:05,15:12,"Adit, Eko",31,9,10,17
+baseline,25/11/2017,PLPE,B,East,350m,OP.edge,B-East-350m-OpEdge,10:20,10:57,Rio dan Falchdian,12,28,24,19
+baseline,25/11/2017,PLPE,B,East,350m,OP.edge,B-East-350m-OpEdge,10:20,10:57,Rio dan Falchdian,16,21,19,12
+baseline,25/11/2017,PLPE,B,East,350m,OP.edge,B-East-350m-OpEdge,10:20,10:57,Rio dan Falchdian,21,27,24,11
+baseline,25/11/2017,PLPE,B,East,350m,OP.edge,B-East-350m-OpEdge,10:20,10:57,Rio dan Falchdian,21,35,17,32
+baseline,25/11/2017,PLPE,B,East,350m,OP.edge,B-East-350m-OpEdge,10:20,10:57,Rio dan Falchdian,27,23,18,27
+baseline,25/11/2017,PLPE,B,West,50m,OP.edge,B-West-50m-OpEdge,09:19,09:42,Rio dan Falchdian,18,31,23,21
+baseline,25/11/2017,PLPE,B,West,50m,OP.edge,B-West-50m-OpEdge,09:19,09:42,Rio dan Falchdian,18,22,29,13
+baseline,25/11/2017,PLPE,B,West,50m,OP.edge,B-West-50m-OpEdge,09:19,09:42,Rio dan Falchdian,20,17,14,36
+baseline,25/11/2017,PLPE,B,West,50m,OP.edge,B-West-50m-OpEdge,09:19,09:42,Rio dan Falchdian,20,22,16,13
+baseline,25/11/2017,PLPE,B,West,50m,OP.edge,B-West-50m-OpEdge,09:19,09:42,Rio dan Falchdian,25,24,20,21
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,20,18,30,20
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,22,24,11,20
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,23,25,12,21
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,23,19,31,21
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,27,20,32,16
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,29,27,64,68
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,33,35,24,16
+baseline,20/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,10:08,11:28,Rio dan Falchdian,72,52,76,82
+baseline,24/11/2017,PLPE,C,West,250m,buffer.core,C-West-250m-BufferCore,09:10,09:25,"Adit, Eko",21,28,32,25
+baseline,24/11/2017,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,08:02,08:16,"Adit, Eko",17,14,38,23
+baseline,25/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,09:02,09:42,"Adit, Eko",17,11,16,15
+baseline,25/11/2017,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,11:05,11:15,"Adit, Eko",75,43,14,11
+baseline,28/11/2017,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,09:00,10:03,Adit Dan Eko,34,16,12,29
+baseline,28/11/2017,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,09:00,10:03,Adit Dan Eko,45,33,39,70
+baseline,28/11/2017,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,09:00,10:03,Adit Dan Eko,80,26,14,19
+baseline,28/11/2017,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,09:00,10:03,Adit Dan Eko,96,75,17,23
+baseline,28/11/2017,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,09:00,10:03,Adit Dan Eko,96,85,28,68
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,11,14,19,16
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,12,10,8,19
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,12,21,16,26
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,14,9,13,10
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,14,47,13,8
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,15,22,11,18
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,19,22,66,12
+baseline,28/11/2017,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,8.5,9.42,Rio dan Falchdian,82,11,9,15
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,17,20,45,16
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,17,21,24,23
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,19,27,11,9
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,19,23,24,31
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,22,9,18,13
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,23,29,21,11
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,29,25,20,30
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,30,31,25,23
+baseline,29/11/2017,PLPE,C,East,250m,buffer.core,C-East-250m-BufferCore,14:11,15:18,Rio dan Falchdian,35,34,26,26
+baseline,20/11/2017,PLPE,C,West,50m,OP.core,C-West-50m-OpCore,14:51,15:29,Rio dan Falchdian,11,6,10,10
+baseline,20/11/2017,PLPE,C,West,50m,OP.core,C-West-50m-OpCore,14:51,15:29,Rio dan Falchdian,13,18,12,12
+baseline,20/11/2017,PLPE,C,West,50m,OP.core,C-West-50m-OpCore,14:51,15:29,Rio dan Falchdian,13,15,18,17
+baseline,20/11/2017,PLPE,C,West,50m,OP.core,C-West-50m-OpCore,14:51,15:29,Rio dan Falchdian,20,17,17,19
+baseline,20/11/2017,PLPE,C,West,50m,OP.core,C-West-50m-OpCore,14:51,15:29,Rio dan Falchdian,96,84,26,68
+baseline,24/11/2017,PLPE,C,West,250m,OP.core,C-West-250m-Opcore,09:52,10:07,"Adit, Eko",25,20,8,19
+baseline,24/11/2017,PLPE,C,West,50m,OP.core,C-West-50m-Opcore,08:43,08:58,"Adit, Eko",12,14,7,9
+baseline,25/11/2017,PLPE,C,East,150m,OP.core,C-East-150m-Opcore,11:26,11:31,"Adit, Eko",28,14,12,0
+baseline,25/11/2017,PLPE,C,East,350m,OP.core,C-East-350m-Opcore,10:13,10:18,"Adit, Eko",24,18,20,10
+baseline,25/11/2017,PLPE,C,West,250m,OP.core,C-West-250m-OpCore,11.12,11.46,Rio dan Falchdian,19,23,13,27
+baseline,25/11/2017,PLPE,C,West,250m,OP.core,C-West-250m-OpCore,11.12,11.46,Rio dan Falchdian,21,10,16,27
+baseline,25/11/2017,PLPE,C,West,250m,OP.core,C-West-250m-OpCore,11.12,11.46,Rio dan Falchdian,22,27,21,19
+baseline,25/11/2017,PLPE,C,West,250m,OP.core,C-West-250m-OpCore,11.12,11.46,Rio dan Falchdian,24,30,21,16
+baseline,25/11/2017,PLPE,C,West,250m,OP.core,C-West-250m-OpCore,11.12,11.46,Rio dan Falchdian,26,38,31,32
+baseline,28/11/2017,PLPE,C,East,150m,OP.core,C-East-150m-OpCore,11:13,11:33,Adit Dan Eko,14,17,20,69
+baseline,28/11/2017,PLPE,C,East,150m,OP.core,C-East-150m-OpCore,11:13,11:33,Adit Dan Eko,15,27,32,46
+baseline,28/11/2017,PLPE,C,East,150m,OP.core,C-East-150m-OpCore,11:13,11:33,Adit Dan Eko,26,18,23,35
+baseline,28/11/2017,PLPE,C,East,150m,OP.core,C-East-150m-OpCore,11:13,11:33,Adit Dan Eko,27,34,312,42
+baseline,28/11/2017,PLPE,C,East,150m,OP.core,C-East-150m-OpCore,11:13,11:33,Adit Dan Eko,42,28,21,19
+baseline,28/11/2017,PLPE,C,East,350m,OP.core,C-East-350m-OpCore,10.25,11.15,Rio dan Falchdian,13,17,21,13
+baseline,28/11/2017,PLPE,C,East,350m,OP.core,C-East-350m-OpCore,10.25,11.15,Rio dan Falchdian,17,12,42,39
+baseline,28/11/2017,PLPE,C,East,350m,OP.core,C-East-350m-OpCore,10.25,11.15,Rio dan Falchdian,19,30,24,16
+baseline,28/11/2017,PLPE,C,East,350m,OP.core,C-East-350m-OpCore,10.25,11.15,Rio dan Falchdian,33,21,20,19
+baseline,20/11/2017,PLPE,C,West,50m,OP.edge,C-West-50m-OpEdge,14:10,14:45,Rio dan Falchdian,23,19,27,15
+baseline,20/11/2017,PLPE,C,West,50m,OP.edge,C-West-50m-OpEdge,14:10,14:45,Rio dan Falchdian,25,29,21,14
+baseline,20/11/2017,PLPE,C,West,50m,OP.edge,C-West-50m-OpEdge,14:10,14:45,Rio dan Falchdian,27,24,21,22
+baseline,20/11/2017,PLPE,C,West,50m,OP.edge,C-West-50m-OpEdge,14:10,14:45,Rio dan Falchdian,28,21,17,24
+baseline,20/11/2017,PLPE,C,West,50m,OP.edge,C-West-50m-OpEdge,14:10,14:45,Rio dan Falchdian,36,32,30,24
+baseline,24/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-Opedge,09:30,09:45,"Adit, Eko",37,22,23,11
+baseline,24/11/2017,PLPE,C,West,50m,OP.edge,C-West-50m-Opedge,08:21,08:36,"Adit, Eko",10,42,15,19
+baseline,25/11/2017,PLPE,C,East,150m,OP.edge,C-East-150m-Opedge,11:17,11:22,"Adit, Eko",11,23,32,17
+baseline,25/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-Opedge,09:49,10:01,"Adit, Eko",15,17,19,15
+baseline,28/11/2017,PLPE,C,East,150m,OP.edge,C-East-150m-OpEdge,10:49,11:06,Adit Dan Eko,16,19,43,29
+baseline,28/11/2017,PLPE,C,East,150m,OP.edge,C-East-150m-OpEdge,10:49,11:06,Adit Dan Eko,16,7,22,24
+baseline,28/11/2017,PLPE,C,East,150m,OP.edge,C-East-150m-OpEdge,10:49,11:06,Adit Dan Eko,18,16,47,29
+baseline,28/11/2017,PLPE,C,East,150m,OP.edge,C-East-150m-OpEdge,10:49,11:06,Adit Dan Eko,28,20,31,24
+baseline,28/11/2017,PLPE,C,East,150m,OP.edge,C-East-150m-OpEdge,10:49,11:06,Adit Dan Eko,27,13,11,31
+baseline,28/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-OpEdge,9.44,10.22,Rio dan Falchdian,7,12,22,27
+baseline,28/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-OpEdge,9.44,10.22,Rio dan Falchdian,8,20,25,16
+baseline,28/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-OpEdge,9.44,10.22,Rio dan Falchdian,14,18,24,21
+baseline,28/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-OpEdge,9.44,10.22,Rio dan Falchdian,15,11,12,29
+baseline,28/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-OpEdge,9.44,10.22,Rio dan Falchdian,15,27,21,12
+baseline,28/11/2017,PLPE,C,East,350m,OP.edge,C-East-350m-OpEdge,9.44,10.22,Rio dan Falchdian,16,14,13,22
+baseline,29/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-OpEdge,11:05,11:38,Rio dan Falchdian,18,13,22,19
+baseline,29/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-OpEdge,11:05,11:38,Rio dan Falchdian,22,37,28,19
+baseline,29/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-OpEdge,11:05,11:38,Rio dan Falchdian,23,67,92,21
+baseline,29/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-OpEdge,11:05,11:38,Rio dan Falchdian,25,72,60,17
+baseline,29/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-OpEdge,11:05,11:38,Rio dan Falchdian,55,36,27,44
+baseline,29/11/2017,PLPE,C,West,250m,OP.edge,C-West-250m-OpEdge,11:05,11:38,Rio dan Falchdian,77,28,39,32
+baseline,20/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.37,9.27,Rio dan Falchdian,23,17,31,21
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,09:41,09:56,"Adit, Eko",20,12,34,10
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,10,20,15,45
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,17,23,12,12
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,20,17,36,27
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,20,13,22,11
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,23,11,20,26
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,52,44,18,18
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,53,45,19,19
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,66,11,24,21
+baseline,21/11/2017,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,8.3,9.05,Rio dan Falchdian,67,12,25,12
+baseline,24/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,10:19,10:34,"Adit, Eko",14,20,56,27
+baseline,24/11/2017,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,14:39,14:54,"Adit, Eko",25,11,28,23
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,10:30,10:35,"Adit, Eko",29,18,14,48
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,16,38,43,29
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,21,30,37,33
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,22,31,39,34
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,29,22,43,40
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,30,23,44,41
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,48,16,13,29
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,52,13,26,65
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,64,39,76,42
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,68,19,21,30
+baseline,25/11/2017,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,9.22,10.02,Rio dan Falchdian,83,39,76,42
+baseline,28/11/2017,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,14.14,15.03,Adit Dan Eko,15,17,22,23
+baseline,28/11/2017,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,14.14,15.03,Adit Dan Eko,19,11,16,28
+baseline,28/11/2017,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,14.14,15.03,Adit Dan Eko,22,12,24,20
+baseline,28/11/2017,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,14.14,15.03,Adit Dan Eko,26,20,42,39
+baseline,28/11/2017,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,14.14,15.03,Adit Dan Eko,29,16,28,26
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,13,48,24,20
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,14,21,29,55
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,15,32,22,23
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,18,16,81,27
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,19,65,53,26
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,22,17,56,25
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,25,20,57,48
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,26,11,56,24
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,29,25,28,28
+baseline,28/11/2017,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,14.12,15.16,Rio dan Falchdian,48,55,42,45
+baseline,21/11/2017,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,11:27,11:42,"Adit, Eko",28,61,20,42
+baseline,24/11/2017,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,15:17,15:28,"Adit, Eko",18,18,12,13
+baseline,24/11/2017,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,11:01,11:16,"Adit, Eko",17,10,14,24
+baseline,25/11/2017,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,10:46,10:56,"Adit, Eko",65,60,20,
+baseline,25/11/2017,PLPE,D,East,350m,OP.core,D-East-350m-OpCore,8.4,9.15,Rio dan Falchdian,22,34,29,47
+baseline,25/11/2017,PLPE,D,East,350m,OP.core,D-East-350m-OpCore,8.4,9.15,Rio dan Falchdian,28,45,51,24
+baseline,25/11/2017,PLPE,D,East,350m,OP.core,D-East-350m-OpCore,8.4,9.15,Rio dan Falchdian,64,81,68,23
+baseline,25/11/2017,PLPE,D,East,350m,OP.core,D-East-350m-OpCore,8.4,9.15,Rio dan Falchdian,80,87,42,64
+baseline,28/11/2017,PLPE,D,West,250m,OP.core,D-West-250m-OpCore,11.4,12.03,Adit Dan Eko,11,20,18,23
+baseline,28/11/2017,PLPE,D,West,250m,OP.core,D-West-250m-OpCore,11.4,12.03,Adit Dan Eko,17,14,22,25
+baseline,28/11/2017,PLPE,D,West,250m,OP.core,D-West-250m-OpCore,11.4,12.03,Adit Dan Eko,18,17,19,24
+baseline,28/11/2017,PLPE,D,West,250m,OP.core,D-West-250m-OpCore,11.4,12.03,Adit Dan Eko,26,10,15,12
+baseline,28/11/2017,PLPE,D,West,250m,OP.core,D-West-250m-OpCore,11.4,12.03,Adit Dan Eko,42,21,18,14
+baseline,28/11/2017,PLPE,D,West,50m,OP.core,D-West-50m-OpCore,11.2,11.38,Rio dan Falchdian,17,14,20,28
+baseline,28/11/2017,PLPE,D,West,50m,OP.core,D-West-50m-OpCore,11.2,11.38,Rio dan Falchdian,21,14,33,19
+baseline,28/11/2017,PLPE,D,West,50m,OP.core,D-West-50m-OpCore,11.2,11.38,Rio dan Falchdian,28,10,18,24
+baseline,28/11/2017,PLPE,D,West,50m,OP.core,D-West-50m-OpCore,11.2,11.38,Rio dan Falchdian,30,22,14,28
+baseline,28/11/2017,PLPE,D,West,50m,OP.core,D-West-50m-OpCore,11.2,11.38,Rio dan Falchdian,67,48,27,18
+baseline,20/11/2017,PLPE,D,East,150m,OP.edge,D-East-150m-OpEdge,8.37,9.27,Rio dan Falchdian,15,19,42,27
+baseline,20/11/2017,PLPE,D,East,150m,OP.edge,D-East-150m-OpEdge,8.37,9.27,Rio dan Falchdian,17,52,48,19
+baseline,20/11/2017,PLPE,D,East,150m,OP.edge,D-East-150m-OpEdge,8.37,9.27,Rio dan Falchdian,28,16,38,23
+baseline,20/11/2017,PLPE,D,East,150m,OP.edge,D-East-150m-OpEdge,8.37,9.27,Rio dan Falchdian,28,25,41,24
+baseline,20/11/2017,PLPE,D,East,150m,OP.edge,D-East-150m-OpEdge,8.37,9.27,Rio dan Falchdian,34,26,50,26
+baseline,21/11/2017,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,09:59,11:24,"Adit, Eko",20,29,67,52
+baseline,24/11/2017,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,14:59,15:10,"Adit, Eko",26,81,65,17
+baseline,24/11/2017,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,10:39,10:54,"Adit, Eko",44,48,42,55
+baseline,25/11/2017,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,10:37,10:42,"Adit, Eko",25,39,39,15
+baseline,25/11/2017,PLPE,D,East,350m,OP.edge,D-East-350m-OpEdge,10.35,11.02,Rio dan Falchdian,19,47,74,22
+baseline,25/11/2017,PLPE,D,East,350m,OP.edge,D-East-350m-OpEdge,10.35,11.02,Rio dan Falchdian,21,23,45,7
+baseline,25/11/2017,PLPE,D,East,350m,OP.edge,D-East-350m-OpEdge,10.35,11.02,Rio dan Falchdian,43,26,18,14
+baseline,25/11/2017,PLPE,D,East,350m,OP.edge,D-East-350m-OpEdge,10.35,11.02,Rio dan Falchdian,43,36,39,68
+baseline,25/11/2017,PLPE,D,East,350m,OP.edge,D-East-350m-OpEdge,10.35,11.02,Rio dan Falchdian,47,31,24,22
+baseline,28/11/2017,PLPE,D,West,250m,OP.edge,D-West-250m-OpEdge,15.06,15.29,Adit Dan Eko,14,25,81,27
+baseline,28/11/2017,PLPE,D,West,250m,OP.edge,D-West-250m-OpEdge,15.06,15.29,Adit Dan Eko,16,13,14,27
+baseline,28/11/2017,PLPE,D,West,250m,OP.edge,D-West-250m-OpEdge,15.06,15.29,Adit Dan Eko,36,65,29,55
+baseline,28/11/2017,PLPE,D,West,250m,OP.edge,D-West-250m-OpEdge,15.06,15.29,Adit Dan Eko,44,32,56,48
+baseline,28/11/2017,PLPE,D,West,250m,OP.edge,D-West-250m-OpEdge,15.06,15.29,Adit Dan Eko,50,48,53,17
+baseline,28/11/2017,PLPE,D,West,50m,OP.edge,D-West-50m-OpEdge,11.4,12.15,Rio dan Falchdian,20,16,13,15
+baseline,28/11/2017,PLPE,D,West,50m,OP.edge,D-West-50m-OpEdge,11.4,12.15,Rio dan Falchdian,44,56,45,55
+baseline,28/11/2017,PLPE,D,West,50m,OP.edge,D-West-50m-OpEdge,11.4,12.15,Rio dan Falchdian,47,54,54,49
+baseline,28/11/2017,PLPE,D,West,50m,OP.edge,D-West-50m-OpEdge,11.4,12.15,Rio dan Falchdian,54,48,50,57
+baseline,28/11/2017,PLPE,D,West,50m,OP.edge,D-West-50m-OpEdge,11.4,12.15,Rio dan Falchdian,58,42,58,46
+baseline,24/12/2018,KNDE,F,East,150m,OP.edge,F.E 150 OPE,10:00,10:05,"Adi, idris",80,84,84,76
+baseline,24/12/2018,KNDE,F,East,150m,OP.core,F.E 150 OPC,09:20,09:25,"Adi, idris",64,40,80,88
+baseline,24/12/2018,KNDE,F,East,350m,OP.core,F-E-350-OPC,12:10,12:15,"Adi, don, idris",48,64,48,24
+baseline,24/12/2018,KNDE,F,East,350m,OP.edge,F-E-350-OPE,13:30,13:35,-,48,72,76,8
+baseline,24/12/2018,KNDE,F,East,350m,buffer.core,F-E-350-BC,13:55,14:35,"Adi, don, idris",80,76,72,72
+baseline,24/12/2018,KNDE,F,East,150m,buffer.core,F.E 150 BC,11:05,11:30,"Adi, idris",68,88,84,76
+baseline,27/12/2018,KNDE,F,West,250m,OP.core,F.W 250 OPC,13:05,13:08,"Adi, don, idris",72,84,80,76
+baseline,27/12/2018,KNDE,F,West,250m,OP.edge,F.W 250 OPE,13:45,13:53,"Adi, don, idris",88,80,84,84
+baseline,27/12/2018,KNDE,F,West,250m,buffer.core,F.W 250 BC,14:25,14:50,"Adi, don, idris",80,84,88,76
+baseline,27/12/2018,KNDE,F,West,50m,OP.core,F.W 50 OPC,09:15,09:20,"Adi, don, idris",80,64,76,88
+baseline,27/12/2018,KNDE,F,West,50m,OP.edge,F.W 50 OPE,09:58,10:08,"Adi, don, idris",76,84,88,80
+baseline,27/12/2018,KNDE,F,West,50m,buffer.core,F.W 50 BC,11:13,11:45,"Adi, don, idris",48,88,72,72
+baseline,26/12/2018,KNDE,G,East,150m,buffer.core,G.E 150 BC,14:20,14:45,"Adi, don, idris",40,28,88,72
+baseline,26/12/2018,KNDE,G,East,150m,OP.core,G.E 150 OPC,09:23,09:27,"Adi, don, idris",68,88,84,68
+baseline,26/12/2018,KNDE,G,East,350m,OP.edge,G.E 350 OPE,10:00,10:05,"Adi, don, idris",80,56,80,88
+baseline,26/12/2018,KNDE,G,East,350m,buffer.core,G.E 350 BC,11:10,11:35,"Adi, don, idris",80,64,56,56
+baseline,26/12/2018,KNDE,G,East,150m,OP.edge,G-E 150 OPE,13:35,13:42,"Adi, don, idris",64,88,80,84
+baseline,26/12/2018,KNDE,G,East,150m,OP.core,G-E 150 OPC,12:15,12:20,"Adi, don, idris",88,84,88,80
+baseline,29/12/2018,KNDE,G,West,250m,buffer.core,G-W-250 BC,12:30,12:50,"Adi, don, idris",84,88,88,80
+baseline,29/12/2018,KNDE,G,West,250m,OP.core,G-W-250 OPC,14:40,14:51,"Adi, don, idris",52,88,84,92
+baseline,29/12/2018,KNDE,G,West,250m,OP.edge,G-W-250 OPE,13:36,13:45,"Adi, don, idris",76,80,12,76
+baseline,29/12/2018,KNDE,G,West,50m,OP.core,G-W 50 OPC,09:05,09:10,"Adi, idris",52,68,80,76
+baseline,29/12/2018,KNDE,G,West,50m,OP.edge,G-W 50 OPE,09:55,10:06,"Adi, idris",84,84,64,80
+baseline,29/12/2018,KNDE,G,West,50m,buffer.core,G-W 50 BC,10:53,11:15,"Adi, don, idris",84,84,80,88
+baseline,13/12/2018,KNDE,H,East,150m,OP.core,H.E 150 OPC,14:50,15:00,"Adi, idris",84,88,80,48
+baseline,13/12/2018,KNDE,H,East,150m,Center,H.E 150 OPE Center,13:55,14:05,"Adi, idris",80,76,75,72
+baseline,13/12/2018,KNDE,H,East,150m,buffer.core,H.E 150 BC,13:05,13:15,"Adi, don, idris",76,72,48,72
+baseline,13/12/2018,KNDE,H,East,350m,OP.core,HE 350 OPC,11:40,11:54,"Adi, don, idris",88,84,68,72
+baseline,13/12/2018,KNDE,H,East,350m,VEGH,HE 350 OPE VEGH,10:40,10:53,"Adi, don, idris",56,64,80,60
+baseline,13/12/2018,KNDE,H,East,350m,buffer.core,HE 350 BC,09:40,09:53,"Adi, don, idris",76,84,80,76
+baseline,17/12/2018,KNDE,H,West,250m,OP.core,HW 250 OPC,14:20,14:23,"Adi, don, idris",32,52,48,32
+baseline,17/12/2018,KNDE,H,West,250m,OP.edge,HW 250 OPE,13:40,13:43,"Adi, idris",56,84,80,76
+baseline,17/12/2018,KNDE,H,West,250m,Center,HW 250 BC Center,13:05,13:08,blank,4,60,44,76
+baseline,19/12/2018,KNDE,H,West,50m,OP.core,H.W 50 OPC,14:19,14:20,"Adi, idris",88,84,80,76
+baseline,19/12/2018,KNDE,H,West,50m,OP.edge,HW 50 OPE,13:30,13:35,"Adi, idris",80,72,84,76
+baseline,19/12/2018,KNDE,H,West,50m,buffer.core,HW 50 BC,12:55,13:25,"Adi, idris",68,80,84,76
+baseline,11/12/2018,KNDE,I,East,350m,Center,IE 350 OPE Center,-,-,"Adi, don, idris",blank,blank,blank,blank
+baseline,12/12/2018,KNDE,I,East,150m,buffer.core,IE 150 BC,11:55,12:05,"Adi, don, idris",40,48,68,48
+baseline,12/12/2018,KNDE,I,East,150m,OP.core,IE 150 OPC,11:00,11:10,"Adi, don, idris",72,84,88,80
+baseline,12/12/2018,KNDE,I,East,150m,OP.edge,IE 150 OPE,13:00,13:20,"Adi, don, idris",72,76,80,84
+baseline,12/12/2018,KNDE,I,East,350m,OP.core,IE 350 OPC,09:18,09:30,"Adi, idris",68,64,72,60
+baseline,12/12/2018,KNDE,I,East,350m,buffer.core,IE 350 BC,10:07,10:17,"Adi, don, idris",80,48,84,84
+baseline,17/12/2018,KNDE,I,West,50m,OP.edge,I-W 50 OPE,09:55,10:00,"Adi, don, idris",76,80,80,72
+baseline,17/12/2018,KNDE,I,West,150m,buffer.core,I.W 150 BC,12:00,12:02,"Adi, idris",64,68,76,84
+baseline,17/12/2018,KNDE,I,West,50m,OP.core,I-W 50 OPC,09:15,09:20,"Adi, don, idris",80,84,69,60
+baseline,19/12/2018,KNDE,I,West,250m,OP.edge,I.W 250 OPE,09:45,09:47,"Adi, idris",64,80,88,76
+baseline,19/12/2018,KNDE,I,West,250m,OP.core,I.W 250 OPC,11:35,11:40,"Adi, idris",72,84,80,76
+baseline,19/12/2018,KNDE,I,West,250m,buffer.core,I.W 250 BC,09:10,09:12,"Adi, idris",72,80,64,32
+not.given,not.given,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,not.given,not.given,not.given,15,18,16,15
+post1,07/12/2019,PLPE,A,East,350m,buffer.core,A East 350 BC,08:30,09:30,"Adit, Idris",44,20,24,32
+post1,07/12/2019,PLPE,A,West,50m,buffer.core,A West 50 BC,11:30,12:30,"Adit, dan, Idris",40,28,36,20
+post1,10/12/2019,PLPE,A,East,150m,buffer.core,A East 150 BC,08:30,09:30,"Adit, dan, Idris",12,16,20,16
+post1,10/12/2019,PLPE,A,West,250m,buffer.core,A West 250 BC,10:10,11:10,"Adit, dan, Idris",16,12,20,16
+post1,17/02/2022,PLPE,A,West,250m,buffer.core,A-WEST-250-BC,10:55,11:35,"Adit, Riyan",4,12,16,4
+post1,17/02/2022,PLPE,A,West,250m,buffer.core,A-WEST-250-BC,10:55,11:35,"Adit, Riyan",4,12,12,8
+post1,17/02/2022,PLPE,A,West,250m,buffer.core,A-WEST-250-BC,10:55,11:35,"Adit, Riyan",4,4,8,4
+post1,17/02/2022,PLPE,A,West,250m,buffer.core,A-WEST-250-BC,10:55,11:35,"Adit, Riyan",8,4,8,8
+post1,17/02/2022,PLPE,A,West,250m,buffer.core,A-WEST-250-BC,10:55,11:35,"Adit, Riyan",16,12,12,16
+post1,17/02/2022,PLPE,A,West,50m,buffer.core,A-WEST-50-BC,08:25,08:55,"Adit, Riyan",4,8,8,4
+post1,17/02/2022,PLPE,A,West,50m,buffer.core,A-WEST-50-BC,08:25,08:55,"Adit, Riyan",4,8,4,12
+post1,17/02/2022,PLPE,A,West,50m,buffer.core,A-WEST-50-BC,08:25,08:55,"Adit, Riyan",12,8,4,20
+post1,17/02/2022,PLPE,A,West,50m,buffer.core,A-WEST-50-BC,08:25,08:55,"Adit, Riyan",12,4,8,4
+post1,17/02/2022,PLPE,A,West,50m,buffer.core,A-WEST-50-BC,08:25,08:55,"Adit, Riyan",16,24,20,16
+post1,21/02/2022,PLPE,A,East,150m,buffer.core,A-EAST-150-BC,10:45,11:20,"Adit, Riyan",4,8,4,12
+post1,21/02/2022,PLPE,A,East,150m,buffer.core,A-EAST-150-BC,10:45,11:20,"Adit, Riyan",8,4,8,8
+post1,21/02/2022,PLPE,A,East,150m,buffer.core,A-EAST-150-BC,10:45,11:20,"Adit, Riyan",12,16,8,12
+post1,21/02/2022,PLPE,A,East,150m,buffer.core,A-EAST-150-BC,10:45,11:20,"Adit, Riyan",12,24,20,16
+post1,21/02/2022,PLPE,A,East,350m,buffer.core,A-EAST-350-BC,08:25,08:55,"Adit, Riyan",8,4,8,12
+post1,21/02/2022,PLPE,A,East,350m,buffer.core,A-EAST-350-BC,08:25,08:55,"Adit, Riyan",8,12,12,16
+post1,21/02/2022,PLPE,A,East,350m,buffer.core,A-EAST-350-BC,08:25,08:55,"Adit, Riyan",12,12,16,20
+post1,21/02/2022,PLPE,A,East,350m,buffer.core,A-EAST-350-BC,08:25,08:55,"Adit, Riyan",12,16,20,20
+post1,21/02/2022,PLPE,A,East,350m,buffer.core,A-EAST-350-BC,08:25,08:55,"Adit, Riyan",32,20,28,20
+post1,17/02/2022,PLPE,A,West,250m,OP.core,A-WEST-250-OPC,12:25,13:00,"Adit, Riyan",4,8,4,4
+post1,17/02/2022,PLPE,A,West,250m,OP.core,A-WEST-250-OPC,12:25,13:00,"Adit, Riyan",24,12,28,24
+post1,17/02/2022,PLPE,A,West,250m,OP.core,A-WEST-250-OPC,12:25,13:00,"Adit, Riyan",28,16,32,38
+post1,17/02/2022,PLPE,A,West,250m,OP.core,A-WEST-250-OPC,12:25,13:00,"Adit, Riyan",32,38,28,40
+post1,17/02/2022,PLPE,A,West,250m,OP.core,A-WEST-250-OPC,12:25,13:00,"Adit, Riyan",38,12,16,32
+post1,17/02/2022,PLPE,A,West,50m,OP.core,A-WEST-50-OPC,10:00,10:40,"Adit, Riyan",16,38,28,40
+post1,17/02/2022,PLPE,A,West,50m,OP.core,A-WEST-50-OPC,10:00,10:40,"Adit, Riyan",28,40,44,24
+post1,17/02/2022,PLPE,A,West,50m,OP.core,A-WEST-50-OPC,10:00,10:40,"Adit, Riyan",40,76,44,48
+post1,17/02/2022,PLPE,A,West,50m,OP.core,A-WEST-50-OPC,10:00,10:40,"Adit, Riyan",40,32,44,38
+post1,17/02/2022,PLPE,A,West,50m,OP.core,A-WEST-50-OPC,10:00,10:40,"Adit, Riyan",76,40,38,24
+post1,21/02/2022,PLPE,A,East,150m,OP.core,A-EAST-150-OPC,12:10,12:45,"Adit, Riyan",20,32,40,28
+post1,21/02/2022,PLPE,A,East,150m,OP.core,A-EAST-150-OPC,12:10,12:45,"Adit, Riyan",24,20,16,20
+post1,21/02/2022,PLPE,A,East,150m,OP.core,A-EAST-150-OPC,12:10,12:45,"Adit, Riyan",25,24,28,28
+post1,21/02/2022,PLPE,A,East,150m,OP.core,A-EAST-150-OPC,12:10,12:45,"Adit, Riyan",32,48,80,24
+post1,21/02/2022,PLPE,A,East,350m,OP.core,A-EAST-350-OPC,09:55,10:35,"Adit, Riyan",12,18,76,40
+post1,21/02/2022,PLPE,A,East,350m,OP.core,A-EAST-350-OPC,09:55,10:35,"Adit, Riyan",20,8,4,12
+post1,21/02/2022,PLPE,A,East,350m,OP.core,A-EAST-350-OPC,09:55,10:35,"Adit, Riyan",32,24,38,12
+post1,21/02/2022,PLPE,A,East,350m,OP.core,A-EAST-350-OPC,09:55,10:35,"Adit, Riyan",32,28,36,20
+post1,21/02/2022,PLPE,A,East,350m,OP.core,A-EAST-350-OPC,09:55,10:35,"Adit, Riyan",88,76,32,40
+post1,17/02/2022,PLPE,A,West,250m,OP.edge,A-WEST-250-OPE,11:45,12:15,"Adit, Riyan",4,8,12,12
+post1,17/02/2022,PLPE,A,West,250m,OP.edge,A-WEST-250-OPE,11:45,12:15,"Adit, Riyan",16,20,12,32
+post1,17/02/2022,PLPE,A,West,250m,OP.edge,A-WEST-250-OPE,11:45,12:15,"Adit, Riyan",32,12,24,28
+post1,17/02/2022,PLPE,A,West,250m,OP.edge,A-WEST-250-OPE,11:45,12:15,"Adit, Riyan",32,28,24,24
+post1,17/02/2022,PLPE,A,West,250m,OP.edge,A-WEST-250-OPE,11:45,12:15,"Adit, Riyan",40,36,36,40
+post1,17/02/2022,PLPE,A,West,50m,OP.edge,A-WEST-50-OPE,09:05,09:40,"Adit, Riyan",8,16,32,12
+post1,17/02/2022,PLPE,A,West,50m,OP.edge,A-WEST-50-OPE,09:05,09:40,"Adit, Riyan",8,12,24,32
+post1,17/02/2022,PLPE,A,West,50m,OP.edge,A-WEST-50-OPE,09:05,09:40,"Adit, Riyan",8,4,12,4
+post1,17/02/2022,PLPE,A,West,50m,OP.edge,A-WEST-50-OPE,09:05,09:40,"Adit, Riyan",12,8,24,16
+post1,17/02/2022,PLPE,A,West,50m,OP.edge,A-WEST-50-OPE,09:05,09:40,"Adit, Riyan",16,12,8,12
+post1,21/02/2022,PLPE,A,East,150m,OP.edge,A-EAST-150-OPE,11:30,12:00,"Adit, Riyan",4,12,8,4
+post1,21/02/2022,PLPE,A,East,150m,OP.edge,A-EAST-150-OPE,11:30,12:00,"Adit, Riyan",20,28,32,36
+post1,21/02/2022,PLPE,A,East,150m,OP.edge,A-EAST-150-OPE,11:30,12:00,"Adit, Riyan",24,36,28,20
+post1,21/02/2022,PLPE,A,East,150m,OP.edge,A-EAST-150-OPE,11:30,12:00,"Adit, Riyan",76,60,88,56
+post1,21/02/2022,PLPE,A,East,150m,OP.edge,A-EAST-150-OPE,11:30,12:00,"Adit, Riyan",76,80,52,60
+post1,21/02/2022,PLPE,A,East,350m,OP.edge,A-EAST-350-OPE,09:05,09:40,"Adit, Riyan",16,20,4,8
+post1,21/02/2022,PLPE,A,East,350m,OP.edge,A-EAST-350-OPE,09:05,09:40,"Adit, Riyan",28,32,28,20
+post1,21/02/2022,PLPE,A,East,350m,OP.edge,A-EAST-350-OPE,09:05,09:40,"Adit, Riyan",32,36,40,28
+post1,21/02/2022,PLPE,A,East,350m,OP.edge,A-EAST-350-OPE,09:05,09:40,"Adit, Riyan",40,16,32,24
+post1,07/12/2019,PLPE,B,West,250m,buffer.core,B West 250 BC,09:40,10:10,"Adit, Idris",16,12,12,16
+post1,07/12/2019,PLPE,B,West,50m,buffer.core,B West 50 BC,10:45,11:20,"Adit, Idris",40,76,28,80
+post1,09/12/2019,PLPE,B,East,150m,buffer.core,B East 150 BC,09:50,10:40,"Adit, dan, Idris",20,16,24,20
+post1,09/12/2019,PLPE,B,East,350m,OP.edge,B East 350 OPE,11:20,12:00,"Adit, dan, Idris",96,96,40,92
+post1,09/12/2019,PLPE,B,East,350m,buffer.core,B East 350 BC,11:20,12:15,"Adit, dan, Idris",16,24,20,16
+post1,18/02/2022,PLPE,B,East,350m,buffer.core,B-EAST-350-BC,08:20,08:55,"Adit, Riyan",8,16,76,40
+post1,18/02/2022,PLPE,B,East,350m,buffer.core,B-EAST-350-BC,08:20,08:55,"Adit, Riyan",16,20,32,40
+post1,18/02/2022,PLPE,B,East,350m,buffer.core,B-EAST-350-BC,08:20,08:55,"Adit, Riyan",16,28,28,20
+post1,18/02/2022,PLPE,B,East,350m,buffer.core,B-EAST-350-BC,08:20,08:55,"Adit, Riyan",16,20,24,20
+post1,18/02/2022,PLPE,B,East,350m,buffer.core,B-EAST-350-BC,08:20,08:55,"Adit, Riyan",76,80,60,52
+post1,19/02/2022,PLPE,B,East,150m,buffer.core,B-EAST-150-BC,10:15,10:45,"Adit, Riyan",16,20,32,28
+post1,19/02/2022,PLPE,B,East,150m,buffer.core,B-EAST-150-BC,10:15,10:45,"Adit, Riyan",24,32,28,16
+post1,19/02/2022,PLPE,B,East,150m,buffer.core,B-EAST-150-BC,10:15,10:45,"Adit, Riyan",24,20,16,24
+post1,19/02/2022,PLPE,B,East,150m,buffer.core,B-EAST-150-BC,10:15,10:45,"Adit, Riyan",28,32,28,20
+post1,19/02/2022,PLPE,B,East,150m,buffer.core,B-EAST-150-BC,10:15,10:45,"Adit, Riyan",30,32,28,24
+post1,22/02/2022,PLPE,B,West,250m,buffer.core,B-WEST-250-BC,10:55,11:30,"Adit, Riyan",16,28,24,20
+post1,22/02/2022,PLPE,B,West,250m,buffer.core,B-WEST-250-BC,10:55,11:30,"Adit, Riyan",24,32,20,16
+post1,22/02/2022,PLPE,B,West,250m,buffer.core,B-WEST-250-BC,10:55,11:30,"Adit, Riyan",28,32,24,36
+post1,22/02/2022,PLPE,B,West,250m,buffer.core,B-WEST-250-BC,10:55,11:30,"Adit, Riyan",28,32,36,28
+post1,22/02/2022,PLPE,B,West,250m,buffer.core,B-WEST-250-BC,10:55,11:30,"Adit, Riyan",32,36,40,32
+post1,22/02/2022,PLPE,B,West,50m,buffer.core,B-WEST-50-BC,09:55,10:35,"Adit, Riyan",24,28,16,20
+post1,22/02/2022,PLPE,B,West,50m,buffer.core,B-WEST-50-BC,09:55,10:35,"Adit, Riyan",32,40,84,80
+post1,22/02/2022,PLPE,B,West,50m,buffer.core,B-WEST-50-BC,09:55,10:35,"Adit, Riyan",76,44,56,36
+post1,22/02/2022,PLPE,B,West,50m,buffer.core,B-WEST-50-BC,09:55,10:35,"Adit, Riyan",76,88,84,80
+post1,22/02/2022,PLPE,B,West,50m,buffer.core,B-WEST-50-BC,09:55,10:35,"Adit, Riyan",88,96,76,80
+post1,18/02/2022,PLPE,B,East,350m,OP.core,B-EAST-350-OPC,10:00,10:40,"Adit, Riyan",16,20,20,24
+post1,18/02/2022,PLPE,B,East,350m,OP.core,B-EAST-350-OPC,10:00,10:40,"Adit, Riyan",24,16,20,24
+post1,18/02/2022,PLPE,B,East,350m,OP.core,B-EAST-350-OPC,10:00,10:40,"Adit, Riyan",28,40,32,44
+post1,18/02/2022,PLPE,B,East,350m,OP.core,B-EAST-350-OPC,10:00,10:40,"Adit, Riyan",38,40,44,24
+post1,19/02/2022,PLPE,B,East,150m,OP.core,B-EAST-150-OPC,10:05,11:35,"Adit, Riyan",8,12,12,16
+post1,19/02/2022,PLPE,B,East,150m,OP.core,B-EAST-150-OPC,10:05,11:35,"Adit, Riyan",12,16,28,24
+post1,19/02/2022,PLPE,B,East,150m,OP.core,B-EAST-150-OPC,10:05,11:35,"Adit, Riyan",32,28,24,20
+post1,19/02/2022,PLPE,B,East,150m,OP.core,B-EAST-150-OPC,10:05,11:35,"Adit, Riyan",88,96,76,88
+post1,22/02/2022,PLPE,B,West,250m,OP.core,B-WEST-250-OPC,12:25,12:55,"Adit, Riyan",4,4,8,4
+post1,22/02/2022,PLPE,B,West,250m,OP.core,B-WEST-250-OPC,12:25,12:55,"Adit, Riyan",16,28,20,36
+post1,22/02/2022,PLPE,B,West,250m,OP.core,B-WEST-250-OPC,12:25,12:55,"Adit, Riyan",28,32,20,26
+post1,22/02/2022,PLPE,B,West,250m,OP.core,B-WEST-250-OPC,12:25,12:55,"Adit, Riyan",28,12,6,32
+post1,22/02/2022,PLPE,B,West,250m,OP.core,B-WEST-250-OPC,12:25,12:55,"Adit, Riyan",32,36,24,24
+post1,22/02/2022,PLPE,B,West,50m,OP.core,B-WEST-50-OPC,08:25,08:55,"Adit, Riyan",8,28,32,24
+post1,22/02/2022,PLPE,B,West,50m,OP.core,B-WEST-50-OPC,08:25,08:55,"Adit, Riyan",12,16,8,12
+post1,22/02/2022,PLPE,B,West,50m,OP.core,B-WEST-50-OPC,08:25,08:55,"Adit, Riyan",24,20,32,40
+post1,22/02/2022,PLPE,B,West,50m,OP.core,B-WEST-50-OPC,08:25,08:55,"Adit, Riyan",40,32,36,28
+post1,22/02/2022,PLPE,B,West,50m,OP.core,B-WEST-50-OPC,08:25,08:55,"Adit, Riyan",44,24,48,20
+post1,18/02/2022,PLPE,B,East,350m,OP.edge,B-EAST-350-OPE,09:00,09:40,"Adit, Riyan",8,4,8,16
+post1,18/02/2022,PLPE,B,East,350m,OP.edge,B-EAST-350-OPE,09:00,09:40,"Adit, Riyan",12,8,8,6
+post1,18/02/2022,PLPE,B,East,350m,OP.edge,B-EAST-350-OPE,09:00,09:40,"Adit, Riyan",76,36,32,40
+post1,18/02/2022,PLPE,B,East,350m,OP.edge,B-EAST-350-OPE,09:00,09:40,"Adit, Riyan",88,96,80,76
+post1,18/02/2022,PLPE,B,East,350m,OP.edge,B-EAST-350-OPE,09:00,09:40,"Adit, Riyan",96,96,76,88
+post1,20/02/2022,PLPE,B,East,150m,OP.edge,B-EAST-150-OPE,11:45,12:20,"Adit, Riyan",24,40,28,32
+post1,20/02/2022,PLPE,B,East,150m,OP.edge,B-EAST-150-OPE,11:45,12:20,"Adit, Riyan",32,28,38,28
+post1,20/02/2022,PLPE,B,East,150m,OP.edge,B-EAST-150-OPE,11:45,12:20,"Adit, Riyan",48,56,40,44
+post1,20/02/2022,PLPE,B,East,150m,OP.edge,B-EAST-150-OPE,11:45,12:20,"Adit, Riyan",56,44,48,40
+post1,20/02/2022,PLPE,B,East,150m,OP.edge,B-EAST-150-OPE,11:45,12:20,"Adit, Riyan",60,44,40,38
+post1,22/02/2022,PLPE,B,West,250m,OP.edge,B-WEST-250-OPE,11:40,12:10,"Adit, Riyan",4,12,8,12
+post1,22/02/2022,PLPE,B,West,250m,OP.edge,B-WEST-250-OPE,11:40,12:10,"Adit, Riyan",8,4,8,12
+post1,22/02/2022,PLPE,B,West,250m,OP.edge,B-WEST-250-OPE,11:40,12:10,"Adit, Riyan",16,8,28,16
+post1,22/02/2022,PLPE,B,West,250m,OP.edge,B-WEST-250-OPE,11:40,12:10,"Adit, Riyan",20,12,8,12
+post1,22/02/2022,PLPE,B,West,250m,OP.edge,B-WEST-250-OPE,11:40,12:10,"Adit, Riyan",40,36,36,28
+post1,22/02/2022,PLPE,B,West,50m,OP.edge,B-WEST-50-OPE,09:10,09:45,"Adit, Riyan",8,12,4,12
+post1,22/02/2022,PLPE,B,West,50m,OP.edge,B-WEST-50-OPE,09:10,09:45,"Adit, Riyan",16,28,32,20
+post1,22/02/2022,PLPE,B,West,50m,OP.edge,B-WEST-50-OPE,09:10,09:45,"Adit, Riyan",32,28,36,28
+post1,22/02/2022,PLPE,B,West,50m,OP.edge,B-WEST-50-OPE,09:10,09:45,"Adit, Riyan",36,24,28,26
+post1,22/02/2022,PLPE,B,West,50m,OP.edge,B-WEST-50-OPE,09:10,09:45,"Adit, Riyan",76,32,40,44
+post1,09/12/2019,PLPE,C,West,50m,buffer.core,C West 50 BC,08:30,09:30,"Adit, dan, Idris",40,92,96,60
+post1,11/12/2019,PLPE,C,East,350m,buffer.core,C East 350 BC,12:00,13:00,"Adit, dan, Idris",28,36,16,12
+post1,11/12/2019,PLPE,C,West,250m,buffer.core,C West 250 BC,08:30,09:30,"Adit, dan, Idris",60,44,80,84
+post1,11/12/2019,PLPE,C,East,150m,buffer.core,C East 150 BC,10:55,11:10,"Adit, dan, Idris",8,12,60,96
+post1,10/02/2022,PLPE,C,East,350m,buffer.core,C-EAST-350-BC,10:00,10:40,"Adit, Riyan",24,24,20,18
+post1,10/02/2022,PLPE,C,East,350m,buffer.core,C-EAST-350-BC,10:00,10:40,"Adit, Riyan",24,28,20,24
+post1,10/02/2022,PLPE,C,East,350m,buffer.core,C-EAST-350-BC,10:00,10:40,"Adit, Riyan",32,20,40,80
+post1,10/02/2022,PLPE,C,East,350m,buffer.core,C-EAST-350-BC,10:00,10:40,"Adit, Riyan",40,24,28,18
+post1,10/02/2022,PLPE,C,East,350m,buffer.core,C-EAST-350-BC,10:00,10:40,"Adit, Riyan",44,32,60,68
+post1,15/02/2022,PLPE,C,West,250m,buffer.core,C-WEST-250-BC,08:25,08:55,"Adit, Riyan",4,8,8,12
+post1,15/02/2022,PLPE,C,West,250m,buffer.core,C-WEST-250-BC,08:25,08:55,"Adit, Riyan",8,12,4,8
+post1,15/02/2022,PLPE,C,West,250m,buffer.core,C-WEST-250-BC,08:25,08:55,"Adit, Riyan",20,12,16,12
+post1,15/02/2022,PLPE,C,West,250m,buffer.core,C-WEST-250-BC,08:25,08:55,"Adit, Riyan",32,76,40,28
+post1,15/02/2022,PLPE,C,West,50m,buffer.core,C-WEST-50-BC,11:00,11:40,"Adit, Riyan",16,12,8,16
+post1,15/02/2022,PLPE,C,West,50m,buffer.core,C-WEST-50-BC,11:00,11:40,"Adit, Riyan",20,24,32,20
+post1,15/02/2022,PLPE,C,West,50m,buffer.core,C-WEST-50-BC,11:00,11:40,"Adit, Riyan",20,18,16,20
+post1,15/02/2022,PLPE,C,West,50m,buffer.core,C-WEST-50-BC,11:00,11:40,"Adit, Riyan",20,16,24,16
+post1,15/02/2022,PLPE,C,West,50m,buffer.core,C-WEST-50-BC,11:00,11:40,"Adit, Riyan",28,24,20,20
+post1,16/02/2022,PLPE,C,East,150m,buffer.core,C-EAST-150-BC,11:00,11:40,"Adit, Riyan",8,4,8,20
+post1,16/02/2022,PLPE,C,East,150m,buffer.core,C-EAST-150-BC,11:00,11:40,"Adit, Riyan",12,8,20,16
+post1,16/02/2022,PLPE,C,East,150m,buffer.core,C-EAST-150-BC,11:00,11:40,"Adit, Riyan",16,8,12,8
+post1,16/02/2022,PLPE,C,East,150m,buffer.core,C-EAST-150-BC,11:00,11:40,"Adit, Riyan",24,20,20,28
+post1,16/02/2022,PLPE,C,East,150m,buffer.core,C-EAST-150-BC,11:00,11:40,"Adit, Riyan",32,28,40,38
+post1,10/02/2022,PLPE,C,East,350m,OP.core,C-EAST-350-OPC,11:45,12:20,"Adit, Riyan",20,40,36,20
+post1,10/02/2022,PLPE,C,East,350m,OP.core,C-EAST-350-OPC,11:45,12:20,"Adit, Riyan",24,28,44,36
+post1,10/02/2022,PLPE,C,East,350m,OP.core,C-EAST-350-OPC,11:45,12:20,"Adit, Riyan",28,20,32,40
+post1,10/02/2022,PLPE,C,East,350m,OP.core,C-EAST-350-OPC,11:45,12:20,"Adit, Riyan",36,38,30,40
+post1,10/02/2022,PLPE,C,East,350m,OP.core,C-EAST-350-OPC,11:45,12:20,"Adit, Riyan",96,96,96,96
+post1,15/02/2022,PLPE,C,West,250m,OP.core,C-WEST-250-OPC,10:00,10:40,"Adit, Riyan",8,4,8,16
+post1,15/02/2022,PLPE,C,West,250m,OP.core,C-WEST-250-OPC,10:00,10:40,"Adit, Riyan",8,8,20,24
+post1,15/02/2022,PLPE,C,West,250m,OP.core,C-WEST-250-OPC,10:00,10:40,"Adit, Riyan",16,4,8,12
+post1,15/02/2022,PLPE,C,West,250m,OP.core,C-WEST-250-OPC,10:00,10:40,"Adit, Riyan",76,96,88,96
+post1,15/02/2022,PLPE,C,West,50m,OP.core,C-WEST-50-OPC,12:35,13:10,"Adit, Riyan",8,12,4,8
+post1,15/02/2022,PLPE,C,West,50m,OP.core,C-WEST-50-OPC,12:35,13:10,"Adit, Riyan",16,12,20,12
+post1,15/02/2022,PLPE,C,West,50m,OP.core,C-WEST-50-OPC,12:35,13:10,"Adit, Riyan",24,8,32,28
+post1,15/02/2022,PLPE,C,West,50m,OP.core,C-WEST-50-OPC,12:35,13:10,"Adit, Riyan",28,16,24,20
+post1,15/02/2022,PLPE,C,West,50m,OP.core,C-WEST-50-OPC,12:35,13:10,"Adit, Riyan",36,28,40,32
+post1,16/02/2022,PLPE,C,East,150m,OP.core,C-EAST-150-OPC,10:11,10:50,"Adit, Riyan",12,8,11,8
+post1,16/02/2022,PLPE,C,East,150m,OP.core,C-EAST-150-OPC,10:11,10:50,"Adit, Riyan",16,12,8,12
+post1,16/02/2022,PLPE,C,East,150m,OP.core,C-EAST-150-OPC,10:11,10:50,"Adit, Riyan",16,20,12,20
+post1,16/02/2022,PLPE,C,East,150m,OP.core,C-EAST-150-OPC,10:11,10:50,"Adit, Riyan",20,16,24,28
+post1,16/02/2022,PLPE,C,East,150m,OP.core,C-EAST-150-OPC,10:11,10:50,"Adit, Riyan",28,20,24,24
+post1,10/02/2022,PLPE,C,East,350m,OP.edge,C-EAST-350-OPE,10:55,11:30,"Adit, Riyan",20,36,28,16
+post1,10/02/2022,PLPE,C,East,350m,OP.edge,C-EAST-350-OPE,10:55,11:30,"Adit, Riyan",20,18,24,16
+post1,10/02/2022,PLPE,C,East,350m,OP.edge,C-EAST-350-OPE,10:55,11:30,"Adit, Riyan",32,40,36,44
+post1,10/02/2022,PLPE,C,East,350m,OP.edge,C-EAST-350-OPE,10:55,11:30,"Adit, Riyan",32,20,28,40
+post1,10/02/2022,PLPE,C,East,350m,OP.edge,C-EAST-350-OPE,10:55,11:30,"Adit, Riyan",32,44,68,64
+post1,15/02/2022,PLPE,C,West,250m,OP.edge,C-WEST-250-OPE,09:00,09:40,"Adit, Riyan",4,8,12,8
+post1,15/02/2022,PLPE,C,West,250m,OP.edge,C-WEST-250-OPE,09:00,09:40,"Adit, Riyan",8,12,16,12
+post1,15/02/2022,PLPE,C,West,250m,OP.edge,C-WEST-250-OPE,09:00,09:40,"Adit, Riyan",20,8,4,24
+post1,15/02/2022,PLPE,C,West,250m,OP.edge,C-WEST-250-OPE,09:00,09:40,"Adit, Riyan",76,36,20,20
+post1,15/02/2022,PLPE,C,West,50m,OP.edge,C-WEST-50-OPE,11:45,12:25,"Adit, Riyan",8,16,24,32
+post1,15/02/2022,PLPE,C,West,50m,OP.edge,C-WEST-50-OPE,11:45,12:25,"Adit, Riyan",32,36,20,24
+post1,15/02/2022,PLPE,C,West,50m,OP.edge,C-WEST-50-OPE,11:45,12:25,"Adit, Riyan",36,28,32,16
+post1,15/02/2022,PLPE,C,West,50m,OP.edge,C-WEST-50-OPE,11:45,12:25,"Adit, Riyan",40,36,28,32
+post1,16/02/2022,PLPE,C,East,150m,OP.edge,C-EAST-150-OPE,11:50,12:30,"Adit, Riyan",8,12,4,16
+post1,16/02/2022,PLPE,C,East,150m,OP.edge,C-EAST-150-OPE,11:50,12:30,"Adit, Riyan",16,12,8,12
+post1,16/02/2022,PLPE,C,East,150m,OP.edge,C-EAST-150-OPE,11:50,12:30,"Adit, Riyan",16,18,8,4
+post1,16/02/2022,PLPE,C,East,150m,OP.edge,C-EAST-150-OPE,11:50,12:30,"Adit, Riyan",16,12,12,8
+post1,16/02/2022,PLPE,C,East,150m,OP.edge,C-EAST-150-OPE,11:50,12:30,"Adit, Riyan",32,36,40,36
+post1,25/11/2019,PLPE,D,East,350m,OP.edge,D East 350 OPE,-,-,"Adit, Idris",96,96,88,96
+post1,09/02/2022,PLPE,D,West,250m,buffer.core,D-WEST-250-BC,10:40,11:10,"Adit, Riyan",16,20,28,24
+post1,09/02/2022,PLPE,D,West,250m,buffer.core,D-WEST-250-BC,10:40,11:10,"Adit, Riyan",28,32,36,24
+post1,09/02/2022,PLPE,D,West,250m,buffer.core,D-WEST-250-BC,10:40,11:10,"Adit, Riyan",28,24,36,48
+post1,09/02/2022,PLPE,D,West,250m,buffer.core,D-WEST-250-BC,10:40,11:10,"Adit, Riyan",36,24,36,28
+post1,09/02/2022,PLPE,D,West,50m,buffer.core,D-WEST-50-BC,08:35,08:55,"Adit, Riyan",16,20,28,24
+post1,09/02/2022,PLPE,D,West,50m,buffer.core,D-WEST-50-BC,08:35,08:55,"Adit, Riyan",24,16,32,28
+post1,09/02/2022,PLPE,D,West,50m,buffer.core,D-WEST-50-BC,08:35,08:55,"Adit, Riyan",36,28,32,40
+post1,09/02/2022,PLPE,D,West,50m,buffer.core,D-WEST-50-BC,08:35,08:55,"Adit, Riyan",96,96,96,96
+post1,09/02/2022,PLPE,D,West,50m,buffer.core,D-WEST-50-BC,08:35,08:55,"Adit, Riyan",96,96,96,96
+post1,12/02/2022,PLPE,D,East,150m,buffer.core,D-EAST-150-BC,10:25,10:55,"Adit, Riyan",20,12,8,28
+post1,12/02/2022,PLPE,D,East,150m,buffer.core,D-EAST-150-BC,10:25,10:55,"Adit, Riyan",20,24,18,28
+post1,12/02/2022,PLPE,D,East,150m,buffer.core,D-EAST-150-BC,10:25,10:55,"Adit, Riyan",36,40,20,32
+post1,12/02/2022,PLPE,D,East,150m,buffer.core,D-EAST-150-BC,10:25,10:55,"Adit, Riyan",96,96,96,96
+post1,14/02/2022,PLPE,D,East,350m,buffer.core,D-EAST-350-BC,10:50,11:30,"Adit, Riyan",32,38,32,40
+post1,14/02/2022,PLPE,D,East,350m,buffer.core,D-EAST-350-BC,10:50,11:30,"Adit, Riyan",36,28,40,28
+post1,14/02/2022,PLPE,D,East,350m,buffer.core,D-EAST-350-BC,10:50,11:30,"Adit, Riyan",48,96,40,76
+post1,14/02/2022,PLPE,D,East,350m,buffer.core,D-EAST-350-BC,10:50,11:30,"Adit, Riyan",80,88,96,76
+post1,14/02/2022,PLPE,D,East,350m,buffer.core,D-EAST-350-BC,10:50,11:30,"Adit, Riyan",96,96,60,80
+post1,09/02/2022,PLPE,D,West,250m,OP.core,D-WEST-250-OPC,12:15,12:55,"Adit, Riyan",8,12,8,16
+post1,09/02/2022,PLPE,D,West,250m,OP.core,D-WEST-250-OPC,12:15,12:55,"Adit, Riyan",20,32,20,24
+post1,09/02/2022,PLPE,D,West,250m,OP.core,D-WEST-250-OPC,12:15,12:55,"Adit, Riyan",20,28,40,36
+post1,09/02/2022,PLPE,D,West,250m,OP.core,D-WEST-250-OPC,12:15,12:55,"Adit, Riyan",36,28,40,24
+post1,09/02/2022,PLPE,D,West,250m,OP.core,D-WEST-250-OPC,12:15,12:55,"Adit, Riyan",40,48,52,28
+post1,09/02/2022,PLPE,D,West,50m,OP.core,D-WEST-50-OPC,09:50,10:30,"Adit, Riyan",20,56,76,36
+post1,09/02/2022,PLPE,D,West,50m,OP.core,D-WEST-50-OPC,09:50,10:30,"Adit, Riyan",36,48,32,40
+post1,09/02/2022,PLPE,D,West,50m,OP.core,D-WEST-50-OPC,09:50,10:30,"Adit, Riyan",36,28,34,20
+post1,09/02/2022,PLPE,D,West,50m,OP.core,D-WEST-50-OPC,09:50,10:30,"Adit, Riyan",40,20,36,48
+post1,09/02/2022,PLPE,D,West,50m,OP.core,D-WEST-50-OPC,09:50,10:30,"Adit, Riyan",40,36,32,56
+post1,12/02/2022,PLPE,D,East,150m,OP.core,D-EAST-150-OPC,11:55,12:35,"Adit, Riyan",64,78,66,88
+post1,12/02/2022,PLPE,D,East,150m,OP.core,D-EAST-150-OPC,11:55,12:35,"Adit, Riyan",72,84,68,88
+post1,12/02/2022,PLPE,D,East,150m,OP.core,D-EAST-150-OPC,11:55,12:35,"Adit, Riyan",76,72,88,80
+post1,12/02/2022,PLPE,D,East,150m,OP.core,D-EAST-150-OPC,11:55,12:35,"Adit, Riyan",76,80,32,38
+post1,14/02/2022,PLPE,D,East,350m,OP.core,D-EAST-350-OPC,11:45,12:30,"Adit, Riyan",16,20,28,24
+post1,14/02/2022,PLPE,D,East,350m,OP.core,D-EAST-350-OPC,11:45,12:30,"Adit, Riyan",16,8,12,16
+post1,14/02/2022,PLPE,D,East,350m,OP.core,D-EAST-350-OPC,11:45,12:30,"Adit, Riyan",20,24,16,28
+post1,14/02/2022,PLPE,D,East,350m,OP.core,D-EAST-350-OPC,11:45,12:30,"Adit, Riyan",24,16,20,28
+post1,14/02/2022,PLPE,D,East,350m,OP.core,D-EAST-350-OPC,11:45,12:30,"Adit, Riyan",36,28,24,40
+post1,25/11/207,PLPE,D,East,150m,OP.core,D-East-150m-OpCore,8.08,8.29,Rio dan Falchdian,25,21,20,17
+post1,25/11/207,PLPE,D,East,150m,OP.core,D-East-150m-OpCore,8.08,8.29,Rio dan Falchdian,39,64,37,42
+post1,25/11/207,PLPE,D,East,150m,OP.core,D-East-150m-OpCore,8.08,8.29,Rio dan Falchdian,42,45,47,26
+post1,25/11/207,PLPE,D,East,150m,OP.core,D-East-150m-OpCore,8.08,8.29,Rio dan Falchdian,44,60,48,36
+post1,25/11/207,PLPE,D,East,150m,OP.core,D-East-150m-OpCore,8.08,8.29,Rio dan Falchdian,64,31,33,67
+post1,09/02/2022,PLPE,D,West,250m,OP.edge,D-WEST-250-OPE,11:20,12:05,"Adit, Riyan",48,96,96,96
+post1,09/02/2022,PLPE,D,West,250m,OP.edge,D-WEST-250-OPE,11:20,12:05,"Adit, Riyan",48,40,36,28
+post1,09/02/2022,PLPE,D,West,250m,OP.edge,D-WEST-250-OPE,11:20,12:05,"Adit, Riyan",48,52,28,32
+post1,09/02/2022,PLPE,D,West,250m,OP.edge,D-WEST-250-OPE,11:20,12:05,"Adit, Riyan",96,96,36,48
+post1,09/02/2022,PLPE,D,West,50m,OP.edge,D-WEST-50-OPE,09:09,09:35,"Adit, Riyan",36,38,40,48
+post1,09/02/2022,PLPE,D,West,50m,OP.edge,D-WEST-50-OPE,09:09,09:35,"Adit, Riyan",38,60,36,68
+post1,09/02/2022,PLPE,D,West,50m,OP.edge,D-WEST-50-OPE,09:09,09:35,"Adit, Riyan",38,48,36,40
+post1,09/02/2022,PLPE,D,West,50m,OP.edge,D-WEST-50-OPE,09:09,09:35,"Adit, Riyan",40,48,36,28
+post1,09/02/2022,PLPE,D,West,50m,OP.edge,D-WEST-50-OPE,09:09,09:35,"Adit, Riyan",56,68,76,64
+post1,12/02/2022,PLPE,D,East,150m,OP.edge,D-EAST-150-OPE,11:00,11:40,"Adit, Riyan",16,28,20,32
+post1,12/02/2022,PLPE,D,East,150m,OP.edge,D-EAST-150-OPE,11:00,11:40,"Adit, Riyan",38,32,48,60
+post1,12/02/2022,PLPE,D,East,150m,OP.edge,D-EAST-150-OPE,11:00,11:40,"Adit, Riyan",40,28,36,76
+post1,12/02/2022,PLPE,D,East,150m,OP.edge,D-EAST-150-OPE,11:00,11:40,"Adit, Riyan",44,68,64,80
+post1,14/02/2022,PLPE,D,East,350m,OP.edge,D-EAST-350-OPE,10:00,10:40,"Adit, Riyan",24,32,20,28
+post1,14/02/2022,PLPE,D,East,350m,OP.edge,D-EAST-350-OPE,10:00,10:40,"Adit, Riyan",38,20,24,28
+post1,14/02/2022,PLPE,D,East,350m,OP.edge,D-EAST-350-OPE,10:00,10:40,"Adit, Riyan",48,76,60,44
+post2,31/01/2022,PLPE,A,West,50m,buffer.core,A West 50 BC,11:25,11:55,"Adit, Ryon",20,20,24,20
+post2,31/01/2022,PLPE,A,West,50m,buffer.core,A West 50 BC,11:25,11:55,"Adit, Ryon",20,20,24,20
+post2,31/01/2022,PLPE,A,West,50m,buffer.core,A West 50 BC,11:25,11:55,"Adit, Ryon",20,20,24,20
+post2,02/02/2022,PLPE,A,East,350m,buffer.core,A East 350 BC,08:50,09:30,"Adit, Ryon",8,16,20,8
+post2,02/02/2022,PLPE,A,East,350m,buffer.core,A East 350 BC,08:50,09:30,"Adit, Ryon",8,16,20,8
+post2,05/02/2022,PLPE,A,West,250m,buffer.core,A West 250 BC,11:15,11:30,"Adit, Ryon",8,16,20,24
+post2,05/02/2022,PLPE,A,West,250m,buffer.core,A West 250 BC,11:15,11:30,"Adit, Ryon",8,16,20,24
+post2,08/02/2022,PLPE,A,East,150m,buffer.core,A East 150 BC,11:20,11:50,"Adit, Ryon",18,12,28,20
+post2,08/02/2022,PLPE,A,East,150m,buffer.core,A East 150 BC,11:20,11:50,"Adit, Ryon",18,12,28,20
+post2,29/01/2022,PLPE,B,East,350m,buffer.core,B East 350 BC,08:50,09:10,"Adit, Ryon",24,40,40,36
+post2,29/01/2022,PLPE,B,East,350m,buffer.core,B East 350 BC,08:50,09:10,"Adit, Ryon",24,40,40,36
+post2,31/01/2022,PLPE,B,East,150m,buffer.core,B East 150 BC,08:50,09:10,"Adit, Ryon",44,25,24,28
+post2,31/01/2022,PLPE,B,East,150m,buffer.core,B East 150 BC,08:50,09:10,"Adit, Ryon",44,25,24,28
+post2,05/02/2022,PLPE,B,West,250m,buffer.core,B West 250 BC,08:50,09:15,"Adit, Ryon",40,28,32,24
+post2,05/02/2022,PLPE,B,West,250m,buffer.core,B West 250 BC,08:50,09:15,"Adit, Ryon",40,28,32,24
+post2,08/02/2022,PLPE,B,West,50m,buffer.core,B West 50 BC,08:50,08:05,"Adit, Ryon",40,54,80,72
+post2,08/02/2022,PLPE,B,West,50m,buffer.core,B West 50 BC,08:50,08:05,"Adit, Ryon",40,54,80,72
+post2,28/01/2022,PLPE,C,East,350m,buffer.core,C East 350 BC,08:50,09:20,"Adit, Ryon",20,24,24,20
+post2,28/01/2022,PLPE,C,East,350m,buffer.core,C East 350 BC,08:50,09:20,"Adit, Ryon",20,24,24,20
+post2,02/02/2022,PLPE,C,West,250m,buffer.core,C West 250 BC,-,-,"Adit, Ryon",36,80,80,20
+post2,02/02/2022,PLPE,C,West,250m,buffer.core,C West 250 BC,-,-,"Adit, Ryon",36,80,80,20
+post2,03/02/2022,PLPE,C,East,250m,buffer.core,C East 250 BC,08:50,09:20,"Adit, Ryon",24,0,16,10
+post2,03/02/2022,PLPE,C,East,250m,buffer.core,C East 250 BC,08:50,09:20,"Adit, Ryon",24,0,16,10
+post2,07/02/2022,PLPE,C,West,50m,buffer.core,C West 50 BC,08:50,08:20,"Adit, Ryon",20,24,14,20
+post2,07/02/2022,PLPE,C,West,50m,buffer.core,C West 50 BC,08:50,09:20,"Adit, Ryon",20,24,14,20
+post2,07/02/2022,PLPE,C,West,50m,buffer.core,C West 50 BC,08:50,08:20,"Adit, Ryon",20,24,14,20
+post2,07/02/2022,PLPE,C,West,50m,buffer.core,C West 50 BC,08:50,09:20,"Adit, Ryon",20,24,14,20
+post3,27/02/2024,PLPE,A,West,50m,OP.core,A West 50 OPC,-,-,"Adit, Idris",12,14,10,72
+post3,27/02/2024,PLPE,A,West,50m,OP.edge,A West 50 OPE,-,-,"Adit, Idris",10,6,4,2
+post3,27/02/2024,PLPE,A,West,50m,buffer.core,A West 50 BC,-,-,"Adit, Idris",10,12,6,2
+post3,28/02/2024,PLPE,A,West,250m,buffer.core,A West 250 BC,-,-,"Adit, Idris",20,18,24,28
+post3,28/02/2024,PLPE,A,West,250m,OP.core,A West 250 OPC,-,-,"Adit, Idris",6,8,4,2
+post3,28/02/2024,PLPE,A,West,250m,OP.edge,A West 250 OPE,-,-,"Adit, Idris",10,13,18,26
+post3,14/03/2024,PLPE,A,East,350m,buffer.core,A East 350 BC,-,-,"Adit, Idris",2,30,43,20
+post3,14/03/2024,PLPE,A,East,350m,OP.core,A East 350 OPC,-,-,"Adit, Idris",20,64,83,32
+post3,14/03/2024,PLPE,A,East,150m,OP.edge,A East 150 OPE,-,-,"Adit, Idris",20,6,2,8
+post3,14/03/2024,PLPE,A,East,150m,buffer.core,A East 150 BC,-,-,"Adit, Idris",32,20,16,38
+post3,14/03/2024,PLPE,A,East,150m,OP.core,A East 150 OPC,-,-,"Adit, Idris",6,18,43,54
+post3,01/02/2024,PLPE,B,West,250m,OP.core,B West 250 OPC,-,-,"Adit, Idris",32,29,17,13
+post3,29/02/2024,PLPE,B,West,50m,OP.core,B West 50 OPC,-,-,"Adit, Idris",43,24,33,20
+post3,29/02/2024,PLPE,B,West,50m,OP.edge,B West 50 OPE,-,-,"Adit, Idris",48,54,90,46
+post3,29/02/2024,PLPE,B,West,50m,buffer.core,B West 50 BC,-,-,"Adit, Idris",48,86,34,44
+post3,01/03/2024,PLPE,B,West,250m,buffer.core,B West 250 BC,-,-,"Adit, Idris",16,20,10,4
+post3,01/03/2024,PLPE,B,West,250m,OP.edge,B West 250 OPE,-,-,"Adit, Idris",2,8,4,12
+post3,12/03/2024,PLPE,B,East,350m,buffer.core,B East 350 BC,-,-,"Adit, Idris",8,4,12,6
+post3,12/03/2024,PLPE,B,East,350m,OP.core,B East 350 OPC,-,-,-,16,24,10,22
+post3,13/03/2024,PLPE,B,East,150m,buffer.core,B East 150 BC,-,-,"Adit, Idris",32,38,16,48
+post3,13/03/2024,PLPE,B,East,150m,OP.edge,B East 150 OPE,-,-,"Adit, Idris",34,16,32,28
+post3,13/03/2024,PLPE,B,East,150m,OP.core,B East 150 OPC,-,-,"Adit, Idris",14,13,16,28
+post3,13/03/2024,PLPE,B,East,150m,OP.edge,B East 150 OPE,-,-,"Adit, Idris",33,8,14,24
+post3,02/03/2024,PLPE,C,West,50m,OP.edge,C West 50 OPE,-,-,"Adit, Idris",12,8,4,4
+post3,02/03/2024,PLPE,C,West,50m,buffer.core,C West 50 BC,-,-,"Adit, Idris",10,20,27,20
+post3,02/03/2024,PLPE,C,West,250m,OP.core,C West 250 OPC,-,-,"Adit, Idris",4,8,4,6
+post3,03/03/2024,PLPE,C,West,250m,OP.core,C West 250 OPC,-,-,"Adit, Idris",16,20,4,20
+post3,03/03/2024,PLPE,C,West,250m,OP.edge,C West 250 OPE,-,-,"Adit, Idris",14,18,16,4
+post3,03/03/2024,PLPE,C,West,250m,buffer.core,C West 250 BC,-,-,"Adit, Idris",44,30,74,32
+post3,08/03/2024,PLPE,C,East,350m,OP.edge,C East 350 OPE,-,-,"Adit, Idris",14,28,12,22
+post3,08/03/2024,PLPE,C,East,350m,OP.core,C East 350 OPC,-,-,"Adit, Idris",8,10,4,2
+post3,08/03/2024,PLPE,C,East,350m,buffer.core,C East 350 BC,-,-,"Adit, Idris",blank,blank,blank,blank
+post3,09/03/2024,PLPE,C,East,150m,OP.core,C East 150 OPC,-,-,"Adit, Idris",8,10,12,16
+post3,09/03/2024,PLPE,C,East,150m,OP.edge,C East 150 OPE,-,-,"Adit, Idris",8,6,12,4
+post3,09/03/2024,PLPE,C,East,150m,buffer.core,C East 150 BC,-,-,"Adit, Idris",22,14,10,34
+post3,04/03/2024,PLPE,D,West,250m,OP.core,D West 250 OPC,-,-,"Adit, Idris",17,20,33,18
+post3,04/03/2024,PLPE,D,West,250m,OP.edge,D West 250 OPE,-,-,"Adit, Idris",12,8,14,23
+post3,04/03/2024,PLPE,D,West,250m,buffer.core,D West 250 BC,-,-,"Adit, Idris",16,10,8,4
+post3,05/03/2024,PLPE,D,West,50m,OP.core,D West 50 OPC,-,-,"Adit, Idris",88,82,80,74
+post3,05/03/2024,PLPE,D,West,50m,OP.edge,D West 50 OPE,-,-,"Adit, Idris",28,20,32,44
+post3,05/03/2024,PLPE,D,West,50m,OP.edge,D West 50 OPE,-,-,"Adit, Idris",10,8,35,2
+post3,06/03/2024,PLPE,D,East,350m,OP.edge,D East 350 OPE,-,-,"Adit, Idris",22,4,12,16
+post3,06/03/2024,PLPE,D,East,350m,OP.core,D East 350 OPC,-,-,"Adit, Idris",16,10,24,20
+post3,06/03/2024,PLPE,D,East,350m,buffer.core,D East 350 BC,-,-,"Adit, Idris",24,30,32,44
+post3,07/03/2024,PLPE,D,East,150m,buffer.core,D East 150 BC,-,-,"Adit, Idris",4,12,8,16
+post3,07/03/2024,PLPE,D,East,350m,OP.edge,D East 350 OPE,-,-,"Adit, Idris",12,8,22,8
+post3,07/03/2024,PLPE,D,East,150m,OP.core,D East 150 OPC,-,-,"Adit, Idris",23,22,27,28
