@@ -1,38 +1,47 @@
 import geopandas as gpd
-import fiona
 import pandas as pd
+import re
 
-def extract_coordinates(gpkg_path):
-    '''Extracts coordinates from a GeoPackage file and filters rows based on the 'name' column. 
-    classifies the coordinates based on "Buffer core", "OP edge" and "OP core", plotting the results for confirmation.'''
+def standardize_names_for_extract_coords(name):
+    """
+    Standardizes the 'name' column in the GeoDataFrame by replacing specific patterns. 
+    ***SPECIFICALLY FOR Rerta koordinate 2018_09_24.gpkg***
+    """
+    identifier = name.split('-')
+    if identifier[1] == 'E':
+      identifier[1] = 'EAST'
+    elif identifier[1] == 'W':
+      identifier[1] = 'WEST'
+    
+    identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
+    
+    if re.search("OPc", identifier[3], re.IGNORECASE):
+      identifier[3] = 'OPC'
+    elif re.search("OPe", identifier[3], re.IGNORECASE):
+      identifier[3] = 'OPE'
+    elif re.search("buff", identifier[3], re.IGNORECASE):
+      identifier[3] = 'BC'
+
+    name = '-'.join(identifier)
+    return name
+
+def extract_coords(path):
+  gpkg_path = path
+  try:
+    gdf = gpd.read_file(gpkg_path)
+  except Exception as e :
+    print("Error reading files")
+    return
+
+  # Filter rows where the 'name' column contains "core" (case-insensitive)
+  result_gdf = gdf[gdf['name'].str.contains("co|edg|buffe", case=False, na=False)]
+  result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_coords)
+
+  # Display the result
+  result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
+  print(result_gdf.head())
+  result_gdf.to_file("result_data.gpkg", driver="GPKG")
+  return result_gdf
 
 
-    # Check if the file exists
-    if not fiona.supported_drivers.get('GPKG'):
-        print("GeoPackage driver is not supported.")
-        return None
-    try:
-        gdf = gpd.read_file(gpkg_path)
-    except Exception as e:
-        print(f"Error reading GeoPackage: {e}")
-        return None
-
-    # Filter rows where the 'name' column contains "core" (case-insensitive)
-    core_gdf = gdf[gdf['name'].str.contains("co|edg|buffe", case=False, na=False)]
-
-    # Extract coordinates (geometry.x, geometry.y)
-    coordinates = core_gdf.geometry.apply(lambda geom: (geom.x, geom.y))
-
-    # Create a DataFrame with the coordinates
-    coordinates_df = pd.DataFrame(coordinates.tolist(), columns=['Longitude', 'Latitude'])
-
-    # Concatenate the original GeoDataFrame with the coordinates DataFrame
-    result_gdf = pd.concat([core_gdf.reset_index(drop=True), coordinates_df], axis=1)
-
-    # Display the result
-    print(result_gdf.head())
-
-    ax = core_gdf.plot(markersize=5)
-    ax.set_title("Spatial Distribution of Coordinates")
-
-extract_coordinates("Data/Rerta koordinate 2018_09_24.gpkg")
+extract_coords("G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Rerta koordinate 2018_09_24.gpkg")
