@@ -40,7 +40,7 @@ def extract_coords(path):
   # Display the result
   result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
   print(result_gdf.head())
-  result_gdf.to_file("result_data.gpkg", driver="GPKG")
+  #result_gdf.to_file("result_data.gpkg", driver="GPKG")
   return result_gdf
 
 

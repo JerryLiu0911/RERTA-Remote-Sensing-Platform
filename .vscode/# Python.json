@@ -1,0 +1,54 @@
+# Python
+
+import pytest
+import geopandas as gpd
+from shapely.geometry import Point
+import pandas as pd
+import os
+
+from coordinate_extraction import standardize_names_for_extract_coords, extract_coords
+
+def test_standardize_names_for_extract_coords_basic():
+    name = "RERTA-E-12-OPc"
+    result = standardize_names_for_extract_coords(name)
+    assert result == "RERTA-EAST-12-OPC"
+
+def test_standardize_names_for_extract_coords_buff():
+    name = "RERTA-W-5-buffer"
+    result = standardize_names_for_extract_coords(name)
+    assert result == "RERTA-WEST-5-BC"
+
+def test_standardize_names_for_extract_coords_ope():
+    name = "RERTA-E-7-OPe"
+    result = standardize_names_for_extract_coords(name)
+    assert result == "RERTA-EAST-7-OPE"
+
+def test_standardize_names_for_extract_coords_numeric_extraction():
+    name = "RERTA-E-123-OPc"
+    result = standardize_names_for_extract_coords(name)
+    assert result == "RERTA-EAST-123-OPC"
+
+def test_extract_coords_filters_and_standardizes(tmp_path):
+    # Create a mock GeoDataFrame
+    data = {
+        'name': [
+            "A-E-12-OPc",    # should be included
+            "A-W-5-buffer",  # should be included
+            "A-E-7-OPe",     # should be included
+            "A-E-8-foo",     # should NOT be included
+        ],
+        'geometry': [Point(1,2), Point(2,3), Point(3,4), Point(4,5)],
+        'other': [1,2,3,4]
+    }
+    gdf = gpd.GeoDataFrame(data, crs="EPSG:4326")
+    test_gpkg = tmp_path / "test.gpkg"
+    gdf.to_file(test_gpkg, driver="GPKG")
+
+    result_gdf = extract_coords(str(test_gpkg))
+    # Only 3 rows should remain
+    assert len(result_gdf) == 3
+    # Only 'name' and 'geometry' columns should remain
+    assert set(result_gdf.columns) == {'name', 'geometry'}
+    # Check standardized names
+    expected_names = {"RERTA-EAST-12-OPC", "RERTA-WEST-5-BC", "RERTA-EAST-7-OPE"}
+    assert set(result_gdf['name']) == expected_names
