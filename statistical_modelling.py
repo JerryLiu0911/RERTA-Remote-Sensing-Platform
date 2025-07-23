@@ -28,9 +28,9 @@ def load_data(dataframes):
           if np.allclose(merged_df['average_canopy_openness'], merged_df[f'average_canopy_openness_{name}'], equal_nan=True):
               # If they are the same, drop one and rename the other
               merged_df = merged_df.drop(columns=[f'average_canopy_openness_{name}'])
-              print("average_canopy_openness_ExG and average_canopy_openness_GLI are the same. Merged into one column.")
+              print(f"No discrepancies found in {name}, merged successfully.")
           else:
-              print("average_canopy_openness_ExG and average_canopy_openness_GLI are not the same.")
+              print(f"discrepancies found in {name}, NOT MERGED.")
   return merged_df
 
 
