@@ -39,9 +39,5 @@ def extract_coords(path):
 
   # Display the result
   result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
-  print(result_gdf.head())
   #result_gdf.to_file("result_data.gpkg", driver="GPKG")
   return result_gdf
-
-
-extract_coords("G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Rerta koordinate 2018_09_24.gpkg")

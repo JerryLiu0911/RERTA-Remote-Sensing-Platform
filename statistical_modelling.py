@@ -12,7 +12,11 @@ def load_data(dataframes):
   merged_df = pd.DataFrame()
   for i in range(len(dataframes)):
       name, path = dataframes[i]
-      df = gpd.read_file(path)
+      try:
+        df = gpd.read_file(path)
+      except Exception as e:
+        print(f"Error reading file {path}: {e}")
+        continue
       df = df.dropna() # Remove rows with NaN values
       df_cleaned = df[df['point.label'].str.contains("OPE|BC", case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
       df_cleaned = df_cleaned.rename(columns={col: f'{col}_{name}' for col in df_cleaned.columns if col != 'point.label'})
@@ -27,9 +31,6 @@ def load_data(dataframes):
               print("average_canopy_openness_ExG and average_canopy_openness_GLI are the same. Merged into one column.")
           else:
               print("average_canopy_openness_ExG and average_canopy_openness_GLI are not the same.")
-
-  # Display the merged dataframe
-  print(merged_df.head())
   return merged_df
 
 
@@ -109,12 +110,3 @@ def multi_linear_regression_display(merged_df, target, variables, display = True
   print(f'Best model: {best_model}')
 
   # Assuming you have your x and y data and the calculated slope (m) and intercept (b)
-
-
-merged_df = load_data([('GLI','/content/drive/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 GLI statistics.gpkg'),
-          ('ExG','/content/drive/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 ExG statistics.gpkg'),
-          ('DEM', '/content/drive/MyDrive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 DEM statistics.gpkg')])
-# Assuming you have your x and y data and the calculated slope (m) and intercept (b)
-# Replace with your actual data and calculated values
-
-multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if ('GLI' in column) & (column!='geometry_GLI')], display=True)

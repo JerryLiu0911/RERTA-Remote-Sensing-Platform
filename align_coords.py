@@ -84,5 +84,3 @@ def canopy_openness(path, timepoint="post1"):
     print(f"Error: The file was not found at {canopy_path}")
   except Exception as e:
     print(f"An error occurred: {e}")
-
-canopy_openness("G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/3.4-canopy.openness.csv")
