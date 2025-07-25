@@ -24,7 +24,12 @@ def standardize_names_for_canopy_openness(name):
             identifier[3] = "OPC"
     identifier[2] = re.findall(r'\d+', identifier[2])[0]  #Only keep the numeric part
     
+    # Remove later
+    temp = identifier[2]
+    identifier[2] = identifier[1]
+    identifier[1] = temp
 
+    
     name = '-'.join(identifier)
     return name
 
