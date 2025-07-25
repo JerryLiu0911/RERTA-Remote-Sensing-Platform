@@ -77,13 +77,15 @@ def simple_linear_regression(x, y):
 
   return m, b
 
-def random_forest_regression(x, y, max_depth = 7, n_estimators=100, test_size=0.2, random_state=42):
+def random_forest_regression(df, target, variables, display=True, max_depth = 7, n_estimators=100, test_size=0.2, random_state=42):
     """
     Performs random forest regression using scikit-learn.
 
     Args:
-        x: Pandas DataFrame of independent variable values
-        y: A Pandas series array of dependent variable values
+        df: Pandas DataFrame containing the data.
+        target: Name of the target variable (dependent variable).
+        variables: List of independent variable names (features).
+        display: Whether to display the feature importance plot (default: True).
         n_estimators: Number of trees in the forest (default: 100)
         test_size: Proportion of dataset to include in the test split (default: 0.2)
         random_state: Random state for reproducibility (default: 42)
@@ -96,6 +98,8 @@ def random_forest_regression(x, y, max_depth = 7, n_estimators=100, test_size=0.
             - r2: R-squared score
             - y_pred: Predicted values
     """
+    y = np.array(df[target])
+    x = np.array(df[variables])
 
     # Split the data
     X_train, X_test, y_train, y_test = train_test_split(
@@ -109,8 +113,6 @@ def random_forest_regression(x, y, max_depth = 7, n_estimators=100, test_size=0.
         max_depth=max_depth
     )
 
-    print(X_train.shape, y_train.shape)
-
     model.fit(X_train, y_train)
 
     # Make predictions
@@ -118,15 +120,9 @@ def random_forest_regression(x, y, max_depth = 7, n_estimators=100, test_size=0.
 
     # Get feature importances
     importances = model.feature_importances_
-    features = x.columns
+    features = df[variables].columns
 
-    # Visualize
-    plt.figure(figsize=(10,6))
-    plt.barh(features, importances)
-    plt.xlabel('Importance Score')
-    plt.title('Feature Relevance to Canopy Openness')
-    plt.tight_layout()
-        # Calculate metrics
+    # Calculate metrics
     mse = mean_squared_error(y_test, y_pred)
     rmse = np.sqrt(mse)
     r2 = r2_score(y_test, y_pred)
@@ -135,6 +131,23 @@ def random_forest_regression(x, y, max_depth = 7, n_estimators=100, test_size=0.
     print(f'Mean Squared Error: {mse:.2f}')
     print(f'Root Mean Squared Error: {rmse:.2f}')
     print(f'R-squared: {r2:.2f}')
+
+    if display:
+      # Visualize
+      plt.figure(figsize=(10,6))
+      bars = plt.barh(features, importances)
+      for bar in bars:
+          width = bar.get_width()
+          plt.text(width, 
+                  bar.get_y() + bar.get_height()/2,
+                  f'{width:.3f}',
+                  ha='left',
+                  va='center',
+                  fontsize=10)
+      plt.xlabel('Importance Score')
+      plt.title('Feature Relevance to Canopy Openness')
+      plt.tight_layout()
+      plt.show()
 
     return model, mse, rmse, r2, y_pred
    

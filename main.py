@@ -24,26 +24,39 @@ merged_df = statistical_modelling.load_data(
 BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
 
 
-def plot_average_canopy_openness(BC_df, column):
+def plot_relations(df, target, column, geo = False):
     """
     Plots average canopy openness against CHM for the BC points.
     """
-    plt.scatter(BC_df['average_canopy_openness'], BC_df['point.label']
-                , label='Average Canopy Openness'
-                , color='blue', alpha=0.5
-                , s=10)
-    plt.scatter(BC_df[column], BC_df['point.label']
-                , label=column
-                , color='red', alpha=0.5
-                , s=10)
-    plt.xlabel('Average Canopy Openness and ' + column)
-    plt.ylabel('Point Label')
-    plt.legend()
-    plt.show()
+    if geo:
+        plt.scatter(df[target], df['point.label']
+                    , label=target
+                    , color='blue', alpha=0.5
+                    , s=10)
+        plt.scatter(df[column], df['point.label']
+                    , label=column
+                    , color='red', alpha=0.5
+                    , s=10)
+        plt.xlabel(column + 'and ' + target)
+        plt.ylabel('point.label')
+        plt.legend()
+        plt.show()
+        
+    else:
+        plt.scatter(df[target], df[column]
+                    , label=target
+                    , color='blue', alpha=0.5
+                    , s=10)
+        plt.xlabel(column)
+        plt.ylabel(target)
+        plt.legend()
+        plt.show()
 
-plot_average_canopy_openness(BC_df, '_mean_CHM')
-#print(merged_df.columns)
-#print(merged_df[[feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']]].head())
-#statistical_modelling.random_forest_regression(merged_df['average_canopy_openness'], merged_df[[feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']]])
-statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column], display=True)
+# plot_relations(BC_df,'average_canopy_openness', '_mean_CHM', geo =True)
+
+print(type(merged_df[[feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']]]))
+
+# print(np.array(merged_df[[feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']]]))
+statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
+#statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column], display=False)
 #statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'average_canopy_openness']], display=False)
