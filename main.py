@@ -34,12 +34,12 @@ def plot_relations(df, target, column, geo = False):
 
 def main():
     paths = {
-    'canopy_openness': "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/3.4-canopy.openness.csv",
-    'coordinates': "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Rerta koordinate 2018_09_24.gpkg",
-    'GLI': "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 GLI statistics.gpkg",
-    'ExG': "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 ExG statistics.gpkg",
-    'DEM': "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 DEM statistics.gpkg",
-    'CHM': "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/Data/Palapa June2019 CHM statistics.gpkg"
+    'canopy_openness': "Data/3.4-canopy.openness.csv",
+    'coordinates': "Data/Rerta koordinate 2018_09_24.gpkg",
+    'GLI': "Data/Palapa June2019 GLI statistics.gpkg",
+    'ExG': "Data/Palapa June2019 ExG statistics.gpkg",
+    'DEM': "Data/Palapa June2019 DEM statistics.gpkg",
+    'CHM': "Data/Palapa June2019 CHM statistics.gpkg"
     }
     coordinate_extraction.extract_coords(paths['coordinates'])
     align_coords.canopy_openness(paths['canopy_openness'],timepoint=2019)
@@ -55,3 +55,5 @@ def main():
     #statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column], display=False)
     #statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'average_canopy_openness']], display=False)
+
+main()

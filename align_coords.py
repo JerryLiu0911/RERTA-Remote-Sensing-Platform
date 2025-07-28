@@ -45,8 +45,6 @@ def canopy_openness(path, timepoint="post1"):
     canopy_df_filtered = pd.read_csv(canopy_path)
     coordinates_gdf = gpd.read_file(coordinates_path)
 
-    print(coordinates_gdf.head())  # Display the first few rows of the coordinates GeoDataFrame
-
     # Define the columns to average
     openness_cols = ['canopy.openness.to.river', 'canopy.openness.from.river', 'canopy.openness.right', 'canopy.openness.left']
 
