@@ -53,7 +53,7 @@ def main():
     plot_relations(BC_df,'average_canopy_openness', '_mean_CHM', geo =True)
 
 
-    print("sync testtt")
+    print("sync testtt no.2")
     #statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column], display=False)
     #statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'average_canopy_openness']], display=False)
