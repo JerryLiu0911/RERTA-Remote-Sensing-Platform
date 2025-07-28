@@ -116,21 +116,29 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
     model.fit(X_train, y_train)
 
     # Make predictions
-    y_pred = model.predict(X_test)
+    y_pred_test = model.predict(X_test)
+    y_pred = model.predict(X_train)
 
     # Get feature importances
     importances = model.feature_importances_
     features = df[variables].columns
 
     # Calculate metrics
-    mse = mean_squared_error(y_test, y_pred)
+    mse = mean_squared_error(y_train, y_pred)
     rmse = np.sqrt(mse)
-    r2 = r2_score(y_test, y_pred)
+    r2 = r2_score(y_train, y_pred)
 
     # Print metrics
-    print(f'Mean Squared Error: {mse:.2f}')
-    print(f'Root Mean Squared Error: {rmse:.2f}')
-    print(f'R-squared: {r2:.2f}')
+    print(f'Mean Squared Error for training: {mse:.2f}')
+    print(f'Root Mean Squared Error for training: {rmse:.2f}')
+    print(f'R-squared for training: {r2:.2f}')
+
+    mse = mean_squared_error(y_test, y_pred_test)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, y_pred_test)
+    print(f'Mean Squared Error for testing: {mse:.2f}')
+    print(f'Root Mean Squared Error for testing: {rmse:.2f}')
+    print(f'R-squared for testing: {r2:.2f}')
 
     if display:
       # Visualize
@@ -152,18 +160,25 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
     return model, mse, rmse, r2, y_pred
    
 
-def multi_linear_regression_display(merged_df, target, variables, display = True):
+def multi_linear_regression_display(df, target, variables, display = False):
   '''
-  Performs linear regression with 'target' on all variables stated in the 'variables' list. 
-  'target' and elements in variables should be names of columns in merged_df.
-  Displays results.
-  stores the best model in best_model.
+  Performs multiple linear regression and displays the results.
+  Outputs the best model based on R-squared value.
+    Args:
+        df: Pandas DataFrame containing the data.
+        target: Name of the target variable (dependent variable).
+        variables: List of independent variable names (features).
+        display: Whether to display the feature importance plot (default: False).
+
+    Returns:
+        best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
+    """
   '''
   best_model = []
   
   for variable_name in variables:
-    x = np.array(merged_df[variable_name])
-    y = np.array(merged_df[target])
+    x = np.array(df[variable_name])
+    y = np.array(df[target])
     m, b = simple_linear_regression(x, y)
     y_pred = m * x + b
     mse = mean_squared_error(y, y_pred)
@@ -180,12 +195,12 @@ def multi_linear_regression_display(merged_df, target, variables, display = True
       plt.scatter(x, y, label='Data')
       plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
 
-      # Add labels and title for ExG plot
+      # Add labels and title for the plot
       plt.xlabel(variable_name)
       plt.ylabel(target)
       plt.title(f'Linear Regression of {variable_name} vs. {target}')
 
-      # Add text annotations for ExG metrics
+      # Add text annotations for metrics
       plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
               verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
       plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
@@ -196,6 +211,33 @@ def multi_linear_regression_display(merged_df, target, variables, display = True
       plt.legend()
       plt.grid(True)
       plt.show()
+  if not display: 
+    x = np.array(df[best_model[0]])
+    y_pred = best_model[1] * x + best_model[2]
+    mse = best_model[3]
+    rmse = best_model[4]
+    r2 = best_model[5]
+    plt.figure(figsize=(10, 6))
+    plt.scatter(x, y, label='Data')
+    plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
+
+    # Add labels and title for the plot
+    plt.xlabel(best_model[0])
+    plt.ylabel(target)
+    plt.title(f'Linear Regression of {best_model[0]} vs. {target}')
+
+    # Add text annotations for metrics
+    plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+       
   print(f'Best model: {best_model}')
 
   # Assuming you have your x and y data and the calculated slope (m) and intercept (b)
