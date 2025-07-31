@@ -41,8 +41,10 @@ def main():
     'DEM': "Data/Palapa June2019 DEM statistics.gpkg",
     'CHM': "Data/Palapa June2019 CHM statistics.gpkg"
     }
+
     coordinate_extraction.extract_coords(paths['coordinates'])
     align_coords.canopy_openness(paths['canopy_openness'],timepoint=2019)
+    
     merged_df = statistical_modelling.load_data(
             [('GLI', paths['GLI']),
             ('ExG', paths['ExG']),
