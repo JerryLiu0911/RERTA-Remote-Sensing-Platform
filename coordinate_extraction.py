@@ -22,12 +22,12 @@ def standardize_names_for_extract_coords(name):
     elif re.search("buff", identifier[3], re.IGNORECASE):
       identifier[3] = 'BC'
 
-
-    temp = identifier[2]
-    identifier[2] = identifier[1]
-    identifier[1] = temp
+    # temp = identifier[2]
+    # identifier[2] = identifier[1]
+    # identifier[1] = temp
 
     name = '-'.join(identifier)
+    print(name)
     return name
 
 def extract_coords(path):

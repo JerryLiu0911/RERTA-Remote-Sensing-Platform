@@ -4,7 +4,7 @@ import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV
 
 
 
@@ -26,6 +26,7 @@ def load_data(dataframes):
       name, path = dataframes[i]
       try:
         df = gpd.read_file(path)
+        print(df.head())
       except Exception as e:
         print(f"Error reading file {path}: {e}")
         continue
@@ -141,7 +142,22 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
     print(f'R-squared for testing: {r2:.2f}')
 
     if display:
-      # Visualize
+      # Plot fit
+      plt.figure()
+      plt.scatter(y_test, y_pred_test, color='red')
+      plt.xlabel('Actual Canopy Openness')
+      plt.ylabel('Predicted Canopy Openness')
+      # Add text annotations for metrics
+      plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+      plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+      plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
+              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+      plt.title('Random Forest Ensemble Predictions')
+      plt.legend()
+      plt.show()
+      # Plot feature importances
       plt.figure(figsize=(10,6))
       bars = plt.barh(features, importances)
       for bar in bars:
@@ -158,7 +174,6 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
       plt.show()
 
     return model, mse, rmse, r2, y_pred
-   
 
 def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.2, random_state=42):
     """
@@ -173,13 +188,17 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
         random_state: Random state for reproducibility (default: 42)
 
     Returns:
-        y_pred: Predicted values from the ensemble model.
+        y_pred_sum: Sum of predicted values from the ensemble model.
     """
+    # Reshape variables to be a 2D array
+    # x = variables.reshape(-1, 1)
+    # y = target
     y = np.array(df[target])
     x = np.array(df[variables])
 
+
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(
+    x_train, x_test, y_train, y_test = train_test_split(
         x, y, test_size=test_size, random_state=random_state
     )
 
@@ -188,22 +207,76 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
     kf = KFold(n_splits=5, shuffle=True, random_state=42)
     models = []
 
-    for train_index, val_index in kf.split(x):
-        X_train, X_val = x[train_index], x[val_index]
-        y_train, y_val = y[train_index], y[val_index]
+    for train_index, val_index in kf.split(x_train):
+        x_train_sub, x_val = x_train[train_index], x_train[val_index]
+        y_train_sub, y_val = y_train[train_index], y_train[val_index]
 
-        model = RandomForestRegressor(max_depth=7, n_estimators=100)
-        model.fit(X_train, y_train)
-        y_val_pred = model.predict(X_val)
-        r2_score = r2_score(y_val, y_val_pred)
-        models.append((model, r2_score))
+        model = RandomForestRegressor(max_depth=5, n_estimators=100)
+        model.fit(x_train_sub, y_train_sub)
+        y_val_pred = model.predict(x_val)
+        r2_score_value = r2_score(y_val, y_val_pred)
+        plt.figure()
+        plt.scatter(y_val, y_val_pred, color='red')
+        plt.xlabel('Actual Canopy Openness')
+        plt.ylabel('Predicted Canopy Openness')
+        # Add text annotations for metrics
+        plt.text(0.05, 0.85, f'R-squared: {r2_score_value:.2f}', transform=plt.gca().transAxes, fontsize=10,
+                verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+        plt.title('Random Forest Ensemble Predictions')
+        plt.legend()
+        plt.show()
+        models.append((model, r2_score_value))
 
-    preds = [model.predict(x) for model, r2_score in models]
-    weights = [r2_score / sum(r2_score for _, r2_score in models) for _, r2_score in models]
-    y_pred = sum(preds*weights)
-    print(y_pred)
-    # Final prediction
-    
+    preds = [model.predict(x_test) for model, _ in models]
+
+    val_scores = np.array([r2 for _, r2 in models])
+    weights = val_scores / val_scores.sum()
+
+    y_pred = np.average(np.array(preds), axis=0, weights=weights)
+
+    # Calculate metrics
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y_test, y_pred)
+
+    plt.figure()
+    plt.scatter(y_test, y_pred, color='red')
+    plt.xlabel('Actual Canopy Openness')
+    plt.ylabel('Predicted Canopy Openness')
+    # Add text annotations for metrics
+    plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.title('Random Forest Ensemble Predictions')
+    plt.show()
+
+    return models, y_pred, preds
+
+def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
+    # Define parameter grid
+    param_dist = {
+        'n_estimators': [50, 100, 200, 300],
+        'max_depth': [3, 5, 7, 10, None],
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 4],
+        'max_features': ['auto', 'sqrt', 'log2', None]
+    }
+
+    rf = RandomForestRegressor(random_state=random_state)
+
+    rs = RandomizedSearchCV(rf, param_distributions=param_dist,
+                            n_iter=n_iter, cv=3, scoring='r2',
+                            random_state=random_state, n_jobs=-1, verbose=1)
+
+    rs.fit(x_train, y_train)
+
+    print(f"Best params: {rs.best_params_}")
+    print(f"Best CV R2: {rs.best_score_:.3f}")
+
+    return rs.best_estimator_
 
 
 
