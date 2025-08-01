@@ -25,9 +25,10 @@ def standardize_names_for_canopy_openness(name):
     identifier[2] = re.findall(r'\d+', identifier[2])[0]  #Only keep the numeric part
     
     # Remove later
-    temp = identifier[2]
-    identifier[2] = identifier[1]
-    identifier[1] = temp
+    # edit 2 : forgot why I swapped the orders
+    # temp = identifier[2]
+    # identifier[2] = identifier[1]
+    # identifier[1] = temp
 
     
     name = '-'.join(identifier)
@@ -84,7 +85,7 @@ def canopy_openness(path, timepoint="post1"):
     # Drop unnecessary columns and keep only relevant ones
     canopy_df_filtered = canopy_df_filtered.drop([column for column in canopy_df_filtered.columns if column not in ['point.label', 'average_canopy_openness','geometry']], axis=1)
     
-    print(canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
+    print('Final dataframe : ', canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
 
     # Create a GeoDataFrame and save as a gpkg file
     merged_gdf = gpd.GeoDataFrame(canopy_df_filtered, geometry='geometry')

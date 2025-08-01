@@ -26,6 +26,7 @@ def load_data(dataframes):
       name, path = dataframes[i]
       try:
         df = gpd.read_file(path)
+        print(df.head())
       except Exception as e:
         print(f"Error reading file {path}: {e}")
         continue
