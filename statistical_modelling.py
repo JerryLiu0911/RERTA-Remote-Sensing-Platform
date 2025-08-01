@@ -1,11 +1,11 @@
 import numpy as np
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score, make_scorer
 import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
+
 
 
 def check_geometries(geom1, geom2, tolerance=1e-8):
@@ -159,6 +159,53 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
 
     return model, mse, rmse, r2, y_pred
    
+
+def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.2, random_state=42):
+    """
+    Performs random forest regression using an ensemble of models.
+
+    Args:
+        df: Pandas DataFrame containing the data.
+        target: Name of the target variable (dependent variable).
+        variables: List of independent variable names (features).
+        n_estimators: Number of trees in the forest (default: 100)
+        test_size: Proportion of dataset to include in the test split (default: 0.2)
+        random_state: Random state for reproducibility (default: 42)
+
+    Returns:
+        y_pred: Predicted values from the ensemble model.
+    """
+    y = np.array(df[target])
+    x = np.array(df[variables])
+
+    # Split the data
+    X_train, X_test, y_train, y_test = train_test_split(
+        x, y, test_size=test_size, random_state=random_state
+    )
+
+    # Create and train multiple models
+
+    kf = KFold(n_splits=5, shuffle=True, random_state=42)
+    models = []
+
+    for train_index, val_index in kf.split(x):
+        X_train, X_val = x[train_index], x[val_index]
+        y_train, y_val = y[train_index], y[val_index]
+
+        model = RandomForestRegressor(max_depth=7, n_estimators=100)
+        model.fit(X_train, y_train)
+        y_val_pred = model.predict(X_val)
+        r2_score = r2_score(y_val, y_val_pred)
+        models.append((model, r2_score))
+
+    preds = [model.predict(x) for model, r2_score in models]
+    weights = [r2_score / sum(r2_score for _, r2_score in models) for _, r2_score in models]
+    y_pred = sum(preds*weights)
+    print(y_pred)
+    # Final prediction
+    
+
+
 
 def multi_linear_regression_display(df, target, variables, display = False):
   '''
