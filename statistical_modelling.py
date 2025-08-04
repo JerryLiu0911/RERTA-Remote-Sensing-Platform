@@ -4,7 +4,7 @@ import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV, LeaveOneOut
 
 
 
@@ -78,7 +78,7 @@ def simple_linear_regression(x, y):
 
   return m, b
 
-def random_forest_regression(df, target, variables, display=True, max_depth = 7, n_estimators=100, test_size=0.2, random_state=42):
+def random_forest_regression(df, target, variables, display=True, test_size=0.2, random_state=42):
     """
     Performs random forest regression using scikit-learn.
 
@@ -103,22 +103,16 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
     x = np.array(df[variables])
 
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(
+    x_train, x_test, y_train, y_test = train_test_split(
         x, y, test_size=test_size, random_state=random_state
     )
 
     # Create and train the model
-    model = RandomForestRegressor(
-        n_estimators=n_estimators,
-        random_state=random_state,
-        max_depth=max_depth
-    )
-
-    model.fit(X_train, y_train)
+    model, best_score =  tune_random_forest(x_train, y_train, random_state=random_state)
 
     # Make predictions
-    y_pred_test = model.predict(X_test)
-    y_pred = model.predict(X_train)
+    y_pred_test = model.predict(x_test)
+    y_pred = model.predict(x_train)
 
     # Get feature importances
     importances = model.feature_importances_
@@ -177,7 +171,10 @@ def random_forest_regression(df, target, variables, display=True, max_depth = 7,
 
 def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.2, random_state=42):
     """
-    Performs random forest regression using an ensemble of models.
+    This function performs k-fold cross-validation on the training data, training a separate Random Forest model on each fold and recording its validation score. After all models are trained,
+    each one makes predictions on the test set, and these predictions are combined using a weighted average, where the weights are based on the models’ respective validation scores. This results in an ensemble prediction on the test set, with better-performing models (on their own folds) contributing more to the final output.
+
+    # There are big issues with this method. Only a limited number of data are used for training, and they may not generalize well to unseen data.
 
     Args:
         df: Pandas DataFrame containing the data.
@@ -258,25 +255,44 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
-        'n_estimators': [50, 100, 200, 300],
-        'max_depth': [3, 5, 7, 10, None],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
-        'max_features': ['auto', 'sqrt', 'log2', None]
+        'n_estimators': np.random.randint(500, 1000, size=10).tolist(),              # More trees for better performance
+        'max_depth': np.random.randint(3, 10, size=10).tolist() + [None],                     # Wider depth range
+        'min_samples_split': np.random.randint(2, 20, size=n_iter).tolist(),             # More granular control
+        'min_samples_leaf': np.random.randint(1, 10, size=n_iter).tolist(),              # Prevent overfitting
+        'max_features': ['sqrt', 'log2', 0.3, 0.5, 0.7], # Mix of strings and floats
+        # 'criterion': ['squared_error', 'absolute_error'], # Different loss functions
+        'max_samples': np.random.uniform(0.3, 0.7, size=n_iter)                 # Sample fraction for bootstrap
     }
 
     rf = RandomForestRegressor(random_state=random_state)
 
-    rs = RandomizedSearchCV(rf, param_distributions=param_dist,
-                            n_iter=n_iter, cv=3, scoring='r2',
-                            random_state=random_state, n_jobs=-1, verbose=1)
+    rs = RandomizedSearchCV(rf,
+                            param_distributions=param_dist,
+                            n_iter=n_iter,
+                            #cv=KFold(n_splits=10, shuffle=True, random_state=random_state),
+                            cv=10,
+                            scoring='r2',
+                            random_state=random_state, 
+                            return_train_score=True,
+                            n_jobs=-1, 
+                            verbose=1
+                            )
 
     rs.fit(x_train, y_train)
 
     print(f"Best params: {rs.best_params_}")
     print(f"Best CV R2: {rs.best_score_:.3f}")
+    # Check for overfitting
+    results_df = pd.DataFrame(rs.cv_results_)
+    best_idx = rs.best_index_
+    train_score = results_df.loc[best_idx, 'mean_train_score']
+    val_score = results_df.loc[best_idx, 'mean_test_score']
 
-    return rs.best_estimator_
+    print(f"Training R²: {train_score:.4f}")
+    print(f"Validation R²: {val_score:.4f}")
+    print(f"Overfitting gap: {train_score - val_score:.4f}")
+
+    return rs.best_estimator_, rs.best_score_
 
 
 
