@@ -34,14 +34,13 @@ def standardize_names_for_canopy_openness(name):
     name = '-'.join(identifier)
     return name
 
-def canopy_openness(path, timepoint="post1"):
+def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="post1"):
   ''' 
   Extracts canopy openness data from a CSV file, calculates the average openness, and filters by timepoint.
   Default timepoint is "post1", but for more recent data "post 3" should be considered.
   
   '''
-  coordinates_path = "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/result_data.gpkg"
-  canopy_path = path
+  # coordinates_path = "G:/My Drive/UROP/UROP RERTA Remote Sensing Platform/RERTA-Remote-Sensing-Platform/result_data.gpkg"
   try:
     canopy_df_filtered = pd.read_csv(canopy_path)
     coordinates_gdf = gpd.read_file(coordinates_path)

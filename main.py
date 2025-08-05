@@ -34,21 +34,23 @@ def plot_relations(df, target, column, geo = False):
 
 def main(paths):
 
-    coordinate_extraction.extract_coords(paths['coordinates'])
-    align_coords.canopy_openness(paths['canopy_openness'],timepoint='post1')
-    gis.zonal_statistics("canopy_openness_result.gpkg", "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", "buffered_points.gpkg", paths['CHM'])
+    # coordinate_extraction.extract_central_coords(paths['coordinates'], paths['result_data'])
+    coordinate_extraction.extract_corner_coords(paths['coordinates'], paths['result_data'])
+    # align_coords.canopy_openness(paths['canopy_openness'], paths['result_data'], paths['canopy_openness_result'], timepoint='post1')
+    gis.zonal_statistics(paths['canopy_openness_result'], "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", paths['buffered_points'], paths['CHM'], buffer_points=paths['result_data'])
 
-    merged_df = statistical_modelling.load_data(
-            [#('GLI', paths['GLI']),
+    # merged_df = statistical_modelling.load_data(
+            #[#('GLI', paths['GLI']),
             #('ExG', paths['ExG']),
             #('DEM', paths['DEM']),
-            ('CHM', paths['CHM'])])
+            #('CHM', paths['CHM'])], filter = "OPE|BC")
 
-    BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
+    # print(merged_df)
+    # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
     # print(BC_df.head())
     # plot_relations(BC_df,'average_canopy_openness', 'mean_CHM', geo =True)
 
-    statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
+    # statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'average_canopy_openness']], display=False)
@@ -56,7 +58,10 @@ def main(paths):
 
 paths = {
 'canopy_openness': "Data/3.4-canopy.openness.csv",
-'coordinates': "Data/Rerta koordinate 2018_09_24.gpkg",
+'coordinates': "Data/Rerta_veg_plots.gpkg",#"Data/Rerta koordinate 2018_09_24.gpkg",
+'result_data': "result_data.gpkg",
+'canopy_openness_result': "canopy_openness_result.gpkg",
+'buffered_points': "buffered_points.gpkg",
 'GLI': "Data/Palapa June2019 GLI statistics.gpkg",
 'ExG': "Data/Palapa June2019 ExG statistics.gpkg",
 'DEM': "Data/Palapa June2019 DEM statistics.gpkg",

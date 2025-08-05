@@ -7,14 +7,14 @@ import os
 def test_hello():
     assert 1 + 1 == 2
 
-from coordinate_extraction import standardize_names_for_extract_coords, extract_coords
+from coordinate_extraction import standardize_names_for_extract_central_coords, extract_central_coords
 
-def test_standardize_names_for_extract_coords_basic():
+def test_standardize_names_for_extract_central_coords_basic():
     name = "A-E-12m-OPc"
-    result = standardize_names_for_extract_coords(name)
+    result = standardize_names_for_extract_central_coords(name)
     assert result == "A-EAST-12-OPC"
 
-def test_extract_coords_filters_and_standardizes(tmp_path):
+def test_extract_central_coords_filters_and_standardizes(tmp_path):
     # Create a mock GeoDataFrame
     data = {
         'name': [
@@ -30,7 +30,7 @@ def test_extract_coords_filters_and_standardizes(tmp_path):
     test_gpkg = tmp_path / "test.gpkg"
     gdf.to_file(test_gpkg, driver="GPKG")
 
-    result_gdf = extract_coords(str(test_gpkg))
+    result_gdf = extract_central_coords(str(test_gpkg))
     # Only 3 rows should remain
     assert len(result_gdf) == 3
     # Only 'name' and 'geometry' columns should remain

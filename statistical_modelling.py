@@ -16,10 +16,17 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
 
 
-def load_data(dataframes):
+def load_data(dataframes, filter = None):
   '''
   Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
-  Input should be of the form [('name','path'),('name2','path2')]
+    
+  
+  Args:
+    dataframes: A list of tuples specifying the dataframes you wish to merge with paths. Input should be of the form [('name','path'),('name2','path2')]
+    filter: A string to filter the point.label column using regex, selects only those column names included in the expression. (e.g. "OPE|BC"). If None, no filtering is done.
+
+  Returns:
+    merged_df: A pandas DataFrame containing the merged data.
   '''
   merged_df = pd.DataFrame()
   for i in range(len(dataframes)):
@@ -31,7 +38,8 @@ def load_data(dataframes):
         print(f"Error reading file {path}: {e}")
         continue
       df = df.dropna() # Remove rows with NaN values
-      df_cleaned = df[df['point.label'].str.contains("OPE|BC", case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
+      if filter != None:
+        df_cleaned = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
       df_cleaned = df_cleaned.rename(columns={col: f'{col}_{name}' for col in df_cleaned.columns if col != 'point.label'})
       if i == 0:
           merged_df = df_cleaned
