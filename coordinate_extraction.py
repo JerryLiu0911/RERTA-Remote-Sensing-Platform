@@ -27,7 +27,7 @@ def standardize_names_for_extract_central_coords(name):
     # identifier[1] = temp
 
     name = '-'.join(identifier)
-    print(name)
+    #print(name)
     return name
 
 def standardize_names_for_extract_corner_coords(name):
@@ -56,7 +56,7 @@ def standardize_names_for_extract_corner_coords(name):
     # identifier[1] = temp
 
     name = '-'.join(identifier)
-    print(name)
+    #print(name)
     return name
 
 def extract_central_coords(source_path, destination_path):

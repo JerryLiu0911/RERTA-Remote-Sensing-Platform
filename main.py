@@ -27,28 +27,31 @@ def plot_relations(df, target, column, geo = False):
                     , label=target
                     , color='blue', alpha=0.5
                     , s=10)
-        plt.xlabel(column)
-        plt.ylabel(target)
+        plt.xlabel(target)
+        plt.ylabel(column)
         plt.legend()
         plt.show()
 
 def main(paths):
 
-    # coordinate_extraction.extract_central_coords(paths['coordinates'], paths['result_data'])
-    coordinate_extraction.extract_corner_coords(paths['coordinates'], paths['result_data'])
-    # align_coords.canopy_openness(paths['canopy_openness'], paths['result_data'], paths['canopy_openness_result'], timepoint='post1')
-    gis.zonal_statistics(paths['canopy_openness_result'], "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", paths['buffered_points'], paths['CHM'], buffer_points=paths['result_data'])
+    coordinate_extraction.extract_central_coords(paths['coordinates'], paths['result_data'])
+    # coordinate_extraction.extract_corner_coords(paths['coordinates'], paths['result_data'])
+    align_coords.canopy_openness(paths['canopy_openness'], paths['result_data'], paths['canopy_openness_result'], timepoint='post1')
+    gis.zonal_statistics(paths['canopy_openness_result'], "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", paths['buffered_points'], paths['CHM'])#, buffer_points=paths['result_data'])
 
-    # merged_df = statistical_modelling.load_data(
-            #[#('GLI', paths['GLI']),
+    merged_df = statistical_modelling.load_data(
+            [#('GLI', paths['GLI']),
             #('ExG', paths['ExG']),
             #('DEM', paths['DEM']),
-            #('CHM', paths['CHM'])], filter = "OPE|BC")
+            ('CHM', paths['CHM'])], filter = "OPE|BC")
 
     # print(merged_df)
-    # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
-    # print(BC_df.head())
-    # plot_relations(BC_df,'average_canopy_openness', 'mean_CHM', geo =True)
+    BC_df = merged_df#[merged_df['point.label'].str.contains("BC", case=False, na=False)]
+    print(BC_df.head())
+    # plot_relations(BC_df,'average_canopy_openness', 'mean_CHM', geo = False)
+
+    coordinate_extraction.extract_corner_coords(paths['coordinates'], paths['result_data'])
+    gis.create_buffer(gis.gpd.read_file(paths['canopy_openness_result']), paths['buffered_points'], buffer_geom=gis.gpd.read_file(paths['result_data']))
 
     # statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])

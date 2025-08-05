@@ -84,7 +84,7 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
     # Drop unnecessary columns and keep only relevant ones
     canopy_df_filtered = canopy_df_filtered.drop([column for column in canopy_df_filtered.columns if column not in ['point.label', 'average_canopy_openness','geometry']], axis=1)
     
-    print('Final dataframe : ', canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
+    # print('Final dataframe : ', canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
 
     # Create a GeoDataFrame and save as a gpkg file
     merged_gdf = gpd.GeoDataFrame(canopy_df_filtered, geometry='geometry')
