@@ -67,7 +67,8 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         'std': float(np.std(clipped_data)),
                         'median': float(np.median(clipped_data)),
                         'range': float(np.max(clipped_data) - np.min(clipped_data)),
-                        'count': len(clipped_data)
+                        'count': len(clipped_data),
+                        'canopy_coverage': float(len(clipped_data[clipped_data > 0.5])) / len(clipped_data) * 100  # Percentage of positive values
                     }
                 else:
                     # No valid data in this buffer
@@ -134,7 +135,8 @@ def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_di
         # --- Create buffer around each point ---
         buffered = points.copy()
         buffered['geometry'] = buffered.geometry.buffer(12.5)
-
+    
+    buffered = buffered[buffered['name'].str.contains("A|B|C", case=True, na=False)]
     # Saving buffer
     buffered.to_file(output_buffer_gpkg, driver="GPKG")
     return buffered

@@ -76,7 +76,7 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
 
     # Average across time points for a given point.label
     # Maybe consider other methods of averaging if there are multiple time points?
-    canopy_df_filtered = canopy_df_filtered.groupby('point.label').agg({'average_canopy_openness': 'mean'}).reset_index()
+    canopy_df_filtered = canopy_df_filtered.groupby('point.label').agg({'average_canopy_openness': 'max'}).reset_index()
 
     # Merge with coordinates_gdf to attach geometry
     canopy_df_filtered = canopy_df_filtered.merge(coordinates_gdf, left_on='point.label', right_on='name', how='left')

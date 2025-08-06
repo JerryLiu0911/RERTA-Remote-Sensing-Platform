@@ -120,6 +120,8 @@ def random_forest_regression(df, target, variables, display=True, test_size=0.2,
 
     # Create and train the model
     model, best_score =  tune_random_forest(x_train, y_train, random_state=random_state)
+    # model = RandomForestRegressor(n_estimators=100, max_depth = 7,random_state=random_state)
+    # model.fit(x_train, y_train)
 
     # Make predictions
     y_pred_test = model.predict(x_test)
@@ -266,13 +268,13 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
-        'n_estimators': np.random.randint(300, 600, size=10).tolist(),              # More trees for better performance
-        'max_depth': np.random.randint(3, 10, size=3).tolist() + [None],                     # Wider depth range
-        'min_samples_split': np.random.randint(2, 20, size=n_iter).tolist(),             # More granular control
-        'min_samples_leaf': np.random.randint(1, 10, size=n_iter).tolist(),              # Prevent overfitting
-        'max_features': ['sqrt', 'log2', 0.3, 0.5, 0.7], # Mix of strings and floats
+        'n_estimators': [100, 300, 500, 700, 1000],#np.random.randint(300, 600, size=10).tolist(),              # More trees for better performance
+        'max_depth': [2, 3, 5, 7, None], #np.random.randint(3, 10, size=3).tolist() + [None],                     # Wider depth range
+        # 'min_samples_split': [5, 10],#np.random.randint(2, 20, size=n_iter).tolist(),             # More granular control
+        # 'min_samples_leaf': [1, 2, 4],#np.random.randint(1, 10, size=n_iter).tolist(),              # Prevent overfitting
+        #'max_features': ['sqrt', 'log2', 0.3, 0.5, 0.7], # Mix of strings and floats
         # 'criterion': ['squared_error', 'absolute_error'], # Different loss functions
-        'max_samples': np.random.uniform(0.3, 0.7, size=n_iter)                 # Sample fraction for bootstrap
+        #'max_samples': [0.7, 0.8, 0.9, 1]#np.random.uniform(0.3, 0.7, size=n_iter)                 # Sample fraction for bootstrap
     }
 
     rf = RandomForestRegressor(random_state=random_state)
@@ -281,7 +283,7 @@ def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
                             param_distributions=param_dist,
                             n_iter=n_iter,
                             #cv=KFold(n_splits=10, shuffle=True, random_state=random_state),
-                            cv=10,
+                            cv=5,
                             scoring='r2',
                             random_state=random_state, 
                             return_train_score=True,
