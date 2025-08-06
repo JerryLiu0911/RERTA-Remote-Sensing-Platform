@@ -4,40 +4,90 @@ import rasterio.mask
 import numpy as np
 from rasterstats import zonal_stats
 import os
-#from rasterio.warp import reproject, Resampling # Import necessary functions
 
-# # --- Paths ---
-# gpkg_path = "canopy_openness_result.gpkg"     # Input point file
-# # dtm_path = "/content/drive/MyDrive/UROP/UROP RERTA Palapa June2019 DTM.tif"          # DTM raster
-# # dem_path = "/content/drive/MyDrive/UROP/UROP RERTA Palapa June2019 DEM.tif"          # DEM raster
-# chm_path = "/content/drive/MyDrive/UROP/UROP Rerta  Palapa June2019 CHM.tif"          # CHM raster
-# output_buffer_gpkg = "buffered_points.gpkg"
-# output_zonal_gpkg = "zonal_stats_result.gpkg"
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, buffer_geom_path = None):
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, buffer_geom_path = None): 
     # --- Load and reproject point data ---
     points = gpd.read_file(gpkg_path)
     if points.crs.is_geographic:
         points = points.to_crs(points.estimate_utm_crs())
 
-    points = gpd.read_file(gpkg_path)
     print("Vector CRS:", points.crs)
 
     # --- Create buffer around each point ---
     buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
 
     # --- Zonal Statistics on CHM ---
-    stats = zonal_stats(
-        vectors=buffered,
-        raster= raster_path,
-        stats=["mean", "min", "max", "sum","std","median","majority","minority","unique","range", "count"],
-        geojson_out=True,
-        nodata= None
-    )
+    # stats = zonal_stats(
+    #     nodata=0,
+    #     vectors=buffered,
+    #     raster= raster_path,
+    #     stats=['mean', 'min', 'max', 'std', 'median', 'range', 'count'],
+    #     geojson_out=True,
+    # )
 
-    # --- Convert stats back into GeoDataFrame ---
-    zonal_gdf = gpd.GeoDataFrame.from_features(stats)
-    zonal_gdf.set_crs(buffered.crs, inplace=True)
+    # # --- Convert stats back into GeoDataFrame ---
+    # zonal_gdf = gpd.GeoDataFrame.from_features(stats)
+    # zonal_gdf.set_crs(buffered.crs, inplace=True)
+
+
+    # --- Zonal Statistics on CHM with clipping ---
+    results = []
+        
+    with rasterio.open(raster_path) as src:
+        print(f"Raster CRS: {src.crs}")
+        
+        for idx, row in buffered.iterrows():
+            try:
+                # Clip raster to just an individual buffer
+                masked_data, masked_transform = rasterio.mask.mask(
+                    src, [row.geometry], crop=True, nodata=src.nodata
+                )
+                
+                #print(masked_data)
+                # Flatten the array and remove nodata
+                valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
+                
+                # Apply your custom clipping (remove values < 0)
+                clipped_data = valid_data[valid_data >= 0]
+                print(clipped_data)
+
+                negative_count = (clipped_data < 0).sum()
+                print(f"Filtering check: {negative_count} buffers with negative mins (should be 0)")
+                if negative_count == 0:
+                    print("✅ Filtering working correctly!")
+                else:
+                    print("❌ Filtering failed!")
+                
+                if len(clipped_data) > 0:
+                    stats = {
+                        'mean': float(np.mean(clipped_data)),
+                        'min': float(np.min(clipped_data)),
+                        'max': float(np.max(clipped_data)),
+                        'std': float(np.std(clipped_data)),
+                        'median': float(np.median(clipped_data)),
+                        'range': float(np.max(clipped_data) - np.min(clipped_data)),
+                        'count': len(clipped_data)
+                    }
+                else:
+                    # No valid data in this buffer
+                    stats = {
+                        'mean': np.nan, 'min': np.nan, 'max': np.nan,
+                        'std': np.nan, 'median': np.nan, 'range': np.nan, 'count': 0
+                    }
+                
+                # Combine with original row data
+                result_row = row.to_dict()
+                result_row.update(stats)
+                results.append(result_row)
+                
+                print(f"Processed buffer {int(idx/16)+1}/{len(buffered)}")
+                
+            except Exception as e:
+                print(f"Error processing buffer {idx}: {e}")
+                continue
+            
+    zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
 
     # --- Save result ---
     zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG")

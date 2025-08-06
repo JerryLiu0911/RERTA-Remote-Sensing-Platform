@@ -110,6 +110,9 @@ def random_forest_regression(df, target, variables, display=True, test_size=0.2,
     y = np.array(df[target])
     x = np.array(df[variables])
 
+    print(x)
+    print(y)
+
     # Split the data
     x_train, x_test, y_train, y_test = train_test_split(
         x, y, test_size=test_size, random_state=random_state
@@ -263,8 +266,8 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
-        'n_estimators': np.random.randint(500, 1000, size=10).tolist(),              # More trees for better performance
-        'max_depth': np.random.randint(3, 10, size=10).tolist() + [None],                     # Wider depth range
+        'n_estimators': np.random.randint(300, 600, size=10).tolist(),              # More trees for better performance
+        'max_depth': np.random.randint(3, 10, size=3).tolist() + [None],                     # Wider depth range
         'min_samples_split': np.random.randint(2, 20, size=n_iter).tolist(),             # More granular control
         'min_samples_leaf': np.random.randint(1, 10, size=n_iter).tolist(),              # Prevent overfitting
         'max_features': ['sqrt', 'log2', 0.3, 0.5, 0.7], # Mix of strings and floats
