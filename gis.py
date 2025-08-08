@@ -68,7 +68,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         'median': float(np.median(clipped_data)),
                         'range': float(np.max(clipped_data) - np.min(clipped_data)),
                         'count': len(clipped_data),
-                        'canopy_coverage': float(len(clipped_data[clipped_data > 0.5])) / len(clipped_data) * 100  # Percentage of positive values
+                        'canopy_coverage': float(len(clipped_data[clipped_data < 0.8])) / len(clipped_data) * 100  # Percentage of positive values
                     }
                 else:
                     # No valid data in this buffer

@@ -158,10 +158,10 @@ Desktop.ini
 *.rrd
 
 # GIS database files
-*.gdb/
-*.gpkg
-*.sqlite
-*.db
+# *.gdb/
+# *.gpkg
+# *.sqlite
+# *.db
 
 # CSV data files (uncomment if you want to ignore all CSV files)
 # *.csv
