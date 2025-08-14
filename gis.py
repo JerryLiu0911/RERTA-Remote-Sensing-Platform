@@ -4,10 +4,29 @@ import rasterio.mask
 import numpy as np
 from rasterstats import zonal_stats
 import os
+import matplotlib.pyplot as plt
+import seaborn as sns
+from collections import defaultdict
+import pandas as pd
 
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, buffer_geom_path = None): 
+def clip_below_zero(data):
+    """
+    Clips the input data array to remove negative values.
+    """
+    clipped_data = data[data >= 0]
+    negative_count = (clipped_data < 0).sum()
+    print(f"Filtering check: {negative_count} buffers with negative mins (should be 0)")
+    if negative_count == 0:
+        print("✅ Filtering working correctly!")
+    else:
+        print("❌ Filtering failed!")
+    return data[data >= 0]
+
+
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic, buffer_geom_path = None, create_plots=True, save_plots=True): 
     '''
+    
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
     There are three ways of creating the buffer geometries: 
     1. Create a buffer around each point in the GeoPackage.
@@ -19,11 +38,16 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         raster_path (str): Path to the raster file for which statistics are calculated.
         output_buffer_path (str): Path to save the buffered geometries.
         output_zonal_gpkg (str): Path to save the zonal statistics results.
+        filtering_logic (function) : A function that takes a DataFrame and returns a filtered DataFrame.
         buffer_geom_path (str, optional): Path to a GeoPackage containing pre-defined buffer geometries.
+        create_plots (bool): Whether to create distribution plots by treatment region.
+        save_plots (bool): Whether to save the distribution plots.
+
     Returns:
         gpd.GeoDataFrame: A GeoDataFrame containing the zonal statistics results.
+
     '''
-    # --- Load and reproject point data ---
+    #--- Load and reproject point data ---
     # points = gpd.read_file(gpkg_path)
     # if points.crs.is_geographic:
     #     points = points.to_crs(points.estimate_utm_crs())
@@ -36,51 +60,30 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     ''' TESTING PURPOSES ONLY'''
     buffered = gpd.read_file(buffer_geom_path)
 
-
-    # --- Zonal Statistics on CHM ---
-    # stats = zonal_stats(
-    #     nodata=0,
-    #     vectors=buffered,
-    #     raster= raster_path,
-    #     stats=['mean', 'min', 'max', 'std', 'median', 'range', 'count'],
-    #     geojson_out=True,
-    # )
-
-    # # --- Convert stats back into GeoDataFrame ---
-    # zonal_gdf = gpd.GeoDataFrame.from_features(stats)
-    # zonal_gdf.set_crs(buffered.crs, inplace=True)
-
-
-    # --- Zonal Statistics on CHM with clipping ---
-    results = []
+    results = [] # Store results for each buffer, each element being a dictionary
+    region_data = defaultdict(list) # Stores all pixels which belong to a region
         
     with rasterio.open(raster_path) as src:
         print(f"Raster CRS: {src.crs}")
-        
         for idx, row in buffered.iterrows():
             try:
+                region_name = row.get('name', f'Region_{idx}')
+
                 # Clip raster to just an individual buffer
                 masked_data, masked_transform = rasterio.mask.mask(
                     src, [row.geometry], crop=True, nodata=src.nodata
                 )
                 
-                #print(masked_data)
-                # Flatten the array and remove nodata
+
+                # Flatten the array and remove nodata, vectorising for better performance
                 valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
                 
                 # Apply your custom clipping (remove values < 0)
-                clipped_data = valid_data[valid_data >= 0]
-                print(clipped_data)
+                clipped_data = filtering_logic(valid_data)
 
-                negative_count = (clipped_data < 0).sum()
-                print(f"Filtering check: {negative_count} buffers with negative mins (should be 0)")
-                if negative_count == 0:
-                    print("✅ Filtering working correctly!")
-                else:
-                    print("❌ Filtering failed!")
-                
                 if len(clipped_data) > 0:
-                    
+                    region_data[region_name].extend(clipped_data)
+
                     stats = {
                         'mean': float(np.mean(clipped_data)),
                         'min': float(np.min(clipped_data)),
@@ -89,14 +92,17 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         'median': float(np.median(clipped_data)),
                         'range': float(np.max(clipped_data) - np.min(clipped_data)),
                         'count': len(clipped_data),
-                        'canopy_coverage': float(len(clipped_data[clipped_data < 0.8])) / len(clipped_data) * 100  # Percentage of positive values
+                        'canopy_openness': float(len(clipped_data[clipped_data < 0.8])) / len(clipped_data) * 100  # Percentage of positive values
                     }
+
                 else:
                     # No valid data in this buffer
                     stats = {
                         'mean': np.nan, 'min': np.nan, 'max': np.nan,
                         'std': np.nan, 'median': np.nan, 'range': np.nan, 'count': 0
                     }
+
+                    print(f"No valid data in buffer {idx}, skipping...")
                 
                 # Combine with original row data
                 result_row = row.to_dict()
@@ -115,8 +121,29 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG")
     print(f"Saved zonal statistics to: {output_zonal_gpkg}")
 
-
-zonal_statistics(1,"G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 0, "River test Statistics.gpkg", buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg")
+    # Create plots if requested
+    figures = []
+    if create_plots and region_data:
+        print("\nCreating distribution plots...")
+        
+        # Create plots using pre-processed data
+        fig1 = create_distribution_plots_from_data(region_data, output_path=output_zonal_gpkg, save_plots=save_plots)
+        if fig1:
+            figures.append(fig1)
+            if save_plots:
+                fig1.savefig(output_zonal_gpkg.replace('.gpkg', '_distributions.png'), 
+                           dpi=300, bbox_inches='tight')
+        
+        fig2 = create_boxplot_from_data(region_data, output_path=output_zonal_gpkg, save_plots=save_plots)
+        if fig2:
+            figures.append(fig2)
+            if save_plots:
+                fig2.savefig(output_zonal_gpkg.replace('.gpkg', '_boxplot.png'), 
+                           dpi=300, bbox_inches='tight')
+        
+        plt.show()
+    
+    return zonal_gdf, figures
 
 
 def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
@@ -166,261 +193,138 @@ def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_di
     return buffered
 
 
+def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_path=None, save_plots=False):
+    """
+    Create distribution plots from pre-processed data.
 
-### BE CAUTIOUS FUNCTIONS BELOW STILL BEING TESTED AND NOT USED IN MAIN WORKFLOW YET ###
+    Args:
+        region_data (dict): A dictionary containing region names as keys and their data as values.
+        figsize (tuple): The size of the figure to create.
+        output_path (str): The path to save the figure.
+        save_plots (bool): Whether to save the plots.
 
-# def raster_calculation_zonal(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, 
-#                            calculation_func, calculation_name, buffer_geom_path=None):
-#     """
-#     Performs custom raster calculations on each buffer zone instead of basic statistics.
+    Returns:
+        matplotlib.figure.Figure: The created figure.
+
+    """
+    n_regions = len(region_data)
+    if n_regions == 0:
+        return None
     
-#     Args:
-#         gpkg_path (str): Path to the point data GeoPackage
-#         raster_path (str): Path to the multi-band raster file
-#         output_buffer_path (str): Path to save buffer geometries
-#         output_zonal_gpkg (str): Path to save results
-#         calculation_func (function): Function that takes raster bands and returns calculated values
-#         calculation_name (str): Name for the calculation (e.g., 'NDVI', 'Red_minus_Green')
-#         buffer_geom_path (str, optional): Path to predefined buffer geometries
+    cols = min(4, n_regions)
+    rows = (n_regions + cols - 1) // cols
     
-#     Returns:
-#         gpd.GeoDataFrame: Results with calculation statistics per buffer
+    fig, axes = plt.subplots(rows, cols, figsize=figsize)
+    if n_regions == 1:
+        axes = [axes]
+    elif rows == 1:
+        axes = axes if isinstance(axes, np.ndarray) else [axes]
+    else:
+        axes = axes.flatten()
     
-#     Example calculation functions:
-#         # NDVI calculation
-#         def ndvi_calc(bands):
-#             red = bands[2]    # Band 3 (0-indexed)
-#             nir = bands[3]    # Band 4 (0-indexed)
-#             return (nir - red) / (nir + red + 1e-8)  # Add small value to avoid division by zero
+    for idx, (region_name, data) in enumerate(region_data.items()):
+        ax = axes[idx]
+        data_array = np.array(data)
         
-#         # Simple band difference
-#         def red_minus_green(bands):
-#             red = bands[2]    # Band 3
-#             green = bands[1]  # Band 2
-#             return red - green
+        # Create histogram
+        ax.hist(data_array, bins=50, alpha=0.7, color=plt.cm.Set3(idx), 
+               edgecolor='black', linewidth=0.5)
         
-#         # Custom vegetation index
-#         def custom_vi(bands):
-#             blue = bands[0]
-#             green = bands[1]
-#             red = bands[2]
-#             return (green - blue) / (red + green + blue + 1e-8)
-#     """
-    
-#     # --- Load and reproject point data ---
-#     points = gpd.read_file(gpkg_path)
-#     if points.crs.is_geographic:
-#         points = points.to_crs(points.estimate_utm_crs())
-
-#     print("Vector CRS:", points.crs)
-
-#     # --- Create buffer around each point ---
-#     buffered = create_buffer(points, output_buffer_path, 
-#                            buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
-
-#     # --- Perform raster calculations on each buffer ---
-#     results = []
+        # Statistics
+        mean_val = np.mean(data_array)
+        std_val = np.std(data_array)
+        count_val = len(data_array)
         
-#     with rasterio.open(raster_path) as src:
-#         print(f"Raster CRS: {src.crs}")
-#         print(f"Raster bands: {src.count}")
-#         print(f"Raster shape: {src.width} x {src.height}")
+        stats_text = f"Mean: {mean_val:.2f}m\nStd: {std_val:.2f}m\nCount: {count_val}"
+        ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, 
+                verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
-#         for idx, row in buffered.iterrows():
-#             try:
-#                 # Clip raster to individual buffer - get all bands
-#                 masked_data, masked_transform = rasterio.mask.mask(
-#                     src, [row.geometry], crop=True, nodata=src.nodata, all_touched=True
-#                 )
-                
-#                 print(f"Processing buffer {idx + 1}/{len(buffered)}")
-#                 print(f"Masked data shape: {masked_data.shape}")  # Should be (bands, height, width)
-                
-#                 # Remove nodata values from each band
-#                 valid_mask = masked_data[0] != src.nodata if src.nodata is not None else np.ones_like(masked_data[0], dtype=bool)
-                
-#                 # Apply nodata mask to all bands
-#                 for band_idx in range(masked_data.shape[0]):
-#                     if src.nodata is not None:
-#                         band_valid_mask = masked_data[band_idx] != src.nodata
-#                         valid_mask = valid_mask & band_valid_mask
-                
-#                 # Extract valid pixels for all bands
-#                 valid_bands = []
-#                 for band_idx in range(masked_data.shape[0]):
-#                     valid_band_data = masked_data[band_idx][valid_mask]
-#                     valid_bands.append(valid_band_data)
-                
-#                 if len(valid_bands[0]) > 0:
-#                     # Perform the custom calculation
-#                     calculated_values = calculation_func(valid_bands)
-                    
-#                     # Remove invalid results (NaN, inf)
-#                     calculated_values = calculated_values[np.isfinite(calculated_values)]
-                    
-#                     if len(calculated_values) > 0:
-#                         # Calculate statistics on the result
-#                         stats = {
-#                             f'{calculation_name}_mean': float(np.mean(calculated_values)),
-#                             f'{calculation_name}_min': float(np.min(calculated_values)),
-#                             f'{calculation_name}_max': float(np.max(calculated_values)),
-#                             f'{calculation_name}_std': float(np.std(calculated_values)),
-#                             f'{calculation_name}_median': float(np.median(calculated_values)),
-#                             f'{calculation_name}_range': float(np.max(calculated_values) - np.min(calculated_values)),
-#                             f'{calculation_name}_count': len(calculated_values),
-#                             f'{calculation_name}_percentile_25': float(np.percentile(calculated_values, 25)),
-#                             f'{calculation_name}_percentile_75': float(np.percentile(calculated_values, 75))
-#                         }
-                        
-#                         print(f"  {calculation_name} range: {stats[f'{calculation_name}_min']:.3f} to {stats[f'{calculation_name}_max']:.3f}")
-#                         print(f"  Valid pixels: {stats[f'{calculation_name}_count']}")
-                        
-#                     else:
-#                         print(f"  No valid calculated values for buffer {idx}")
-#                         stats = {f'{calculation_name}_{stat}': np.nan 
-#                                 for stat in ['mean', 'min', 'max', 'std', 'median', 'range', 'percentile_25', 'percentile_75']}
-#                         stats[f'{calculation_name}_count'] = 0
-#                 else:
-#                     print(f"  No valid pixels in buffer {idx}")
-#                     stats = {f'{calculation_name}_{stat}': np.nan 
-#                             for stat in ['mean', 'min', 'max', 'std', 'median', 'range', 'percentile_25', 'percentile_75']}
-#                     stats[f'{calculation_name}_count'] = 0
-                
-#                 # Combine with original row data
-#                 result_row = row.to_dict()
-#                 result_row.update(stats)
-#                 results.append(result_row)
-                
-#             except Exception as e:
-#                 print(f"Error processing buffer {idx}: {e}")
-#                 # Add row with NaN values for failed processing
-#                 result_row = row.to_dict()
-#                 error_stats = {f'{calculation_name}_{stat}': np.nan 
-#                               for stat in ['mean', 'min', 'max', 'std', 'median', 'range', 'percentile_25', 'percentile_75']}
-#                 error_stats[f'{calculation_name}_count'] = 0
-#                 result_row.update(error_stats)
-#                 results.append(result_row)
-#                 continue
-            
-#     zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
-
-#     # --- Save result ---
-#     zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG")
-#     print(f"Saved raster calculation results to: {output_zonal_gpkg}")
-    
-#     return zonal_gdf
-
-
-# def create_calculation_functions():
-#     """
-#     Predefined calculation functions for common raster operations
-    
-#     Returns:
-#         dict: Dictionary of calculation functions
-#     """
-    
-#     def ndvi_calculation(bands):
-#         """NDVI = (NIR - Red) / (NIR + Red)"""
-#         if len(bands) < 4:
-#             raise ValueError("NDVI requires at least 4 bands (assuming Red=band3, NIR=band4)")
-#         red = bands[2].astype(float)   # Band 3 (0-indexed)
-#         nir = bands[3].astype(float)   # Band 4 (0-indexed)
-#         denominator = nir + red
-#         # Avoid division by zero
-#         ndvi = np.where(denominator != 0, (nir - red) / denominator, 0)
-#         return ndvi
-    
-#     def red_minus_green(bands):
-#         """Simple band difference: Red - Green"""
-#         if len(bands) < 3:
-#             raise ValueError("Red minus Green requires at least 3 bands")
-#         red = bands[2].astype(float)    # Band 3
-#         green = bands[1].astype(float)  # Band 2
-#         return red - green
-    
-#     def green_leaf_index(bands):
-#         """Green/Red ratio"""
-#         if len(bands) < 3:
-#             raise ValueError("Green/Red ratio requires at least 3 bands")
-#         red = bands[2].astype(float)
-#         green = bands[1].astype(float)
-#         return np.where(red != 0, green / red, 0)
-    
-#     def enhanced_vegetation_index(bands):
-#         """EVI = 2.5 * (NIR - Red) / (NIR + 6*Red - 7.5*Blue + 1)"""
-#         if len(bands) < 4:
-#             raise ValueError("EVI requires at least 4 bands")
-#         blue = bands[0].astype(float)
-#         red = bands[2].astype(float)
-#         nir = bands[3].astype(float)
+        ax.axvline(mean_val, color='red', linestyle='--', linewidth=2, 
+                  label=f"Mean: {mean_val:.2f}m")
         
-#         denominator = nir + 6*red - 7.5*blue + 1
-#         evi = np.where(denominator != 0, 2.5 * (nir - red) / denominator, 0)
-#         return evi
+        ax.set_title(f'{region_name}', fontsize=12, fontweight='bold')
+        ax.set_xlabel('Canopy Height (m)')
+        ax.set_ylabel('Frequency')
+        ax.grid(True, alpha=0.3)
+        ax.legend()
     
-#     def brightness_index(bands):
-#         """Simple brightness: mean of all bands"""
-#         all_bands = np.stack(bands, axis=0)
-#         return np.mean(all_bands, axis=0)
+    # Hide unused subplots
+    for idx in range(n_regions, len(axes)):
+        axes[idx].set_visible(False)
     
-#     def band_ratio(bands, numerator_idx=3, denominator_idx=2):
-#         """Generic band ratio (default NIR/Red)"""
-#         if len(bands) <= max(numerator_idx, denominator_idx):
-#             raise ValueError(f"Not enough bands for ratio {numerator_idx}/{denominator_idx}")
-        
-#         numerator = bands[numerator_idx].astype(float)
-#         denominator = bands[denominator_idx].astype(float)
-#         return np.where(denominator != 0, numerator / denominator, 0)
-    
-#     return {
-#         'NDVI': ndvi_calculation,
-#         'Red_minus_Green': red_minus_green,
-#         'Green_Leaf_Index': green_leaf_index,
-#         'EVI': enhanced_vegetation_index,
-#         'Brightness': brightness_index,
-#         'NIR_Red_Ratio': lambda bands: band_ratio(bands, 3, 2),
-#         'Blue_Green_Ratio': lambda bands: band_ratio(bands, 0, 1)
-#     }
+    plt.tight_layout()
+    if output_path:
+        plt.suptitle(f'{output_path.replace(".gpkg", "")} by Treatment Region', fontsize=16, fontweight='bold', y=1.02)
+        if save_plots:
+            plt.savefig(output_path.replace('.gpkg', '_distributions.png'), dpi=300, bbox_inches='tight')
+
+    return fig
 
 
-# # Example usage function
-# def example_usage():
-#     """
-#     Example of how to use the raster calculation function
-#     """
+def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, save_plots=False):
+    """
+    Create boxplot from pre-processed data.
+
+    Args:
+        region_data (dict): A dictionary containing region names as keys and their data as values.
+        figsize (tuple): The size of the figure to create.
+        output_path (str): The path to save the figure.
+        save_plots (bool): Whether to save the plots.
+
+    Returns:
+        matplotlib.figure.Figure: The created figure.
+    """
+    if not region_data:
+        return None
     
-#     # Get predefined calculation functions
-#     calc_functions = create_calculation_functions()
+    regions = list(region_data.keys())
+    data_lists = [region_data[region] for region in regions]
     
-#     # Example 1: Calculate NDVI
-#     raster_calculation_zonal(
-#         gpkg_path="points.gpkg",
-#         raster_path="multispectral_image.tif",
-#         output_buffer_path="buffers_ndvi.gpkg",
-#         output_zonal_gpkg="ndvi_results.gpkg",
-#         calculation_func=calc_functions['NDVI'],
-#         calculation_name='NDVI'
-#     )
+    fig, ax = plt.subplots(figsize=figsize)
     
-#     # Example 2: Custom calculation function
-#     def custom_vegetation_index(bands):
-#         """Custom calculation: (Green + NIR) / (Red + Blue)"""
-#         if len(bands) < 4:
-#             raise ValueError("Custom VI requires 4 bands")
-#         blue = bands[0].astype(float)
-#         green = bands[1].astype(float)
-#         red = bands[2].astype(float)
-#         nir = bands[3].astype(float)
-        
-#         numerator = green + nir
-#         denominator = red + blue
-#         return np.where(denominator != 0, numerator / denominator, 0)
+    box_plot = ax.boxplot(data_lists, labels=regions, patch_artist=True)
     
-#     raster_calculation_zonal(
-#         gpkg_path="points.gpkg",
-#         raster_path="multispectral_image.tif",
-#         output_buffer_path="buffers_custom.gpkg",
-#         output_zonal_gpkg="custom_vi_results.gpkg",
-#         calculation_func=custom_vegetation_index,
-#         calculation_name='Custom_VI'
-#     )
+    # Customize colors
+    colors = plt.cm.Set3(np.linspace(0, 1, len(regions)))
+    for patch, color in zip(box_plot['boxes'], colors):
+        patch.set_facecolor(color)
+        patch.set_alpha(0.7)
+    
+    if output_path:
+        ax.set_title(f'{output_path.replace(".gpkg", "")} Comparison Across Treatment Regions', 
+                fontsize=14, fontweight='bold')
+        if save_plots:
+            plt.savefig(output_path.replace('.gpkg', '_boxplot.png'), dpi=300, bbox_inches='tight')
+
+    ax.set_xlabel('Treatment Region', fontsize=12)
+    ax.set_ylabel('Canopy Height (m)', fontsize=12)
+    ax.grid(True, alpha=0.3)
+    
+    plt.xticks(rotation=45, ha='right')
+    
+    # Add sample size annotations
+    for i, (region, data) in enumerate(region_data.items()):
+        ax.text(i+1, ax.get_ylim()[0], f'n={len(data)}', ha='center', va='top', fontsize=10)
+    
+    plt.tight_layout()
+    return fig
+
+
+# Example usage - Comment out when not testing
+if __name__ == "__main__":
+    # Test the plotting functions
+    print("Creating CHM distribution plots...")
+    
+    # Use optimized functions for better performance
+    zonal_gdf, figures = zonal_statistics(
+        gpkg_path=1,
+        raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 
+        output_buffer_path=0, 
+        filtering_logic=clip_below_zero,
+        output_zonal_gpkg="River test Statistics.gpkg", 
+        buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg",
+        create_plots=True,
+        save_plots=True
+    )
+    
+    print("Plots created and saved successfully!")

@@ -1,10 +1,21 @@
+# Core geospatial packages
 fiona==1.10.1
 geopandas==1.1.1
-matplotlib==3.10.3
-numpy==2.3.2
-pandas==2.3.1
-pytest==8.4.1
 rasterio==1.4.3
 rasterstats==0.20.0
-scikit_learn==1.7.1
 Shapely==2.1.1
+
+# Data analysis and ML
+numpy==2.3.2
+pandas==2.3.1
+scikit_learn==1.7.1
+matplotlib==3.10.3
+
+# Testing
+pytest==8.4.1
+
+# Optional: Development dependencies (uncomment if needed)
+# jupyter>=1.0.0
+# ipykernel>=6.0.0
+# black>=22.0.0
+# flake8>=4.0.0
