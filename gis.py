@@ -7,15 +7,35 @@ import os
 
 
 def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, buffer_geom_path = None): 
-    # --- Load and reproject point data ---
-    points = gpd.read_file(gpkg_path)
-    if points.crs.is_geographic:
-        points = points.to_crs(points.estimate_utm_crs())
+    '''
+    Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
+    There are three ways of creating the buffer geometries: 
+    1. Create a buffer around each point in the GeoPackage.
+    2. Use a pre-defined points outlining the buffers from another GeoPackage (Convex Hulls).
+    3. Import a GeoPackage with pre-defined buffer geometries.
 
-    print("Vector CRS:", points.crs)
+    Args:
+        gpkg_path (str): Path to the GeoPackage containing point data.
+        raster_path (str): Path to the raster file for which statistics are calculated.
+        output_buffer_path (str): Path to save the buffered geometries.
+        output_zonal_gpkg (str): Path to save the zonal statistics results.
+        buffer_geom_path (str, optional): Path to a GeoPackage containing pre-defined buffer geometries.
+    Returns:
+        gpd.GeoDataFrame: A GeoDataFrame containing the zonal statistics results.
+    '''
+    # --- Load and reproject point data ---
+    # points = gpd.read_file(gpkg_path)
+    # if points.crs.is_geographic:
+    #     points = points.to_crs(points.estimate_utm_crs())
+
+    # print("Vector CRS:", points.crs)
 
     # --- Create buffer around each point ---
-    buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+    #buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+
+    ''' TESTING PURPOSES ONLY'''
+    buffered = gpd.read_file(buffer_geom_path)
+
 
     # --- Zonal Statistics on CHM ---
     # stats = zonal_stats(
@@ -60,6 +80,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                     print("❌ Filtering failed!")
                 
                 if len(clipped_data) > 0:
+                    
                     stats = {
                         'mean': float(np.mean(clipped_data)),
                         'min': float(np.min(clipped_data)),
@@ -82,7 +103,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 result_row.update(stats)
                 results.append(result_row)
                 
-                print(f"Processed buffer {int(idx/16)+1}/{len(buffered)}")
+                print(f"Processed buffer {int(idx/16)+1}    {idx+1}/{len(buffered)}")
                 
             except Exception as e:
                 print(f"Error processing buffer {idx}: {e}")
@@ -93,6 +114,9 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     # --- Save result ---
     zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG")
     print(f"Saved zonal statistics to: {output_zonal_gpkg}")
+
+
+zonal_statistics(1,"G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 0, "River test Statistics.gpkg", buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg")
 
 
 def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
@@ -140,6 +164,8 @@ def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_di
     # Saving buffer
     buffered.to_file(output_buffer_gpkg, driver="GPKG")
     return buffered
+
+
 
 ### BE CAUTIOUS FUNCTIONS BELOW STILL BEING TESTED AND NOT USED IN MAIN WORKFLOW YET ###
 

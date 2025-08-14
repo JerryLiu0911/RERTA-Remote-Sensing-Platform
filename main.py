@@ -185,7 +185,8 @@ def main(paths):
 
 paths = {
 'canopy_openness': "Data/3.4-canopy.openness.csv",
-'coordinates': "Data/Rerta_veg_plots.gpkg",#"Data/Rerta koordinate 2018_09_24.gpkg",
+'coordinates': "Data/Rerta_veg_plots.gpkg", #"Data/Rerta koordinate 2018_09_24.gpkg",
+'abcd_coordinates': "Data/Rerta_ABCD.gpkg", 
 'result_data': "result_data.gpkg",
 'canopy_openness_result': "canopy_openness_result.gpkg",
 'buffered_points': "buffered_points.gpkg",

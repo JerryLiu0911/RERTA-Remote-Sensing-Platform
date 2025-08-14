@@ -116,3 +116,31 @@ def extract_corner_coords(source_path, destination_path):
   result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
   result_gdf.to_file(destination_path, driver="GPKG")
   return result_gdf
+
+def extract_ABCD_coords(source_path, destination_path):
+    """
+    Extracts the corner coordinates of the vegetation plots from a GeoPackage file, filters rows based on specific patterns in the 'name' column,
+    and standardizes the 'name' column.
+    
+    Args:
+        source_path (str): Path to the source GeoPackage file.
+        destination_path (str): Path to save the filtered and standardized GeoDataFrame.
+
+    Returns:
+        gpd.GeoDataFrame: A GeoDataFrame containing the filtered and standardized data.
+    """
+    gpkg_path = source_path
+    try:
+        gdf = gpd.read_file(gpkg_path)
+    except Exception as e:
+        print("Error reading files")
+        return
+
+    # Filter rows where the 'name' column contains "veg" (case-insensitive)
+    result_gdf = gdf[gdf['name'].str.contains("veg", case=False, na=False)]
+    result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_corner_coords)
+
+    # Display the result
+    result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
+    result_gdf.to_file(destination_path, driver="GPKG")
+    return result_gdf
