@@ -61,29 +61,28 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
         canopy_df_filtered['average_canopy_openness'] = canopy_df_filtered[openness_cols].mean(axis=1)
     else:
         print("Error: Not all required columns for averaging were found.")
+    
 
 
     # Filter by 'timepoint' after calculating the average
     if type(timepoint) is str:
         canopy_df_filtered = canopy_df_filtered[canopy_df_filtered['timepoint'].str.contains(timepoint, case=False, na=False)]
     elif type(timepoint) is int:
-        canopy_df_filtered = canopy_df_filtered[canopy_df_filtered['date'].str.contains(str(timepoint), case=False, na=False) | canopy_df_filtered['timepoint'].isna()]
+        canopy_df_filtered = canopy_df_filtered[canopy_df_filtered['date'].str.contains(str(timepoint), case=False, na=False)]
     #print(canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
 
 
     # Standardize names in the 'point.label' column
     canopy_df_filtered['point.label'] = canopy_df_filtered['point.label'].apply(standardize_names_for_canopy_openness)
-
     # Average across time points for a given point.label
     # Maybe consider other methods of averaging if there are multiple time points?
-    canopy_df_filtered = canopy_df_filtered.groupby('point.label').agg({'average_canopy_openness': 'max'}).reset_index()
+    canopy_df_filtered = canopy_df_filtered.groupby('point.label').agg({'average_canopy_openness': 'max','treatment': 'first'}).reset_index()
 
     # Merge with coordinates_gdf to attach geometry
     canopy_df_filtered = canopy_df_filtered.merge(coordinates_gdf, left_on='point.label', right_on='name', how='left')
-    
-    # Drop unnecessary columns and keep only relevant ones
-    canopy_df_filtered = canopy_df_filtered.drop([column for column in canopy_df_filtered.columns if column not in ['point.label', 'average_canopy_openness','geometry']], axis=1)
-    
+    canopy_df_filtered = canopy_df_filtered.drop(columns='name')  # Drop 'name' columns to prevent redundancy with point.label
+
+    print(canopy_df_filtered)
     # print('Final dataframe : ', canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
 
     # Create a GeoDataFrame and save as a gpkg file

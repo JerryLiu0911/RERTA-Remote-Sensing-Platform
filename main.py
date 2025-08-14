@@ -144,7 +144,20 @@ def main(paths):
 
     coordinate_extraction.extract_corner_coords(paths['coordinates'], paths['result_data'])
     align_coords.canopy_openness(paths['canopy_openness'], paths['result_data'], paths['canopy_openness_result'], timepoint=2019)
-    gis.zonal_statistics(paths['canopy_openness_result'], "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", paths['buffered_points'], paths['CHM'], buffer_geom_path=paths['result_data'])
+    zonal_gdf, figures = gis.zonal_statistics(gpkg_path=paths['canopy_openness_result'],
+                        raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif",
+                        output_buffer_path=paths['buffered_points'], 
+                        filtering_logic=gis.clip_below_zero,
+                        output_zonal_gpkg=paths['CHM'],
+                        buffer_geom_path=paths['result_data'])
+    
+    zonal_gdf, figures = gis.zonal_statistics(gpkg_path=paths['canopy_openness_result'],
+                        raster_path="G:/My Drive/UROP/UROP RERTA Palapa June2019 ExG.tif",
+                        output_buffer_path=paths['buffered_points'], 
+                        #filtering_logic=gis.clip_below_zero,
+                        output_zonal_gpkg=paths['ExG'],
+                        buffer_geom_path=paths['result_data'])
+
 
     # gis.raster_calculation_zonal(gpkg_path=paths['canopy_openness_result'],
     #                               raster_path="G:/My Drive/UROP/imagery/rerta_palapa_ortho20190501.tif",
@@ -158,28 +171,28 @@ def main(paths):
     ### Combining and analyzing data into dataframes ###
 
     merged_df = statistical_modelling.load_data(
-            [#('GLI', paths['GLI']),
-            #('ExG', paths['ExG']),
+            [#('GLI', paths['GLI'])
+            ('ExG', paths['ExG']),
             #('DEM', paths['DEM']),
             ('CHM', paths['CHM'])], filter = "OPE|BC")
 
-    BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
-    print(BC_df.head())
-    plot_relations(BC_df,'average_canopy_openness', 'mean_CHM', geo = False)
+    print(merged_df.columns)
+
+    # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
+    # print(BC_df.head())
+    # plot_relations(BC_df,'average_canopy_openness', 'mean_CHM', geo = False)
 
 
     features = [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM']
-    #print(merged_df[features].describe())
-    print(merged_df['average_canopy_openness'].describe())
-    feature_diagnostics(merged_df, 'average_canopy_openness', features)
-    analyze_chm_correlations(merged_df, features)
+    # feature_diagnostics(merged_df, 'average_canopy_openness', features)
+    # analyze_chm_correlations(merged_df, features)
 
 
     ### Statistical Modelling ###
 
-    statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'name_CHM','average_canopy_openness']])
+    # statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'name_CHM','average_canopy_openness']])
     # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
-    statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
+    # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'average_canopy_openness']], display=False)
 
 

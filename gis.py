@@ -23,8 +23,54 @@ def clip_below_zero(data):
         print("❌ Filtering failed!")
     return data[data >= 0]
 
+def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
+    """
+    Creates a buffer around each point in the GeoPackage file, or uses pre-defined buffer geometries if provided with outer convex hulls.
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic, buffer_geom_path = None, create_plots=True, save_plots=True): 
+    Args:
+        gpkg_vector (gpd.GeoDataFrame): GeoDataFrame containing the input points.
+        buffer_distance (float): Distance to buffer around each point in meters.
+        output_buffer_gpkg (str): Path to save the buffered geometries.
+        buffer_points (gpd.GeoDataFrame): Optional GeoDataFrame containing pre-defined buffer geometries.
+
+    Returns:
+        gpd.GeoDataFrame: A GeoDataFrame containing the buffered geometries.
+        
+    """
+    points = gpkg_vector
+    if points.crs.is_geographic:
+        points = points.to_crs(points.estimate_utm_crs())
+
+
+    if buffer_geom is not None:
+        gpkg_vector = gpkg_vector.drop(columns='geometry')
+        buffer_geom = buffer_geom.merge(gpkg_vector, left_on='name', right_on='point.label', how='inner')
+        buffer_geom.drop(columns='name', inplace=True)
+        # --- Use pre-defined buffer geometries ---
+        print(buffer_geom.head())
+        buffer_df = []
+        
+        for name, group in buffer_geom.groupby("point.label"):
+            convex_hull = group.geometry.unary_union.convex_hull
+            results_row = group.iloc[0].copy()  # Copy the geometry to avoid SettingWithCopyWarning
+            results_row['geometry'] = convex_hull
+            buffer_df.append(results_row)
+
+        # Create GeoDataFrame with both name and geometry
+        buffered = gpd.GeoDataFrame(buffer_df, crs=buffer_geom.crs)
+        print(buffered.head())
+
+    else:
+        # --- Create buffer around each point ---
+        buffered = points.copy()
+        buffered['geometry'] = buffered.geometry.buffer(12.5)
+    
+    #buffered = buffered[buffered['name'].str.contains("A|B|C|D", case=True, na=False)]
+    # Saving buffer
+    buffered.to_file(output_buffer_gpkg, driver="GPKG")
+    return buffered
+
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, buffer_geom_path = None, create_plots=False, save_plots=False): 
     '''
     
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
@@ -48,17 +94,14 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
 
     '''
     #--- Load and reproject point data ---
-    # points = gpd.read_file(gpkg_path)
-    # if points.crs.is_geographic:
-    #     points = points.to_crs(points.estimate_utm_crs())
+    points = gpd.read_file(gpkg_path)
+    if points.crs.is_geographic:
+        points = points.to_crs(points.estimate_utm_crs())
 
-    # print("Vector CRS:", points.crs)
+    print("Vector CRS:", points.crs)
 
-    # --- Create buffer around each point ---
-    #buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
-
-    ''' TESTING PURPOSES ONLY'''
-    buffered = gpd.read_file(buffer_geom_path)
+    #--- Create buffer around each point ---
+    buffered = gpd.read_file(buffer_geom_path) if (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all() else create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
 
     results = [] # Store results for each buffer, each element being a dictionary
     region_data = defaultdict(list) # Stores all pixels which belong to a region
@@ -67,7 +110,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         print(f"Raster CRS: {src.crs}")
         for idx, row in buffered.iterrows():
             try:
-                region_name = row.get('name', f'Region_{idx}')
+                region_name = row.get('treatment', f'Treatment {idx}')
 
                 # Clip raster to just an individual buffer
                 masked_data, masked_transform = rasterio.mask.mask(
@@ -79,7 +122,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
                 
                 # Apply your custom clipping (remove values < 0)
-                clipped_data = filtering_logic(valid_data)
+                clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
 
                 if len(clipped_data) > 0:
                     region_data[region_name].extend(clipped_data)
@@ -145,54 +188,6 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     
     return zonal_gdf, figures
 
-
-def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
-    """
-    Creates a buffer around each point in the GeoPackage file, or uses pre-defined buffer geometries if provided with outer convex hulls.
-
-    Args:
-        gpkg_vector (gpd.GeoDataFrame): GeoDataFrame containing the input points.
-        buffer_distance (float): Distance to buffer around each point in meters.
-        output_buffer_gpkg (str): Path to save the buffered geometries.
-        buffer_points (gpd.GeoDataFrame): Optional GeoDataFrame containing pre-defined buffer geometries.
-
-    Returns:
-        gpd.GeoDataFrame: A GeoDataFrame containing the buffered geometries.
-        
-    """
-    points = gpkg_vector
-    if points.crs.is_geographic:
-        points = points.to_crs(points.estimate_utm_crs())
-
-
-    if buffer_geom is not None:
-        gpkg_vector = gpkg_vector.drop(columns='geometry')
-        buffer_geom = buffer_geom.merge(gpkg_vector, left_on='name', right_on='point.label', how='inner')
-        # --- Use pre-defined buffer geometries ---
-        print(buffer_geom.head())
-        buffer_df = []
-        
-        for name, group in buffer_geom.groupby("name"):
-            convex_hull = group.geometry.unary_union.convex_hull
-            results_row = group.iloc[0].copy()  # Copy the geometry to avoid SettingWithCopyWarning
-            results_row['geometry'] = convex_hull
-            buffer_df.append(results_row)
-
-        # Create GeoDataFrame with both name and geometry
-        buffered = gpd.GeoDataFrame(buffer_df, crs=buffer_geom.crs)
-        print(buffered.head())
-
-    else:
-        # --- Create buffer around each point ---
-        buffered = points.copy()
-        buffered['geometry'] = buffered.geometry.buffer(12.5)
-    
-    #buffered = buffered[buffered['name'].str.contains("A|B|C|D", case=True, na=False)]
-    # Saving buffer
-    buffered.to_file(output_buffer_gpkg, driver="GPKG")
-    return buffered
-
-
 def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_path=None, save_plots=False):
     """
     Create distribution plots from pre-processed data.
@@ -254,12 +249,11 @@ def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_pa
     
     plt.tight_layout()
     if output_path:
-        plt.suptitle(f'{output_path.replace(".gpkg", "")} by Treatment Region', fontsize=16, fontweight='bold', y=1.02)
+        plt.suptitle(f'{os.path.basename(output_path).replace(".gpkg", "")} by Treatment Region', fontsize=16, fontweight='bold', y=1.02)
         if save_plots:
             plt.savefig(output_path.replace('.gpkg', '_distributions.png'), dpi=300, bbox_inches='tight')
 
     return fig
-
 
 def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, save_plots=False):
     """
@@ -291,13 +285,13 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
         patch.set_alpha(0.7)
     
     if output_path:
-        ax.set_title(f'{output_path.replace(".gpkg", "")} Comparison Across Treatment Regions', 
+        ax.set_title(f'{os.path.basename(output_path).replace(".gpkg", "")} Comparison Across Treatment Regions', 
                 fontsize=14, fontweight='bold')
         if save_plots:
             plt.savefig(output_path.replace('.gpkg', '_boxplot.png'), dpi=300, bbox_inches='tight')
 
     ax.set_xlabel('Treatment Region', fontsize=12)
-    ax.set_ylabel('Canopy Height (m)', fontsize=12)
+    ax.set_ylabel('Elevation (m)', fontsize=12)
     ax.grid(True, alpha=0.3)
     
     plt.xticks(rotation=45, ha='right')
@@ -311,20 +305,19 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
 
 
 # Example usage - Comment out when not testing
-if __name__ == "__main__":
-    # Test the plotting functions
-    print("Creating CHM distribution plots...")
-    
-    # Use optimized functions for better performance
-    zonal_gdf, figures = zonal_statistics(
-        gpkg_path=1,
-        raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 
-        output_buffer_path=0, 
-        filtering_logic=clip_below_zero,
-        output_zonal_gpkg="River test Statistics.gpkg", 
-        buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg",
-        create_plots=True,
-        save_plots=True
-    )
-    
-    print("Plots created and saved successfully!")
+# Test the plotting functions
+# print("Creating CHM distribution plots...")
+
+# # Use optimized functions for better performance
+# zonal_gdf, figures = zonal_statistics(
+#     gpkg_path=1,
+#     raster_path="D:/Jerry/UROP Rerta Palapa July2025 DEM.tif", 
+#     output_buffer_path=0, 
+#     filtering_logic=clip_below_zero,
+#     output_zonal_gpkg="Results/Palapa July2025 DEM Statistics.gpkg", 
+#     buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg",
+#     create_plots=True,
+#     save_plots=True
+# )
+
+# print("Plots created and saved successfully!")

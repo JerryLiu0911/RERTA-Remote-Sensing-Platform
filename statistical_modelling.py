@@ -33,24 +33,25 @@ def load_data(dataframes, filter = None):
       name, path = dataframes[i]
       try:
         df = gpd.read_file(path)
-        print(df.head())
       except Exception as e:
         print(f"Error reading file {path}: {e}")
         continue
       df = df.dropna() # Remove rows with NaN values
       if filter != None:
-        df_cleaned = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
-      df_cleaned = df_cleaned.rename(columns={col: f'{col}_{name}' for col in df_cleaned.columns if col != 'point.label'})
+        df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
+      df = df.rename(columns={col: f'{col}_{name}' for col in df.columns if col != 'point.label'})
       if i == 0:
-          merged_df = df_cleaned
+          merged_df = df
           merged_df = merged_df.rename(columns={f'average_canopy_openness_{name}': 'average_canopy_openness'})
           merged_df = merged_df.rename(columns={f'geometry_{name}': 'geometry'})
+          merged_df = merged_df.rename(columns={f'treatment_{name}': 'treatment'})
       else:
-          merged_df = merged_df.merge(df_cleaned, on='point.label', how='inner')
+          merged_df = merged_df.merge(df, on='point.label', how='inner')
           if np.allclose(merged_df['average_canopy_openness'], merged_df[f'average_canopy_openness_{name}'], equal_nan=True) & check_geometries(merged_df['geometry'], merged_df[f'geometry_{name}']):
               # If they are the same, drop one and rename the other
               merged_df = merged_df.drop(columns=[f'average_canopy_openness_{name}'])
               merged_df = merged_df.drop(columns=[f'geometry_{name}'])
+              merged_df = merged_df.drop(columns=[f'treatment_{name}'])
               print(f"No discrepancies found in {name}, merged successfully.")
           else:
               print(f"discrepancies found in {name}, NOT MERGED.")
