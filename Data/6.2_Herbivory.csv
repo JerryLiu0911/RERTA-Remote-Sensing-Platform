@@ -1,0 +1,869 @@
+﻿timepoint,date.collected,river,treatment,side,transect,point,og.site.label,surveyors,,palm.name,palm.num,time,frond.length.cm,.whole.palm.herbivory,.cut.frond.herbivory,level.0,level.1,level.2,level.3,area.original,area.filled,herbivory
+baseline,10/01/2018,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,"Agung, Dani, Syamsul H",,X,,08:29,,10,5,15,5,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,"Agung, Dani, Syamsul H",,Y,,08:43,,5,5,11,5,4,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,"Agung, Dani, Syamsul H",,"Not Z, because it was too tall",,08:55,,5,5,15,5,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,"Agung, Dani, Syamsul H",2,X,,08:29,,10,5,15,5,0,0,3941430,3942529,0.027875508
+baseline,10/01/2018,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,"Agung, Dani, Syamsul H",2,Y,,08:43,,5,5,11,5,4,0,4041689,4086678,1.100869704
+baseline,10/01/2018,PLPE,D,East,150m,buffer.core,D-East-150m-BufferCore,"Agung, Dani, Syamsul H",2,"Not Z, because it was too tall",,08:55,,5,5,15,5,0,0,4723514,4724697,0.025038643
+baseline,10/01/2018,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,"Agung, Dani, Syamsul H",,Y,,09:58,,15,20,5,9,6,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,"Agung, Dani, Syamsul H",,X,,10:09,,5,5,17,3,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,"Agung, Dani, Syamsul H",,Z,,10:16,,5,5,14,6,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,"Agung, Dani, Syamsul H",2,Y,,09:58,,15,20,5,9,6,0,4806806,4859821,1.0908838
+baseline,10/01/2018,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,"Agung, Dani, Syamsul H",2,X,,10:09,,5,5,17,3,0,0,4861651,4866140,0.092249709
+baseline,10/01/2018,PLPE,D,East,150m,OP.core,D-East-150m-Opcore,"Agung, Dani, Syamsul H",2,Z,,10:16,,5,5,14,6,0,0,4725510,4730929,0.114544099
+baseline,10/01/2018,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,"Agung, Dani, Syamsul H",,Y,,09:10,,5,5,12,8,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,"Agung, Dani, Syamsul H",,"Not X, because it was too tall",,09:25,,10,5,14,6,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,"Agung, Dani, Syamsul H",,Z,,09:40,,5,5,15,5,0,0,NA,NA,NA
+baseline,10/01/2018,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,"Agung, Dani, Syamsul H",2,Y,,09:10,,5,5,12,8,0,0,4191746,4193051,0.031122922
+baseline,10/01/2018,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,"Agung, Dani, Syamsul H",2,"Not X, because it was too tall",,09:25,,10,5,14,6,0,0,5420637,5426317,0.104675049
+baseline,10/01/2018,PLPE,D,East,150m,OP.edge,D-East-150m-Opedge,"Agung, Dani, Syamsul H",2,Z,,09:40,,5,5,15,5,0,0,4726784,4728369,0.033521072
+baseline,11/01/2018,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,"Agung, Dani, Syamsul H",,Z,,11:15,,5,5,8,12,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,"Agung, Dani, Syamsul H",,Y,,11:28,,5,5,8,12,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,"Agung, Dani, Syamsul H",,X,,11:33,,5,5,12,8,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,"Agung, Dani, Syamsul H",3,Z,,11:15,,5,5,8,12,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,"Agung, Dani, Syamsul H",3,Y,,11:28,,5,5,8,12,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,buffer.core,B-West-250m-BufferCore,"Agung, Dani, Syamsul H",3,X,,11:33,,5,5,12,8,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,buffer.core,A-East-350m-BufferCore,"Agung, Dani, Syamsul H",,X,,08:56,,5,5,19,1,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,buffer.core,A-East-350m-BufferCore,"Agung, Dani, Syamsul H",,Y,,09:06,,5,5,19,1,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,buffer.core,A-East-350m-BufferCore,"Agung, Dani, Syamsul H",,Z,,09:28,,5,5,9,11,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,"Agung, Dani, Syamsul H",,X,,12:44,,5,5,14,4,2,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,"Agung, Dani, Syamsul H",,Y,,12:54,,5,5,16,4,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,"Agung, Dani, Syamsul H",,Z,,12:58,,5,5,14,5,1,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,"Agung, Dani, Syamsul H",3,X,,12:44,,5,5,14,4,2,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,"Agung, Dani, Syamsul H",3,Y,,12:54,,5,5,16,4,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.core,B-West-250m-Opcore,"Agung, Dani, Syamsul H",3,Z,,12:58,,5,5,14,5,1,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,OP.core,A-East-350m-Opcore,"Agung, Dani, Syamsul H",,X,,10:27,,5,5,8,12,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,OP.core,A-East-350m-Opcore,"Agung, Dani, Syamsul H",,Y,,10:50,,5,5,9,11,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,OP.core,A-East-350m-Opcore,"Agung, Dani, Syamsul H",,Z,,10:38,,10,5,8,12,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,"Agung, Dani, Syamsul H",,Y,,11:47,,5,5,13,7,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,"Agung, Dani, Syamsul H",,X,,11:57,,5,5,15,5,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,"Agung, Dani, Syamsul H",,Z,,12:01,,5,5,14,6,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,"Agung, Dani, Syamsul H",3,Y,,11:47,,5,5,13,7,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,"Agung, Dani, Syamsul H",3,X,,11:57,,5,5,15,5,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,B,West,250m,OP.edge,B-West-250m-Opedge,"Agung, Dani, Syamsul H",3,Z,,12:01,,5,5,14,6,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,OP.edge,A-East-350m-Opedge,"Agung, Dani, Syamsul H",,Z,,09:45,,5,5,16,4,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,OP.edge,A-East-350m-Opedge,"Agung, Dani, Syamsul H",,Y,,09:59,,5,5,13,7,0,0,NA,NA,NA
+baseline,11/01/2018,PLPE,A,East,350m,OP.edge,A-East-350m-Opedge,"Agung, Dani, Syamsul H",,X,,10:11,,5,5,6,14,0,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,"Jhon, Agung, Dani, Syamsul H",,Z,,09:33,,10,5,6,11,3,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,"Jhon, Agung, Dani, Syamsul H",,Y,,09:45,,10,5,15,5,0,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,buffer.core,C-West-50m-BufferCore,"Jhon, Agung, Dani, Syamsul H",,X,,09:56,,10,5,10,10,0,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,OP.core,C-West-50m-Opcore,"Jhon, Agung, Dani, Syamsul H",,X,,10:18,,5,5,16,4,0,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,OP.core,C-West-50m-Opcore,"Jhon, Agung, Dani, Syamsul H",,Y,,10:29,,5,5,12,8,0,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,OP.core,C-West-50m-Opcore,"Jhon, Agung, Dani, Syamsul H",,Z,,10:39,,5,5,17,3,0,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,OP.edge,C-West-50m-Opedge,"Agung, Dani, Syamsul H",,Y,,08:44,,5,5,14,5,1,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,OP.edge,C-West-50m-Opedge,"Agung, Dani, Syamsul H",,X,,08:57,,10,5,9,10,1,0,NA,NA,NA
+baseline,12/01/2018,PLPE,C,West,50m,OP.edge,C-West-50m-Opedge,"Agung, Dani, Syamsul H",,Z,,09:09,,5,5,13,7,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,buffer.core,C-West-250m-BufferCore,"Agung, Dani, Syamsul H",,X,,08:33,,10,10,4,16,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,buffer.core,C-West-250m-BufferCore,"Agung, Dani, Syamsul H",,Y,,08:46,,5,5,18,2,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,buffer.core,C-West-250m-BufferCore,"Agung, Dani, Syamsul H",,Z,,08:55,,5,5,13,7,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Agung, Dani, Syamsul H",,Z,,11:10,,5,5,4,16,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Agung, Dani, Syamsul H",,X,,11:15,,5,5,14,6,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Agung, Dani, Syamsul H",,Y,,11:20,,5,5,12,8,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Agung, Dani, Syamsul H",4,Z,,11:10,,5,5,4,16,0,0,3430081,3431179,0.032000662
+baseline,13/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Agung, Dani, Syamsul H",4,X,,11:15,,5,5,14,6,0,0,3628842,3630133,0.035563435
+baseline,13/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Agung, Dani, Syamsul H",4,Y,,11:20,,5,5,12,8,0,0,4048988,4050538,0.038266522
+baseline,13/01/2018,PLPE,A,East,150m,OP.core,A-East-150m-Opcore,"Harvester, Agung, Syamsul",,Z,,09:33,,5,5,6,14,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,OP.core,C-West-250m-Opcore,"Agung, Dani, Syamsul H",,Z,,09:48,,5,5,15,4,1,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,OP.core,C-West-250m-Opcore,"Agung, Dani, Syamsul H",,X,,10:06,,5,5,11,9,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,OP.core,C-West-250m-Opcore,"Agung, Dani, Syamsul H",,Y,,09:58,,5,5,12,5,3,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,"Agung, Dani, Syamsul H",,Z,,10:30,,5,5,13,7,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,"Agung, Dani, Syamsul H",,Y,,10:40,,5,5,16,4,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,"Agung, Dani, Syamsul H",,X,,10:55,,5,5,13,7,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,"Agung, Dani, Syamsul H",4,Z,,10:30,,5,5,13,7,0,0,3373371,3374062,0.020479766
+baseline,13/01/2018,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,"Agung, Dani, Syamsul H",4,Y,,10:40,,5,5,16,4,0,0,4220610,4225102,0.10631696
+baseline,13/01/2018,PLPE,D,East,350m,OP.core,D-East-350m-Opcore,"Agung, Dani, Syamsul H",4,X,,10:55,,5,5,13,7,0,0,3019862,3020489,0.020758228
+baseline,13/01/2018,PLPE,C,West,250m,OP.edge,C-West-250m-Opedge,"Agung, Dani, Syamsul H",,X,,09:08,,5,5,10,10,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,OP.edge,C-West-250m-Opedge,"Agung, Dani, Syamsul H",,Y,,09:19,,5,5,8,12,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,C,West,250m,OP.edge,C-West-250m-Opedge,"Agung, Dani, Syamsul H",,Z,,09:28,,5,5,10,10,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,"Agung, Dani, Syamsul H",,Y,,11:30,,5,5,8,12,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,"Agung, Dani, Syamsul H",,Z,,11:36,,5,5,15,5,0,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,"Agung, Dani, Syamsul H",,X,,11:45,,5,10,9,7,4,0,NA,NA,NA
+baseline,13/01/2018,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,"Agung, Dani, Syamsul H",4,Y,,11:30,,5,5,8,12,0,0,3582638,3584978,0.065272367
+baseline,13/01/2018,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,"Agung, Dani, Syamsul H",4,Z,,11:36,,5,5,15,5,0,0,4000985,4006100,0.127680288
+baseline,13/01/2018,PLPE,D,East,350m,OP.edge,D-East-350m-Opedge,"Agung, Dani, Syamsul H",4,X,,11:45,,5,10,9,7,4,0,3505876,3521769,0.451278889
+baseline,14/01/2018,PLPE,A,East,150m,OP.core,A-East-150m-Opcore,"Harvester, Agung, Syamsul",,X,,09:42,,5,5,12,8,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,"Harvester, Agung, Syamsul",,Y,,11:10,,5,5,15,5,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,"Harvester, Agung, Syamsul",,Z,,11:16,,5,5,17,3,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,buffer.core,A-West-50m-BufferCore,"Harvester, Agung, Syamsul",,X,,11:24,,5,5,7,13,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,"Harvester, Agung, Syamsul",,X,,10:12,,5,5,13,7,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,"Harvester, Agung, Syamsul",,Z,,10:17,,5,5,16,4,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,"Harvester, Agung, Syamsul",,Y,,10:23,,5,5,16,4,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,OP.core,A-West-50m-Opcore,"Harvester, Agung, Syamsul",,X,,12:14,,10,5,12,8,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,OP.core,A-West-50m-Opcore,"Harvester, Agung, Syamsul",,Y,,12:19,,5,5,15,5,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,OP.core,A-West-50m-Opcore,"Harvester, Agung, Syamsul",,Z,,12:25,,5,5,5,15,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,OP.core,A-East-150m-Opcore,"Harvester, Agung, Syamsul",,Y,,09:46,,5,5,10,9,1,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,OP.edge,A-West-50m-Opedge,"Harvester, Agung, Syamsul",,X,,11:36,,5,10,7,9,4,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,OP.edge,A-West-50m-Opedge,"Harvester, Agung, Syamsul",,Z,,11:42,,5,5,11,9,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,West,50m,OP.edge,A-West-50m-Opedge,"Harvester, Agung, Syamsul",,Y,,11:52,,5,5,16,4,0,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,OP.edge,A-East-150m-Opedge,"Harvester, Agung, Syamsul",,Z,,10:41,,10,10,9,10,1,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,OP.edge,A-East-150m-Opedge,"Harvester, Agung, Syamsul",,Y,,10:49,,5,5,12,7,1,0,NA,NA,NA
+baseline,15/01/2018,PLPE,A,East,150m,OP.edge,A-East-150m-Opedge,"Harvester, Agung, Syamsul",,X,,10:54,,5,5,14,6,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,"Syamsul, Agung",,Z,,11:27,,5,5,16,3,1,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,"Syamsul, Agung",,Y,,11:38,,5,5,18,2,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,"Syamsul, Agung",,X,,11:44,,5,5,18,2,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,"Syamsul, Agung",1,Z,,11:27,,5,5,16,3,1,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,"Syamsul, Agung",1,Y,,11:38,,5,5,18,2,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,buffer.core,B-West-50m-BufferCore,"Syamsul, Agung",1,X,,11:44,,5,5,18,2,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,"Harvester, Agung, Syamsul",,Y,,09:32,,5,5,14,6,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,"Harvester, Agung, Syamsul",,X,,09:42,,20,5,10,10,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,buffer.core,A-West-250m-BufferCore,"Harvester, Agung, Syamsul",,Z,,09:49,,10,5,11,9,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",,X,,10:20,,5,5,7,11,2,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",,X0,,10:24,,5,5,13,6,1,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",,Z,,10:34,,5,5,16,4,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",,Y,,10:39,,5,5,8,11,1,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",1,X,,10:20,,5,5,7,11,2,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",1,X0,,10:24,,5,5,13,6,1,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",1,Z,,10:34,,5,5,16,4,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.core,B-West-50m-Opcore,"Syamsul, Agung",1,Y,,10:39,,5,5,8,11,1,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,OP.core,A-West-250m-Opcore,"Harvester, Agung, Syamsul",,X,,08:30,,5,5,12,8,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,OP.core,A-West-250m-Opcore,"Harvester, Agung, Syamsul",,Y,,08:36,,5,5,10,10,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,OP.core,A-West-250m-Opcore,"Harvester, Agung, Syamsul",,Z,,08:45,,5,5,11,9,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.edge,B-West-50m-Opedge,"Syamsul, Agung",,Z,,10:54,,20,5,14,4,2,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.edge,B-West-50m-Opedge,"Syamsul, Agung",,Y,,11:02,,10,10,12,6,2,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.edge,B-West-50m-Opedge,"Syamsul, Agung",,X,,11:11,,5,5,15,5,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.edge,B-West-50m-Opedge,"Syamsul, Agung",1,Z,,10:54,,20,5,14,4,2,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.edge,B-West-50m-Opedge,"Syamsul, Agung",1,Y,,11:02,,10,10,12,6,2,0,NA,NA,NA
+baseline,16/01/2018,PLPE,B,West,50m,OP.edge,B-West-50m-Opedge,"Syamsul, Agung",1,X,,11:11,,5,5,15,5,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,OP.edge,A-West-250m-Opedge,"Harvester, Agung, Syamsul",,X,,09:01,,10,5,6,14,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,OP.edge,A-West-250m-Opedge,"Harvester, Agung, Syamsul",,Z,,09:06,,10,5,15,5,0,0,NA,NA,NA
+baseline,16/01/2018,PLPE,A,West,250m,OP.edge,A-West-250m-Opedge,"Harvester, Agung, Syamsul",,Y,,09:17,,5,5,12,6,2,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,"Syamsul, Agung",,X,,08:16,,5,5,11,8,1,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,"Syamsul, Agung",,Z,,08:25,,5,5,15,4,1,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,"Syamsul, Agung",,Y,,08:36,,5,5,16,4,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,"Syamsul, Agung",1,X,,08:16,,5,5,11,8,1,0,4201919,4215537,0.323043067
+baseline,17/01/2018,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,"Syamsul, Agung",1,Z,,08:25,,5,5,15,4,1,0,3866501,3869917,0.088270627
+baseline,17/01/2018,PLPE,D,West,50m,buffer.core,D-West-50m-BufferCore,"Syamsul, Agung",1,Y,,08:36,,5,5,16,4,0,0,4979079,4979670,0.011868256
+baseline,17/01/2018,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,"Syamsul, Agung",,X,,10:24,,5,5,19,1,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,"Syamsul, Agung",,Z,,09:31,,5,5,16,4,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,"Syamsul, Agung",,Y,,09:36,,5,5,14,3,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,"Syamsul, Agung",,X,,09:43,,10,5,12,8,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,"Syamsul, Agung",1,Z,,09:31,,5,5,16,4,0,0,3953848,3956715,0.072459098
+baseline,17/01/2018,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,"Syamsul, Agung",1,Y,,09:36,,5,5,14,3,0,0,3984856,3999815,0.373992297
+baseline,17/01/2018,PLPE,D,West,50m,OP.core,D-West-50m-Opcore,"Syamsul, Agung",1,X,,09:43,,10,5,12,8,0,0,3857312,3864851,0.195065735
+baseline,17/01/2018,PLPE,C,East,350m,OP.core,C-East-350m-Opcore,"Syamsul, Agung",,X,,11:30,,10,5,12,6,2,0,NA,NA,NA
+baseline,17/01/2018,PLPE,C,East,350m,OP.core,C-East-350m-Opcore,"Syamsul, Agung",,Y,,11:38,,5,5,14,6,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,C,East,350m,OP.core,C-East-350m-Opcore,"Syamsul, Agung",,Z,,11:45,,5,5,17,3,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,"Syamsul, Agung",,X,,08:58,,5,5,9,10,1,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,"Syamsul, Agung",,Y,,09:05,,10,5,18,2,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,"Syamsul, Agung",,Z,,09:13,,5,5,16,4,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,"Syamsul, Agung",1,X,,08:58,,5,5,9,10,1,0,3745536,3757498,0.318350136
+baseline,17/01/2018,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,"Syamsul, Agung",1,Y,,09:05,,10,5,18,2,0,0,3941416,3941881,0.011796399
+baseline,17/01/2018,PLPE,D,West,50m,OP.edge,D-West-50m-Opedge,"Syamsul, Agung",1,Z,,09:13,,5,5,16,4,0,0,4664469,4665685,0.026062625
+baseline,17/01/2018,PLPE,C,East,350m,OP.edge,C-East-350m-Opedge,"Syamsul, Agung",,Y,,11:01,,5,5,12,6,2,0,NA,NA,NA
+baseline,17/01/2018,PLPE,C,East,350m,OP.edge,C-East-350m-Opedge,"Syamsul, Agung",,X,,11:07,,5,5,10,10,0,0,NA,NA,NA
+baseline,17/01/2018,PLPE,C,East,350m,OP.edge,C-East-350m-Opedge,"Syamsul, Agung",,Z0- Z too high,,11:12,,10,5,16,2,2,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,"Syamsul, Agung",,X,,08:24,,10,10,12,5,1,2,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,"Syamsul, Agung",,Y,,08:36,,10,10,5,11,1,3,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,"Syamsul, Agung",,Z,,08:40,,5,10,17,1,1,1,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,"Syamsul, Agung",3,X,,08:24,,10,10,12,5,1,2,1098486,1143053,3.898944318
+baseline,18/01/2018,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,"Syamsul, Agung",3,Y,,08:36,,10,10,5,11,1,3,971071,991702,2.080362851
+baseline,18/01/2018,PLPE,D,West,250m,buffer.core,D-West-250m-BufferCore,"Syamsul, Agung",3,Z,,08:40,,5,10,17,1,1,1,1021363,1034586,1.278095779
+baseline,18/01/2018,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,"Syamsul, Agung",,X,,11:40,,5,5,14,5,0,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,"Syamsul, Agung",,Y,,11:48,,5,5,14,5,0,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,"Syamsul, Agung",,Z,,11:53,,10,5,15,3,1,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,"Syamsul, Agung",4,X,,11:40,,5,5,14,5,0,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,"Syamsul, Agung",4,Y,,11:48,,5,5,14,5,0,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,buffer.core,B-East-350m-BufferCore,"Syamsul, Agung",4,Z,,11:53,,10,5,15,3,1,1,NA,NA,NA
+baseline,18/01/2018,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,"Syamsul, Agung",,Y,,10:39,,5,5,19,1,0,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,"Syamsul, Agung",,Y,,09:37,,5,5,5,12,3,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,"Syamsul, Agung",,Z,,09:43,,5,5,15,5,0,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,"Syamsul, Agung",,X0- because X was too high,,09:55,,15,5,10,9,0,1,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,"Syamsul, Agung",3,Y,,09:37,,5,5,5,12,3,0,1324460,1343574,1.42262354
+baseline,18/01/2018,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,"Syamsul, Agung",3,Z,,09:43,,5,5,15,5,0,0,1040517,1040738,0.021234931
+baseline,18/01/2018,PLPE,D,West,250m,OP.core,D-West-250m-Opcore,"Syamsul, Agung",3,X0- because X was too high,,09:55,,15,5,10,9,0,1,1116632,1141485,2.177251563
+baseline,18/01/2018,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,"Syamsul, Agung",,X,,10:35,,5,5,7,10,2,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,"Syamsul, Agung",,Y,,10:40,,10,5,13,7,0,0,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,"Syamsul, Agung",,Z,,10:47,,10,10,6,5,4,5,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,"Syamsul, Agung",4,X,,10:35,,5,5,7,10,2,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,"Syamsul, Agung",4,Y,,10:40,,10,5,13,7,0,0,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.core,B-East-350m-Opcore,"Syamsul, Agung",4,Z,,10:47,,10,10,6,5,4,5,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,"Syamsul, Agung",,Z,,09:00,,5,5,9,8,3,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,"Syamsul, Agung",,X,,09:12,,5,5,10,10,0,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,"Syamsul, Agung",,Y,,09:20,,5,5,14,5,1,0,NA,NA,NA
+baseline,18/01/2018,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,"Syamsul, Agung",3,Z,,09:00,,5,5,9,8,3,0,1135510,1145704,0.889758611
+baseline,18/01/2018,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,"Syamsul, Agung",3,X,,09:12,,5,5,10,10,0,0,1051394,1053956,0.243084152
+baseline,18/01/2018,PLPE,D,West,250m,OP.edge,D-West-250m-Opedge,"Syamsul, Agung",3,Y,,09:20,,5,5,14,5,1,0,1067693,1077359,0.897193972
+baseline,18/01/2018,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,"Syamsul, Agung",,Z0- Z too high,,11:10,,5,5,11,7,1,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,"Syamsul, Agung",,X,,11:20,,5,5,13,4,3,0,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,"Syamsul, Agung",,Y,,11:27,,10,5,14,5,1,0,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,"Syamsul, Agung",4,Z0- Z too high,,11:10,,5,5,11,7,1,1,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,"Syamsul, Agung",4,X,,11:20,,5,5,13,4,3,0,NA,NA,NA
+baseline,18/01/2018,PLPE,B,East,350m,OP.edge,B-East-350m-Opedge,"Syamsul, Agung",4,Y,,11:27,,10,5,14,5,1,0,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,"Syamsul, Agung",,Z,,09:39,,5,5,14,3,1,2,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,"Syamsul, Agung",,X,,09:45,,5,5,14,3,2,1,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,buffer.core,C-East-150m-BufferCore,"Syamsul, Agung",,Y,,09:55,,10,10,8,5,4,3,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,350m,buffer.core,C-East-350m-BufferCore,"Syamsul, Agung",,Z,,10:47,,5,5,13,5,2,0,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,OP.core,C-East-150m-Opcore,"Syamsul, Agung",,Z,,08:27,,5,5,18,2,0,0,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,OP.core,C-East-150m-Opcore,"Syamsul, Agung",,X,,08:36,,5,10,6,9,1,4,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,OP.core,C-East-150m-Opcore,"Syamsul, Agung",,Y0,,08:51,,5,10,4,9,1,6,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,OP.edge,C-East-150m-Opedge,"Syamsul, Agung",,Z,,09:05,,10,5,8,8,2,2,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,OP.edge,C-East-150m-Opedge,"Syamsul, Agung",,Y,,09:14,,5,5,17,1,0,2,NA,NA,NA
+baseline,19/01/2018,PLPE,C,East,150m,OP.edge,C-East-150m-Opedge,"Syamsul, Agung",,X,,09:23,,10,10,10,4,0,6,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,"Syamsul, Agung",,X,,09:38,,5,10,11,7,1,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,"Syamsul, Agung",,Y,,09:48,,5,5,8,6,5,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,"Syamsul, Agung",,Z,,09:55,,5,5,12,7,1,0,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,"Syamsul, Agung",2,X,,09:38,,5,10,11,7,1,1,4159600,4181637,0.526994572
+baseline,20/01/2018,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,"Syamsul, Agung",2,Y,,09:48,,5,5,8,6,5,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,buffer.core,B-East-150m-BufferCore,"Syamsul, Agung",2,Z,,09:55,,5,5,12,7,1,0,4244150,4259078,0.350498394
+baseline,20/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Syamsul, Agung",,Y0,,10:28,,5,5,15,4,0,1,NA,NA,NA
+baseline,20/01/2018,PLPE,D,East,350m,buffer.core,D-East-350m-BufferCore,"Syamsul, Agung",4,Y0,,10:28,,5,5,15,4,0,1,3750701,3764714,0.37221951
+baseline,20/01/2018,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,"Syamsul, Agung",,Z,,08:28,,5,5,11,8,0,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,"Syamsul, Agung",,X,,08:38,,5,5,18,2,0,0,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,"Syamsul, Agung",,Y,,08:45,,5,5,11,6,0,3,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,"Syamsul, Agung",2,Z,,08:28,,5,5,11,8,0,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,"Syamsul, Agung",2,X,,08:38,,5,5,18,2,0,0,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.core,B-East-150m-Opcore,"Syamsul, Agung",2,Y,,08:45,,5,5,11,6,0,3,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,"Syamsul, Agung",,Z,,09:07,,10,5,11,6,2,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,"Syamsul, Agung",,Y,,09:15,,20,20,4,12,2,2,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,"Syamsul, Agung",,X,,09:28,,10,10,12,7,0,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,"Syamsul, Agung",2,Z,,09:07,,10,5,11,6,2,1,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,"Syamsul, Agung",2,Y,,09:15,,20,20,4,12,2,2,NA,NA,NA
+baseline,20/01/2018,PLPE,B,East,150m,OP.edge,B-East-150m-Opedge,"Syamsul, Agung",2,X,,09:28,,10,10,12,7,0,1,NA,NA,NA
+post1,06/01/2020,PLPE,A,East,150m,OP.core,A-E-150-OPC,"Agung, Syamsul, Dani",,25,,08:35,139,30,5,17,2,1,0,NA,NA,NA
+post1,06/01/2020,PLPE,A,East,150m,OP.core,A-E-150-OPC,"Agung, Syamsul, Dani",,26,,08:52,100,45,15,12,6,2,0,NA,NA,NA
+post1,06/01/2020,PLPE,A,East,150m,OP.core,A-E-150-OPC,"Agung, Syamsul, Dani",,22,,09:00,194,40,15,16,2,2,0,NA,NA,NA
+post1,06/01/2020,PLPE,B,West,250m,OP.core,B-W-250-OPC,"Agung, Syamsul, Dani",,282,,10:48,126,10,10,14,6,0,0,NA,NA,NA
+post1,06/01/2020,PLPE,B,West,250m,OP.core,B-W-250-OPC,"Agung, Syamsul, Dani",,284,,11:00,292,30,10,17,3,0,0,NA,NA,NA
+post1,06/01/2020,PLPE,B,West,250m,OP.core,B-W-250-OPC,"Agung, Syamsul, Dani",,278,,11:10,168,15,10,10,10,0,0,NA,NA,NA
+post1,06/01/2020,PLPE,A,East,150m,OP.edge,A-E-150-OPE,"Agung, Syamsul, Dani",,14,,09:21,202,20,5,19,1,0,0,NA,NA,NA
+post1,06/01/2020,PLPE,A,East,150m,OP.edge,A-E-150-OPE,"Agung, Syamsul, Dani",,18,,09:29,160,20,5,19,1,0,0,NA,NA,NA
+post1,06/01/2020,PLPE,A,East,150m,OP.edge,A-E-150-OPE,"Agung, Syamsul, Dani",,17,,09:38,171,25,5,18,1,1,0,NA,NA,NA
+post1,06/01/2020,PLPE,B,West,250m,OP.edge,B-W-250-OPE,"Agung, Syamsul, Dani",,269,,10:18,272,50,25,9,10,0,1,NA,NA,NA
+post1,06/01/2020,PLPE,B,West,250m,OP.edge,B-W-250-OPE,"Agung, Syamsul, Dani",,276,,10:29,265,30,20,8,12,0,0,NA,NA,NA
+post1,06/01/2020,PLPE,B,West,250m,OP.edge,B-W-250-OPE,"Agung, Syamsul, Dani",,273,,10:38,246,30,20,13,7,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,buffer.core,D-E-350-BC,"Agung, Syamsul, Dani",,166,,11:01,231,55,20,7,13,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,buffer.core,D-E-350-BC,"Agung, Syamsul, Dani",,164,,11:07,82,50,30,10,5,5,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,buffer.core,D-E-350-BC,"Agung, Syamsul, Dani",,170,,11:14,119,30,10,10,10,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,C,East,150m,OP.core,C-E-150-OPC,"Agung, Syamsul, Dani",,114,,08:12,222,60,40,12,8,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,C,East,150m,OP.core,C-E-150-OPC,"Agung, Syamsul, Dani",,115,,08:23,255,30,20,12,8,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,C,East,150m,OP.core,C-E-150-OPC,"Agung, Syamsul, Dani",,110,,08:32,198,40,10,13,7,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,150m,OP.core,D-E-150-OPC,"Agung, Syamsul, Dani",,160,,09:53,200,30,15,16,4,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,150m,OP.core,D-E-150-OPC,"Agung, Syamsul, Dani",,157,,10:00,190,35,15,11,9,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,150m,OP.core,D-E-150-OPC,"Agung, Syamsul, Dani",,163,,10:07,180,20,10,15,5,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,OP.core,D-E-350-OPC,"Agung, Syamsul, Dani",,181,,10:18,157,35,10,13,7,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,OP.core,D-E-350-OPC,"Agung, Syamsul, Dani",,187,,10:23,164,20,10,12,8,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,OP.core,D-E-350-OPC,"Agung, Syamsul, Dani",,186,,10:28,195,35,10,11,9,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,C,East,150m,OP.edge,C-E-150-OPE,"Agung, Syamsul, Dani",,107,,08:45,250,45,5,14,6,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,C,East,150m,OP.edge,C-E-150-OPE,"Agung, Syamsul, Dani",,105,,08:53,152,40,10,13,7,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,C,East,150m,OP.edge,C-E-150-OPE,"Agung, Syamsul, Dani",,102,,09:00,209,20,10,14,6,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,OP.edge,D-E-350-OPE,"Agung, Syamsul, Dani",,174,,10:37,144,20,5,14,6,0,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,OP.edge,D-E-350-OPE,"Agung, Syamsul, Dani",,172,,10:46,195,25,15,8,11,1,0,NA,NA,NA
+post1,07/01/2020,PLPE,D,East,350m,OP.edge,D-E-350-OPE,"Agung, Syamsul, Dani",,175,,10:51,184,30,10,14,3,3,0,NA,NA,NA
+post1,09/01/2020,PLPE,D,East,150m,buffer.core,D-E-150-BC,"Agung, Jaka, Dani",,138,,08:53,138,60,30,8,11,1,0,NA,NA,NA
+post1,09/01/2020,PLPE,D,East,150m,buffer.core,D-E-150-BC,"Agung, Jaka, Dani",,144,,09:02,175,50,15,6,14,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,D,East,150m,buffer.core,D-E-150-BC,"Agung, Jaka, Dani",,141,,09:09,147,65,20,3,15,2,0,NA,NA,NA
+post1,09/01/2020,PLPE,A,West,50m,OP.core,A-W-50-OPC,"Agung, Jaka, Dani",,208,,11:38,159,30,60,1,4,10,6,NA,NA,NA
+post1,09/01/2020,PLPE,A,West,50m,OP.core,A-W-50-OPC,"Agung, Jaka, Dani",,212,,11:48,204,50,10,16,1,0,1,NA,NA,NA
+post1,09/01/2020,PLPE,A,West,50m,OP.core,A-W-50-OPC,"Agung, Jaka, Dani",,214,,11:53,178,30,5,13,7,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,C,West,250m,OP.core,C-W-250-OPC,"Agung, Jaka, Dani",,318,,09:38,208,5,0,19,1,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,C,West,250m,OP.core,C-W-250-OPC,"Agung, Jaka, Dani",,316,,09:48,278,5,0,13,7,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,C,West,250m,OP.core,C-W-250-OPC,"Agung, Jaka, Dani",,314,,09:55,241,5,0,19,1,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,A,West,50m,OP.edge,A-W-50-OPE,"Agung, Jaka, Dani",,202,,11:21,268,25,10,12,7,1,0,NA,NA,NA
+post1,09/01/2020,PLPE,A,West,50m,OP.edge,A-W-50-OPE,"Agung, Jaka, Dani",,205,,11:27,165,5,5,8,11,1,0,NA,NA,NA
+post1,09/01/2020,PLPE,A,West,50m,OP.edge,A-W-50-OPE,"Agung, Jaka, Dani",,199,,11:33,226,10,5,6,4,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,D,East,150m,OP.edge,D-E-150-OPE,"Agung, Jaka, Dani",,150,,08:23,208,15,5,18,2,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,D,East,150m,OP.edge,D-E-150-OPE,"Agung, Jaka, Dani",,148,,08:30,187,30,10,7,13,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,D,East,150m,OP.edge,D-E-150-OPE,"Agung, Jaka, Dani",,154,,08:38,230,30,20,8,12,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,C,West,250m,OP.edge,C-W-250-OPE,"Agung, Jaka, Dani",,306,,10:07,222,10,5,18,2,0,0,NA,NA,NA
+post1,09/01/2020,PLPE,C,West,250m,OP.edge,C-W-250-OPE,"Agung, Jaka, Dani",,305,,10:12,237,10,15,15,1,3,1,NA,NA,NA
+post1,09/01/2020,PLPE,C,West,250m,OP.edge,C-W-250-OPE,"Agung, Jaka, Dani",,308,,10:17,232,15,5,9,9,2,0,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,buffer.core,D-W-250-BC,"Agung, Jaka, Syamsul",,348,,08:59,107,30,10,13,7,0,0,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,buffer.core,D-W-250-BC,"Agung, Jaka, Syamsul",,351,,09:07,152,30,25,11,2,0,7,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,buffer.core,D-W-250-BC,"Agung, Jaka, Syamsul",,346 ?,,09:15,162,25,15,12,8,0,0,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,OP.core,D-W-250-OPC,"Agung, Jaka, Syamsul",,367,,09:27,219,40,20,7,11,0,2,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,OP.core,D-W-250-OPC,"Agung, Jaka, Syamsul",,366,,09:34,216,60,25,8,12,0,0,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,OP.core,D-W-250-OPC,"Agung, Jaka, Syamsul",,363,,09:44,181,30,20,4,13,2,1,NA,NA,NA
+post1,13/01/2020,PLPE,C,East,350m,OP.core,C-E-350-OPC,"Agung, Jaka, Syamsul",,128,,10:57,206,25,20,4,14,2,0,NA,NA,NA
+post1,13/01/2020,PLPE,C,East,350m,OP.core,C-E-350-OPC,"Agung, Jaka, Syamsul",,132,,11:08,193,10,5,11,9,0,0,NA,NA,NA
+post1,13/01/2020,PLPE,C,East,350m,OP.core,C-E-350-OPC,"Agung, Jaka, Syamsul",,130,,11:14,239,20,10,8,11,0,1,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,OP.edge,D-W-250-OPE,"Agung, Jaka, Syamsul",,355 ?,,08:26,243,30,10,7,6,5,2,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,OP.edge,D-W-250-OPE,"Agung, Jaka, Syamsul",,358 ?,,08:37,189,35,10,12,7,1,0,NA,NA,NA
+post1,13/01/2020,PLPE,D,West,250m,OP.edge,D-W-250-OPE,"Agung, Jaka, Syamsul",,353 ?,,08:49,209,30,10,12,8,0,0,NA,NA,NA
+post1,13/01/2020,PLPE,C,East,350m,OP.edge,C-E-350-OPE,"Agung, Jaka, Syamsul",,123,,10:35,174,30,5,11,6,0,3,NA,NA,NA
+post1,13/01/2020,PLPE,C,East,350m,OP.edge,C-E-350-OPE,"Agung, Jaka, Syamsul",,121,,10:43,232,30,20,4,10,0,6,NA,NA,NA
+post1,13/01/2020,PLPE,C,East,350m,OP.edge,C-E-350-OPE,"Agung, Jaka, Syamsul",,122,,10:48,214,15,5,12,8,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,C,West,50m,OP.core,C-W-50-OPC,"Agung, Jaka, Syamsul",,298,,11:11,207,20,5,8,11,1,0,NA,NA,NA
+post1,14/01/2020,PLPE,C,West,50m,OP.core,C-W-50-OPC,"Agung, Jaka, Syamsul",,301,,11:18,205,20,5,8,11,1,0,NA,NA,NA
+post1,14/01/2020,PLPE,C,West,50m,OP.core,C-W-50-OPC,"Agung, Jaka, Syamsul",,296,,11:26,221,20,5,7,12,1,0,NA,NA,NA
+post1,14/01/2020,PLPE,B,East,150m,OP.core,B-E-150-OPC,"Agung, Jaka, Syamsul",,74,,09:21,176,40,25,2,16,2,0,NA,NA,NA
+post1,14/01/2020,PLPE,B,East,150m,OP.core,B-E-150-OPC,"Agung, Jaka, Syamsul",,73,,09:33,213,50,20,7,8,4,1,NA,NA,NA
+post1,14/01/2020,PLPE,B,East,150m,OP.core,B-E-150-OPC,"Agung, Jaka, Syamsul",,79,,09:50,243,40,30,2,17,1,0,NA,NA,NA
+post1,14/01/2020,PLPE,A,East,350m,OP.core,A-E-350-OPC,"Agung, Jaka, Syamsul",,52,,10:32,238,10,10,8,11,1,0,NA,NA,NA
+post1,14/01/2020,PLPE,A,East,350m,OP.core,A-E-350-OPC,"Agung, Jaka, Syamsul",,50,,10:41,274,20,5,3,17,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,A,East,350m,OP.core,A-E-350-OPC,"Agung, Jaka, Syamsul",,49,,10:48,249,10,5,9,11,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,C,West,50m,OP.edge,C-W-50-OPE,"Agung, Jaka, Syamsul",,289,,11:38,243,10,5,11,9,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,C,West,50m,OP.edge,C-W-50-OPE,"Agung, Jaka, Syamsul",,291,,11:45,181,10,5,8,12,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,C,West,50m,OP.edge,C-W-50-OPE,"Agung, Jaka, Syamsul",,294,,11:50,240,10,5,8,12,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,B,East,150m,OP.edge,B-E-150-OPE,"Agung, Jaka, Syamsul",,71,,08:57,237,15,5,12,8,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,B,East,150m,OP.edge,B-E-150-OPE,"Agung, Jaka, Syamsul",,64,,09:05,223,10,5,14,6,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,B,East,150m,OP.edge,B-E-150-OPE,"Agung, Jaka, Syamsul",,66,,09:12,256,20,5,9,11,0,0,NA,NA,NA
+post1,14/01/2020,PLPE,A,East,350m,OP.edge,A-E-350-OPE,"Agung, Jaka, Syamsul",,41,,08:25,160,30,20,10,8,1,1,NA,NA,NA
+post1,14/01/2020,PLPE,A,East,350m,OP.edge,A-E-350-OPE,"Agung, Jaka, Syamsul",,40,,08:35,183,20,20,4,14,1,1,NA,NA,NA
+post1,14/01/2020,PLPE,A,East,350m,OP.edge,A-E-350-OPE,"Agung, Jaka, Syamsul",,45,,08:44,229,30,25,5,11,3,1,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,50m,buffer.core,A-W-50-BC,"Agung, Jaka, Syamsul",,193,,08:52,529,10,15,7,8,0,5,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,50m,buffer.core,A-W-50-BC,"Agung, Jaka, Syamsul",,190,,09:05,490,10,10,12,7,0,1,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,50m,buffer.core,A-W-50-BC,"Agung, Jaka, Syamsul",,194,,09:12,410,10,10,15,2,0,3,NA,NA,NA
+post1,15/01/2020,PLPE,A,East,150m,buffer.core,A-E-150-BC,"Agung, Jaka, Syamsul",,2,,09:24,492,20,10,17,3,0,0,NA,NA,NA
+post1,15/01/2020,PLPE,A,East,150m,buffer.core,A-E-150-BC,"Agung, Jaka, Syamsul",,3,,09:35,623,20,10,16,3,0,1,NA,NA,NA
+post1,15/01/2020,PLPE,A,East,150m,buffer.core,A-E-150-BC,"Agung, Jaka, Syamsul",,6,,09:43,551,30,20,8,8,0,4,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,buffer.core,A-W-250-BC,"Agung, Jaka, Syamsul",,223,,10:00,443,20,30,8,4,1,7,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,buffer.core,A-W-250-BC,"Agung, Jaka, Syamsul",,220,,10:10,540,20,10,11,7,0,2,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,buffer.core,A-W-250-BC,"Agung, Jaka, Syamsul",,219,,10:18,533,10,5,18,2,0,0,NA,NA,NA
+post1,15/01/2020,PLPE,A,East,350m,buffer.core,A-E-350-BC,"Agung, Jaka, Syamsul",,34,,11:50,560,10,30,5,9,0,6,NA,NA,NA
+post1,15/01/2020,PLPE,A,East,350m,buffer.core,A-E-350-BC,"Agung, Jaka, Syamsul",,36,,12:01,345,40,30,6,6,4,4,NA,NA,NA
+post1,15/01/2020,PLPE,A,East,350m,buffer.core,A-E-350-BC,"Agung, Jaka, Syamsul",,30,,12:13,527,20,20,11,7,1,1,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,OP.core,A-W-250-OPC,"Agung, Jaka, Syamsul",,237,,08:01,191,30,40,5,11,0,4,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,OP.core,A-W-250-OPC,"Agung, Jaka, Syamsul",,233,,08:33,207,30,30,5,15,0,0,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,OP.core,A-W-250-OPC,"Agung, Jaka, Syamsul",,234,,08:41,212,40,10,9,10,0,1,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,OP.edge,A-W-250-OPE,"Agung, Jaka, Syamsul",,103,,11:27,293,10,20,8,12,0,0,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,OP.edge,A-W-250-OPE,"Agung, Jaka, Syamsul",,228,,11:36,300,20,20,0,20,0,0,NA,NA,NA
+post1,15/01/2020,PLPE,A,West,250m,OP.edge,A-W-250-OPE,"Agung, Jaka, Syamsul",,227,,11:40,221,15,5,11,9,0,0,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,buffer.core,B-W-50-BC,"Agung, Jaka, Syamsul",,37,,09:05,505,40,30,13,2,2,3,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,buffer.core,B-W-50-BC,"Agung, Jaka, Syamsul",,244,,09:17,490,40,30,5,5,2,8,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,buffer.core,B-W-50-BC,"Agung, Jaka, Syamsul",,243,,09:29,570,40,20,2,17,0,1,NA,NA,NA
+post1,16/01/2020,PLPE,B,East,150m,buffer.core,B-E-150-BC,"Agung, Jaka, Syamsul",,53,,08:29,461,10,20,9,3,1,7,NA,NA,NA
+post1,16/01/2020,PLPE,B,East,150m,buffer.core,B-E-150-BC,"Agung, Jaka, Syamsul",,56,,08:39,518,10,30,9,5,0,6,NA,NA,NA
+post1,16/01/2020,PLPE,B,East,150m,buffer.core,B-E-150-BC,"Agung, Jaka, Syamsul",,59,,08:48,695,20,30,2,14,2,2,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,250m,buffer.core,B-W-250-BC,"Agung, Jaka, Syamsul",,265,,11:05,530,60,15,5,13,1,1,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,250m,buffer.core,B-W-250-BC,"Agung, Jaka, Syamsul",,261,,11:10,550,20,15,7,9,1,3,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,250m,buffer.core,B-W-250-BC,"Agung, Jaka, Syamsul",,266,,11:18,487,40,40,5,9,3,3,NA,NA,NA
+post1,16/01/2020,PLPE,B,East,350m,buffer.core,B-E-350-BC,"Agung, Jaka, Syamsul",,86,,11:40,537,35,15,7,11,0,2,NA,NA,NA
+post1,16/01/2020,PLPE,B,East,350m,buffer.core,B-E-350-BC,"Agung, Jaka, Syamsul",,81,,11:48,520,30,10,6,12,0,2,NA,NA,NA
+post1,16/01/2020,PLPE,B,East,350m,buffer.core,B-E-350-BC,"Agung, Jaka, Syamsul",,84,,11:55,530,20,15,4,12,2,2,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,OP.core,B-W-50-OPC,"Agung, Jaka, Syamsul",,252 A,,12:38,172,10,5,10,9,0,1,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,OP.core,B-W-50-OPC,"Agung, Jaka, Syamsul",,259,,12:45,250,25,10,7,13,0,0,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,OP.core,B-W-50-OPC,"Agung, Jaka, Syamsul",,255,,12:49,128,10,5,6,13,1,0,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,OP.edge,B-W-50-OPE,"Agung, Jaka, Syamsul",,245,,09:36,215,10,5,14,5,0,1,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,OP.edge,B-W-50-OPE,"Agung, Jaka, Syamsul",,247,,09:43,145,5,5,15,5,0,0,NA,NA,NA
+post1,16/01/2020,PLPE,B,West,50m,OP.edge,B-W-50-OPE,"Agung, Jaka, Syamsul",,252,,09:52,221,5,10,12,5,0,3,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,buffer.core,D-W-50-BC,"Agung, Jaka, Suyandra ",,325,,09:39,206,25,5,12,8,0,0,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,buffer.core,D-W-50-BC,"Agung, Jaka, Suyandra ",,322,,09:46,177,20,20,4,8,6,2,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,buffer.core,D-W-50-BC,"Agung, Jaka, Suyandra ",,320,,09:52,193,20,20,5,7,7,1,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,OP.core,D-W-50-OPC,"Agung, Jaka, Suyandra ",,338,,10:30,198,10,5,13,7,0,0,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,OP.core,D-W-50-OPC,"Agung, Jaka, Suyandra ",,339,,10:38,174,10,5,14,3,1,2,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,OP.core,D-W-50-OPC,"Agung, Jaka, Suyandra ",,340,,10:?,175,10,5,9,11,0,0,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.core,B-E-350-OPC,"Agung, Jaka, Suyandra ",,92,,08:26,206,25,10,11,4,3,2,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.core,B-E-350-OPC,"Agung, Jaka, Suyandra ",,99,,08:37,195,20,10,2,14,3,1,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.core,B-E-350-OPC,"Agung, Jaka, Suyandra ",,91,,08:47,204,30,20,2,16,2,0,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,OP.edge,D-W-50-OPE,"Agung, Jaka, Suyandra ",,335,,10:03,197,10,5,14,4,2,0,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,OP.edge,D-W-50-OPE,"Agung, Jaka, Suyandra ",,330,,10:11,226,10,5,11,9,0,0,NA,NA,NA
+post1,17/01/2020,PLPE,D,West,50m,OP.edge,D-W-50-OPE,"Agung, Jaka, Suyandra ",,327,,10:?,242,5,5,11,7,2,0,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.edge,B-E-350-OPE,"Agung, Jaka, Suyandra ",,D 90,,08:56,190,55,60,0,5,6,9,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.edge,B-E-350-OPE,"Agung, Jaka, Suyandra ",,W 1,,09:06,309,20,20,3,12,5,0,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.edge,B-E-350-OPE,"Agung, Jaka, Suyandra ",,W2,,09:13,186,10,10,2,15,3,0,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.edge,B-E-350-OPE,"Agung, Jaka, Suyandra ",,X1,,09:18,44,10,5,9,11,0,0,NA,NA,NA
+post1,17/01/2020,PLPE,B,East,350m,OP.edge,B-E-350-OPE,"Agung, Jaka, Suyandra ",,X2,,09:24,189,20,5,10,10,0,0,NA,NA,NA
+post.planting,18/01/2020,KNDE,I,East,350m,buffer.core,IE 350 BC,"Agung, wira, ali",,Z,114/111cm,08:53,,10,10,3,8,5,0,,,
+post.planting,18/01/2020,KNDE,I,East,350m,buffer.core,IE 350 BC,"Agung, wira, ali",,X,117/117cm,09:04,,10,15,5,10,4,1,,,
+post.planting,18/01/2020,KNDE,I,East,350m,buffer.core,IE 350 BC,"Agung, wira, ali",,Y,112/128,09:15,,10,10,10,7,2,1,,,
+post1,18/01/2021,KNDE,I,East,350m,buffer.core,I-E-350-BC,"Agung, Wira, aji",,117,,09:04,117,10,15,5,10,4,1,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,buffer.core,I-E-350-BC,"Agung, Wira, aji",,112,,09:15,128,10,10,10,7,2,1,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,buffer.core,I-E-350-BC,"Agung, Wira, aji",,114,,08:53,111,10,10,7,8,5,0,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.core,H-E-150-OPC,"Agung, Wira, aji",,66,,11:35,99,20,40,0,6,8,6,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.core,H-E-150-OPC,"Agung, Wira, aji",,61,,11:21,129,25,10,4,16,0,0,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.core,H-E-150-OPC,"Agung, Wira, aji",,63,,11:29,124,10,10,1,19,0,0,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,OP.core,I-E-350-OPC,"Agung, Wira, aji",,124,,10:13,151,10,10,9,11,0,0,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,OP.core,I-E-350-OPC,"Agung, Wira, aji",,130,,10:22,127,5,5,9,11,0,0,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,OP.core,I-E-350-OPC,Agung,,127,,10:05,197,30,15,5,8,7,0,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.edge,H-E-150-OPE,"Agung, Wira, aji",,56,,10:58,172,5,5,9,11,0,0,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.edge,H-E-150-OPE,"Agung, Wira, aji",,55,,10:49,139,10,10,3,14,1,2,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.edge,H-E-150-OPE,"Agung, Wira, aji",,59,,11:08,171,10,20,1,15,1,3,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,OP.edge,I-E-350-OPE,"Agung, Wira, aji",,121,,09:38,148,10,10,7,13,0,0,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,OP.edge,I-E-350-OPE,"Agung, Wira, aji",,118,,09:28,127,20,20,8,7,5,0,NA,NA,NA
+post1,18/01/2021,KNDE,I,East,350m,OP.edge,I-E-350-OPE,"Agung, Wira, aji",,119,,09:48,180,15,20,0,19,0,1,NA,NA,NA
+post1,18/01/2021,KNDE,H,East,150m,OP.core,HE 150 OPC,"Agung, wira, sulinji",,Y,061/129,11:21,,25,10,4,16,0,0,,,
+post1,18/01/2021,KNDE,H,East,150m,OP.core,HE 150 OPC,"Agung, wira, sulinji",,Z,063/124,11:29,,10,10,1,19,0,0,,,
+post1,18/01/2021,KNDE,H,East,150m,OP.core,HE 150 OPC,"Agung, wira, sulinji",,X,066/99,11:35,,20,40,0,6,8,6,,,
+post1,18/01/2021,KNDE,I,East,350m,OP.core,IE 350 OPC,Agung,,Z,127/197,10:05,,30,15,5,8,7,0,,,
+post1,18/01/2021,KNDE,I,East,350m,OP.core,IE 350 OPC,Agung,,X,124/157,10:13,,10,10,9,11,0,0,,,
+post1,18/01/2021,KNDE,I,East,350m,OP.core,IE 350 OPC,Agung,,Y,130/127,10:22,,5,5,9,11,0,0,,,
+post1,18/01/2021,KNDE,H,East,150m,OP.edge,HE 150 OPE,"Agung, wira, sulinji",,Y,055/137,10:49,,10,10,3,14,1,2,,,
+post1,18/01/2021,KNDE,H,East,150m,OP.edge,HE 150 OPE,"Agung, wira, sulinji",,X,056/172,10:58,,5,5,9,11,0,0,,,
+post1,18/01/2021,KNDE,H,East,150m,OP.edge,HE 150 OPE,"Agung, wira, sulinji",,Z,059/171,11:08,,10,20,1,15,1,3,,,
+post1,18/01/2021,KNDE,I,East,350m,OP.edge,IE 350 OPE,"Agung, wira, ali",,Y,118/127cm,09:28,,20,20,8,7,5,0,,,
+post1,18/01/2021,KNDE,I,East,350m,OP.edge,IE 350 OPE,"Agung, wira, ali",,X,121/148,09:38,,10,10,7,13,0,0,,,
+post1,18/01/2021,KNDE,I,East,350m,OP.edge,IE 350 OPE,"Agung, wira, ali",,Z,119/180,09:48,,15,20,0,19,0,1,,,
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,G-W-50-BC,"Agung, Wira, aji",,300,,11:25,535,5,5,7,11,2,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,G-W-50-BC,"Agung, Wira, aji",,300,,11:25,535,5,5,0,0,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,G-W-50-BC,"Agung, Wira, aji",,301,,11:07,493,10,5,6,9,2,3,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,G-W-50-BC,"Agung, Wira, aji",,298,,11:38,430,10,5,7,8,3,2,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,buffer.core,F-W-250-BC,"Agung, Wira, aji",,297,,12:16,435,5,5,9,11,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,buffer.core,F-W-250-BC,"Agung, Wira, aji",,292,,12:07,456,5,5,6,14,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,buffer.core,F-W-250-BC,"Agung, Wira, aji",,295,,11:57,494,5,5,11,9,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.core,G-W-50-OPC,"Agung, Wira, aji",,157,,10:20,169,5,5,3,14,3,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.core,G-W-50-OPC,"Agung, Wira, aji",,164,,10:27,168,5,5,9,11,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.core,G-W-50-OPC,"Agung, Wira, aji",,161,,10:08,163,5,5,2,18,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,OP.core,F-W-250-OPC,"Agung, Wira, aji",,139,,09:00,154,10,10,7,13,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,OP.core,F-W-250-OPC,"Agung, Wira, aji",,144,,09:22,147,5,5,0,17,1,2,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,OP.core,F-W-250-OPC,"Agung, Wira, aji",,142,,09:10,188,10,5,3,16,0,1,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,G-W-50-OPE,"Agung, Wira, aji",,166,,10:40,144,5,5,14,6,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,G-W-50-OPE,"Agung, Wira, aji",,168,,10:49,219,10,15,0,18,2,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,G-W-50-OPE,"Agung, Wira, aji",,165,,10:57,179,5,5,2,17,1,1,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,G-W-50-OPE,"Agung, Wira, aji",,165,,10:57,179,5,5,0,0,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,G-W-50-OPE,"Agung, Wira, aji",,165,,10:57,179,5,5,0,0,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,OP.edge,F-W-250-OPE,"Agung, Wira, aji",,148,,09:43,168,5,10,3,15,2,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,OP.edge,F-W-250-OPE,"Agung, Wira, aji",,153,,09:33,196,10,10,4,14,2,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,OP.edge,F-W-250-OPE,"Agung, Wira, aji",,149,,09:52,176,5,5,10,10,0,0,NA,NA,NA
+post1,19/01/2021,KNDE,F,West,250m,buffer.core,FW 250 BC,"Agung, wira, ali",,Z,295/494,11:57,,5,5,11,9,0,0,,,
+post1,19/01/2021,KNDE,F,West,250m,buffer.core,FW 250 BC,"Agung, wira, ali",,Y,292/456,12:07,,5,5,6,14,0,0,,,
+post1,19/01/2021,KNDE,F,West,250m,buffer.core,FW 250 BC,"Agung, wira, ali",,X,297/435,12:16,,5,5,9,11,0,0,,,
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,GW 50 BC,"Agung, wira, sulinji",,Y,301/493,11:07,,10,5,6,9,2,3,,,
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,GW 50 BC,"Agung, wira, sulinji",,X,300/535,11:25,,5,5,,,,,,,
+post1,19/01/2021,KNDE,G,West,50m,buffer.core,GW 50 BC,"Agung, wira, sulinji",,Z,249/430,11:38,,10,5,7,8,3,2,,,
+post1,19/01/2021,KNDE,F,West,250m,OP.core,FW 250 OPC,"Agung, wira, ali",,Y,144/147,09:00,,10,10,0,17,1,2,,,
+post1,19/01/2021,KNDE,F,West,250m,OP.core,FW 250 OPC,"Agung, wira, ali",,X,139/154,09:22,,5,5,7,13,0,0,,,
+post1,19/01/2021,KNDE,F,West,250m,OP.core,FW 250 OPC,"Agung, wira, ali",,Z,142/188,09:10,,10,5,3,16,0,1,,,
+post1,19/01/2021,KNDE,G,West,50m,OP.core,GW 50 OPC,"Agung, wira, sulinji",,Z,161/163,10:08,,5,5,2,18,0,0,,,
+post1,19/01/2021,KNDE,G,West,50m,OP.core,GW 50 OPC,"Agung, wira, sulinji",,X,157/169,10:20,,5,5,3,14,3,0,,,
+post1,19/01/2021,KNDE,G,West,50m,OP.core,GW 50 OPC,"Agung, wira, sulinji",,Y,164/168,10:27,,5,5,9,11,0,0,,,
+post1,19/01/2021,KNDE,F,West,250m,OP.edge,FW 250 OPE,"Agung, wira, ali",,Y,153/196,09:33,,5,10,4,14,2,0,,,
+post1,19/01/2021,KNDE,F,West,250m,OP.edge,FW 250 OPE,"Agung, wira, ali",,X,148/168,09:43,,10,10,3,15,2,0,,,
+post1,19/01/2021,KNDE,F,West,250m,OP.edge,FW 250 OPE,"Agung, wira, ali",,Z,149/176,09:52,,5,5,10,10,0,0,,,
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,GW 50 OPE,"Agung, wira, sulinji",,,166/144,10:40,,5,5,14,6,0,0,,,
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,GW 50 OPE,"Agung, wira, sulinji",,,168/219,10:45,,10,15,0,18,2,0,,,
+post1,19/01/2021,KNDE,G,West,50m,OP.edge,GW 50 OPE,"Agung, wira, sulinji",,,165/179,10:57,,5,5,2,17,1,0,,,
+post1,20/01/2021,KNDE,I,West,250m,buffer.core,I-W-250-BC,"Agung, Wira, aji",,X,,11:00,139,5,5,10,8,2,0,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,buffer.core,I-W-250-BC,"Agung, Wira, aji",,Y,,11:04,177,5,5,4,16,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,buffer.core,I-W-250-BC,"Agung, Wira, aji",,313,,11:09,150,5,5,5,15,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.core,I-W-250-OPC,"Agung, Wira, aji",,244,,11:45,172,5,15,3,13,3,1,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.core,I-W-250-OPC,"Agung, Wira, aji",,244,,11:45,172,5,15,0,0,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.core,I-W-250-OPC,"Agung, Wira, aji",,241,,11:52,163,20,15,0,16,1,3,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.core,I-W-250-OPC,"Agung, Wira, aji",,246,,11:59,156,20,20,2,9,2,7,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.core,F-E-350-OPC,"Agung, Wira, aji",,21,,08:55,117,10,15,0,19,1,0,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.core,F-E-350-OPC,"Agung, Wira, aji",,20,,09:16,140,10,30,0,10,2,8,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.core,F-E-350-OPC,"Agung, Wira, aji",,16,,09:05,172,5,5,7,13,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.edge,I-W-250-OPE,"Agung, Wira, aji",,253,,11:15,187,5,5,5,13,1,1,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.edge,I-W-250-OPE,"Agung, Wira, aji",,250,,11:23,118,10,5,6,14,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,OP.edge,I-W-250-OPE,"Agung, Wira, aji",,254,,11:31,141,5,5,7,12,0,1,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,25,,09:32,179,5,5,2,18,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,24,,09:39,145,10,10,4,8,3,5,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,23,,09:45,139,5,10,2,15,0,3,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,266,,10:25,499,5,5,0,0,0,0,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,266,,10:25,499,5,5,8,11,0,1,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,272,,10:10,496,5,5,8,8,0,4,NA,NA,NA
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,F-E-350-OPE,"Agung, Wira, aji",,269,,09:54,485,5,5,2,15,1,2,NA,NA,NA
+post1,20/01/2021,KNDE,I,West,250m,buffer.core,IW 250 BC,,,,X/139,11:00,,5,5,10,8,2,0,,,
+post1,20/01/2021,KNDE,I,West,250m,buffer.core,IW 250 BC,,,,Y/177,11:04,,5,5,4,16,0,0,,,
+post1,20/01/2021,KNDE,I,West,250m,buffer.core,IW 250 BC,,,,33/150,11:09,,5,5,5,15,0,0,,,
+post1,20/01/2021,KNDE,F,East,350m,buffer.core,FE 350 BC,"Agung, wira, sulinji",,Z,269/485,09:54,,5,5,2,15,1,2,,,
+post1,20/01/2021,KNDE,F,East,350m,buffer.core,FE 350 BC,"Agung, wira, sulinji",,Y,272/496,10:10,,5,5,8,8,0,4,,,
+post1,20/01/2021,KNDE,F,East,350m,buffer.core,FE 350 BC,"Agung, wira, sulinji",,X,266/499,10:25,,5,5,,,,,,,
+post1,20/01/2021,KNDE,I,West,250m,OP.core,IW 250 OPC,,,,244/172,11:45,,5,15,3,13,3,1,,,
+post1,20/01/2021,KNDE,I,West,250m,OP.core,IW 250 OPC,,,,241/163,11:52,,20,15,0,16,1,3,,,
+post1,20/01/2021,KNDE,I,West,250m,OP.core,IW 250 OPC,,,,246/156,11:59,,20,20,2,9,2,7,,,
+post1,20/01/2021,KNDE,F,East,350m,OP.core,FE 350 OPC,"Agung, wira, sulinji",,X,021/117,08:55,,10,15,0,19,1,0,,,
+post1,20/01/2021,KNDE,F,East,350m,OP.core,FE 350 OPC,"Agung, wira, sulinji",,Z,016/172,09:05,,5,5,7,13,0,0,,,
+post1,20/01/2021,KNDE,F,East,350m,OP.core,FE 350 OPC,"Agung, wira, sulinji",,Y,020/140,09:16,,10,30,0,10,2,0,,,
+post1,20/01/2021,KNDE,I,West,250m,OP.edge,IW 250 OPE,,,,253/187,11:15,,5,5,5,13,1,1,,,
+post1,20/01/2021,KNDE,I,West,250m,OP.edge,IW 250 OPE,,,,250/118,11:23,,10,5,6,14,0,0,,,
+post1,20/01/2021,KNDE,I,West,250m,OP.edge,IW 250 OPE,,,,254/141,11:31,,5,5,7,12,0,1,,,
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,FE 350 OPE,"Agung, wira, sulinji",,,025/179,09:32,,5,5,2,18,0,0,,,
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,FE 350 OPE,"Agung, wira, sulinji",,,024/145,09:39,,10,10,4,8,3,5,,,
+post1,20/01/2021,KNDE,F,East,350m,OP.edge,FE 350 OPE,"Agung, wira, sulinji",,,023/139,09:45,,5,10,2,15,0,3,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.core,H-W-50-OPC,"Agung, Wira, aji",,190,,09:54,142,5,5,7,10,3,0,NA,NA,NA
+post1,21/01/2021,KNDE,H,West,50m,OP.core,H-W-50-OPC,"Agung, Wira, aji",,185,,09:39,141,5,10,6,12,2,0,NA,NA,NA
+post1,21/01/2021,KNDE,H,West,50m,OP.core,H-W-50-OPC,"Agung, Wira, aji",,183,,09:45,198,5,5,7,10,3,0,NA,NA,NA
+post1,21/01/2021,KNDE,H,West,50m,OP.edge,H-W-50-OPE,"Agung, Wira, aji",,193,,10:15,152,10,10,3,11,5,1,NA,NA,NA
+post1,21/01/2021,KNDE,H,West,50m,OP.edge,H-W-50-OPE,"Agung, Wira, aji",,199,,10:08,157,10,10,6,11,3,0,NA,NA,NA
+post1,21/01/2021,KNDE,H,West,50m,OP.edge,H-W-50-OPE,"Agung, Wira, aji",,196,,10:21,,10,5,12,8,0,0,NA,NA,NA
+post1,21/01/2021,KNDE,G,West,250m,buffer.core,GW 250 BC,"Agung, wira, sulinji",,,311/463,12:01,,40,15,1,16,3,0,,,
+post1,21/01/2021,KNDE,G,West,250m,buffer.core,GW 250 BC,"Agung, wira, sulinji",,,314/536,12:09,,25,10,6,14,0,0,,,
+post1,21/01/2021,KNDE,G,West,250m,buffer.core,GW 250 BC,"Agung, wira, sulinji",,,309/453,12:16,,5,5,7,10,3,0,,,
+post1,21/01/2021,KNDE,G,West,250m,OP.core,GW 250 OPC,"Agung, wira, sulinji",,,173/210,11:30,,10,10,5,14,1,0,,,
+post1,21/01/2021,KNDE,G,West,250m,OP.core,GW 250 OPC,"Agung, wira, sulinji",,,171/218,11:44,,5,10,4,12,3,1,,,
+post1,21/01/2021,KNDE,G,West,250m,OP.core,GW 250 OPC,"Agung, wira, sulinji",,,170/229,11:54,,10,25,8,7,2,3,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.core,HW 50 OPC,"Agung, sulinji, suiyan",,Y,185/141,09:39,,5,10,6,12,2,0,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.core,HW 50 OPC,"Agung, sulinji, suiyan",,Z,183/198,09:45,,5,5,7,10,3,0,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.core,HW 50 OPC,"Agung, sulinji, suiyan",,X,190/142,09:54,,5,5,7,10,3,0,,,
+post1,21/01/2021,KNDE,G,West,250m,OP.edge,GW 250 OPE,"Agung, wira, sulinji",,Z,179/157,11:02,,5,10,8,5,2,3,,,
+post1,21/01/2021,KNDE,G,West,250m,OP.edge,GW 250 OPE,"Agung, wira, sulinji",,X,181/202,11:11,,5,5,5,12,3,0,,,
+post1,21/01/2021,KNDE,G,West,250m,OP.edge,GW 250 OPE,"Agung, wira, sulinji",,Y,178/155,11:17,,5,10,7,10,3,0,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.edge,HW 50 OPE,"Agung, sulinji, suiyan",,Y,194/157,10:08,,10,10,6,11,3,0,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.edge,HW 50 OPE,"Agung, sulinji, suiyan",,X,193/152,10:15,,10,10,3,11,5,1,,,
+post1,21/01/2021,KNDE,H,West,50m,OP.edge,HW 50 OPE,"Agung, sulinji, suiyan",,Z,196/,10:21,,10,10,12,8,0,0,,,
+post1,22/01/2021,KNDE,I,West,50m,buffer.core,I-W-50-BC,"Agung, Wira, aji",,238,,10:04,175,5,5,4,13,3,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,buffer.core,I-W-50-BC,"Agung, Wira, aji",,238A,,10:10,137,5,5,6,14,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,buffer.core,I-W-50-BC,"Agung, Wira, aji",,235,,10:15,158,5,5,8,12,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,buffer.core,G-W-250-BC,"Agung, Wira, aji",,311,,12:01,463,40,15,1,16,3,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,buffer.core,G-W-250-BC,"Agung, Wira, aji",,314,,12:09,536,25,10,6,14,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,buffer.core,G-W-250-BC,"Agung, Wira, aji",,309,,12:16,453,5,5,7,10,3,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.core,I-W-50-OPC,"Agung, Wira, aji",,221,,09:35,155,10,25,0,9,4,7,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.core,I-W-50-OPC,"Agung, Wira, aji",,219,,09:43,169,5,5,1,18,1,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.core,I-W-50-OPC,"Agung, Wira, aji",,223,,09:50,,25,30,0,4,5,11,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.core,I-W-50-OPC,"Agung, Wira, aji",,223,,09:50,,25,30,0,0,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,OP.core,G-W-250-OPC,"Agung, Wira, aji",,173,,11:30,210,10,10,5,14,1,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,OP.core,G-W-250-OPC,"Agung, Wira, aji",,171,,11:44,218,5,10,4,12,3,1,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,OP.core,G-W-250-OPC,"Agung, Wira, aji",,170,,11:54,229,10,25,8,7,2,3,NA,NA,NA
+post1,22/01/2021,KNDE,H,West,250m,OP.core,H-W-250-OPC,"Agung, Wira, aji",,208,,09:11,161,5,10,4,15,1,0,NA,NA,NA
+post1,22/01/2021,KNDE,H,West,250m,OP.core,H-W-250-OPC,"Agung, Wira, aji",,205,,09:18,165,5,15,6,6,4,4,NA,NA,NA
+post1,22/01/2021,KNDE,H,West,250m,OP.core,H-W-250-OPC,"Agung, Wira, aji",,202,,09:25,145,15,5,10,10,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.edge,I-W-50-OPE,"Agung, Wira, aji",,232,,10:22,87,5,25,3,10,4,3,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.edge,I-W-50-OPE,"Agung, Wira, aji",,229,,10:28,145,10,5,5,15,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,OP.edge,I-W-50-OPE,"Agung, Wira, aji",,227,,10:34,122,5,5,5,15,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,OP.edge,G-W-250-OPE,"Agung, Wira, aji",,181,,11:11,202,5,5,5,12,3,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,OP.edge,G-W-250-OPE,"Agung, Wira, aji",,178,,11:17,155,5,10,7,10,3,0,NA,NA,NA
+post1,22/01/2021,KNDE,G,West,250m,OP.edge,G-W-250-OPE,"Agung, Wira, aji",,179,,11:02,157,5,10,8,5,2,3,NA,NA,NA
+post1,22/01/2021,KNDE,H,West,250m,OP.edge,H-W-250-OPE,"Agung, Wira, aji",,215,,08:45,161,5,5,10,10,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,H,West,250m,OP.edge,H-W-250-OPE,"Agung, Wira, aji",,213,,08:50,142,5,5,8,11,0,1,NA,NA,NA
+post1,22/01/2021,KNDE,H,West,250m,OP.edge,H-W-250-OPE,"Agung, Wira, aji",,216,,08:58,117,5,5,12,8,0,0,NA,NA,NA
+post1,22/01/2021,KNDE,I,West,50m,buffer.core,IW 50 BC,"Agung, wira, sulinji",,,238/175,10:04,,5,5,4,13,3,0,,,
+post1,22/01/2021,KNDE,I,West,50m,buffer.core,IW 50 BC,"Agung, wira, sulinji",,,238A/137,10:10,,5,5,6,14,0,0,,,
+post1,22/01/2021,KNDE,I,West,50m,buffer.core,IW 50 BC,"Agung, wira, sulinji",,,235/158,10:15,,5,5,8,12,0,0,,,
+post1,22/01/2021,KNDE,H,West,250m,OP.core,HW 250 OPC,"Agung, sulinji, wira",,,208/161,09:11,,5,10,4,15,1,0,,,
+post1,22/01/2021,KNDE,H,West,250m,OP.core,HW 250 OPC,"Agung, sulinji, wira",,,205/165,09:18,,5,15,6,6,4,4,,,
+post1,22/01/2021,KNDE,H,West,250m,OP.core,HW 250 OPC,"Agung, sulinji, wira",,,202/145,09:25,,15,5,10,10,0,0,,,
+post1,22/01/2021,KNDE,I,West,50m,OP.core,IW 50 OPC,"Agung, wira, sulinji",,,221/155,09:35,,10,25,0,9,4,7,,,
+post1,22/01/2021,KNDE,I,West,50m,OP.core,IW 50 OPC,"Agung, wira, sulinji",,,219/169,09:43,,5,5,1,18,1,0,,,
+post1,22/01/2021,KNDE,I,West,50m,OP.core,IW 50 OPC,"Agung, wira, sulinji",,,223/,09:50,,25,30,0,4,5,11,,,
+post1,22/01/2021,KNDE,H,West,250m,OP.edge,HW 250 OPE,"Agung, sulinji, wira",,,215/161,08:45,,5,5,10,10,0,0,,,
+post1,22/01/2021,KNDE,H,West,250m,OP.edge,HW 250 OPE,"Agung, sulinji, wira",,,213/142,08:50,,5,5,8,11,0,1,,,
+post1,22/01/2021,KNDE,H,West,250m,OP.edge,HW 250 OPE,"Agung, sulinji, wira",,,216/117,08:58,,5,5,12,8,0,0,,,
+post1,22/01/2021,KNDE,I,West,50m,OP.edge,IW 50 OPE,"Agung, wira, sulinji",,,232/87,10:22,,5,25,3,10,4,3,,,
+post1,22/01/2021,KNDE,I,West,50m,OP.edge,IW 50 OPE,"Agung, wira, sulinji",,,229/145,10:28,,10,5,5,15,0,0,,,
+post1,22/01/2021,KNDE,I,West,50m,OP.edge,IW 50 OPE,"Agung, wira, sulinji",,,227/122,10:34,,5,5,5,15,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,buffer.core,F-W-50-BC,"Agung, Wira, aji",,287,,09:27,523,5,5,9,11,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,buffer.core,F-W-50-BC,"Agung, Wira, aji",,287A,,09:37,486,5,5,10,8,0,2,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,buffer.core,F-W-50-BC,"Agung, Wira, aji",,290,,09:44,469,10,5,7,12,1,0,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,buffer.core,G-E-350-BC,"Agung, Wira, aji",,283,,10:50,521,20,5,7,13,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,buffer.core,G-E-350-BC,"Agung, Wira, aji",,284,,10:58,587,10,5,12,7,0,1,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,buffer.core,G-E-350-BC,"Agung, Wira, aji",,280,,11:08,547,10,5,7,13,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.core,F-W-50-OPC,"Agung, Wira, aji",,130,,08:42,208,10,20,0,9,11,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.core,F-W-50-OPC,"Agung, Wira, aji",,127,,08:50,165,5,5,8,12,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.core,F-W-50-OPC,"Agung, Wira, aji",,129,,08:58,164,5,5,0,0,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.core,G-E-350-OPC,"Agung, Wira, aji",,38,,10:07,134,5,10,3,16,0,1,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.core,G-E-350-OPC,"Agung, Wira, aji",,40,,10:12,103,5,5,8,12,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.core,G-E-350-OPC,"Agung, Wira, aji",,42,,10:17,116,5,10,3,11,4,2,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.core,G-E-350-OPC,"Agung, Wira, aji",,42,,10:17,116,5,10,0,0,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,F-W-50-OPE,"Agung, Wira, aji",,138,,09:05,132,5,5,8,12,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,F-W-50-OPE,"Agung, Wira, aji",,136,,09:12,201,5,10,5,15,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,F-W-50-OPE,"Agung, Wira, aji",,136,,09:12,201,5,10,0,0,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,F-W-50-OPE,"Agung, Wira, aji",,136,,09:17,,5,10,3,13,0,4,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.edge,G-E-350-OPE,"Agung, Wira, aji",,43,,10:28,193,5,5,11,9,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.edge,G-E-350-OPE,"Agung, Wira, aji",,53,,10:34,204,5,5,10,6,3,1,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,OP.edge,G-E-350-OPE,"Agung, Wira, aji",,49,,10:40,196,10,5,4,16,0,0,NA,NA,NA
+post1,23/01/2021,KNDE,G,East,350m,buffer.core,GE 350 BC,"Agung, sulinji, wira",,,283/521,10:50,,20,5,7,13,0,0,,,
+post1,23/01/2021,KNDE,G,East,350m,buffer.core,GE 350 BC,"Agung, sulinji, wira",,,284/587,10:58,,10,5,12,7,0,1,,,
+post1,23/01/2021,KNDE,G,East,350m,buffer.core,GE 350 BC,"Agung, sulinji, wira",,,280/547,11:08,,10,5,7,13,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,buffer.core,FW 50 BC,"Agung, wira, sulinji",,,287/523,09:27,,5,5,9,11,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,buffer.core,FW 50 BC,"Agung, wira, sulinji",,,287/486,09:37,,10,5,10,8,0,2,,,
+post1,23/01/2021,KNDE,F,West,50m,buffer.core,FW 50 BC,"Agung, wira, sulinji",,,290/469,09:44,,10,5,7,12,1,0,,,
+post1,23/01/2021,KNDE,G,East,350m,OP.core,GE 350 OPC,"Agung, sulinji, wira",,,038/134,10:07,,5,10,3,16,0,1,,,
+post1,23/01/2021,KNDE,G,East,350m,OP.core,GE 350 OPC,"Agung, sulinji, wira",,,040/103,10:12,,5,5,8,12,0,0,,,
+post1,23/01/2021,KNDE,G,East,350m,OP.core,GE 350 OPC,"Agung, sulinji, wira",,,042/116,10:17,,5,10,3,11,4,2,,,
+post1,23/01/2021,KNDE,F,West,50m,OP.core,FW 50 OPC,"Agung, wira, sulinji",,,130/208,08:42,,10,20,0,9,11,0,,,
+post1,23/01/2021,KNDE,F,West,50m,OP.core,FW 50 OPC,"Agung, wira, sulinji",,,127/165,08:50,,5,5,8,12,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,OP.core,FW 50 OPC,"Agung, wira, sulinji",,,129/164,08:58,,5,5,,,,,,,
+post1,23/01/2021,KNDE,G,East,350m,OP.edge,GE 350 OPE,"Agung, sulinji, wira",,,043/193,10:28,,5,5,11,9,0,0,,,
+post1,23/01/2021,KNDE,G,East,350m,OP.edge,GE 350 OPE,"Agung, sulinji, wira",,,053/204,10:34,,5,5,10,6,3,1,,,
+post1,23/01/2021,KNDE,G,East,350m,OP.edge,GE 350 OPE,"Agung, sulinji, wira",,,049/196,10:40,,10,5,4,16,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,FW 50 OPE,"Agung, wira, sulinji",,,138/132,09:05,,5,5,8,12,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,FW 50 OPE,"Agung, wira, sulinji",,,133/201,09:12,,5,10,5,15,0,0,,,
+post1,23/01/2021,KNDE,F,West,50m,OP.edge,FW 50 OPE,"Agung, wira, sulinji",,,136/?,09:17,,5,10,3,13,0,4,,,
+post1,25/01/2021,KNDE,F,East,150m,buffer.core,F-E-150-BC,"Agung, Wira, aji",,258,,09:04,517,5,5,14,5,1,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,buffer.core,F-E-150-BC,"Agung, Wira, aji",,257,,09:14,525,5,5,5,11,1,3,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,buffer.core,F-E-150-BC,"Agung, Wira, aji",,257,,09:14,525,5,5,0,0,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,buffer.core,F-E-150-BC,"Agung, Wira, aji",,262,,09:25,493,10,5,9,11,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,buffer.core,G-E-150-BC,"Agung, Wira, aji",,274,,11:15,501,5,5,13,7,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,buffer.core,G-E-150-BC,"Agung, Wira, aji",,278,,11:26,512,10,10,5,15,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,buffer.core,G-E-150-BC,"Agung, Wira, aji",,275,,11:37,547,5,5,14,6,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.core,F-E-150-OPC,"Agung, Wira, aji",,010A,,10:07,209,5,5,4,16,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.core,F-E-150-OPC,"Agung, Wira, aji",,10,,10:13,147,10,20,0,15,5,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.core,F-E-150-OPC,"Agung, Wira, aji",,13,,10:18,183,5,5,8,12,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.core,G-E-150-OPC,"Agung, Wira, aji",,28,,10:29,186,10,10,1,16,2,1,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.core,G-E-150-OPC,"Agung, Wira, aji",,31,,10:35,174,5,5,4,16,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.core,G-E-150-OPC,"Agung, Wira, aji",,26,,10:40,179,10,15,0,16,1,3,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.edge,F-E-150-OPE,"Agung, Wira, aji",,6,,09:40,142,10,20,1,11,6,2,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.edge,F-E-150-OPE,"Agung, Wira, aji",,4,,09:47,123,10,20,2,18,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.edge,F-E-150-OPE,"Agung, Wira, aji",,8,,09:52,207,10,10,4,16,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,F,East,150m,OP.edge,F-E-150-OPE,"Agung, Wira, aji",,8,,09:52,207,10,10,0,0,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,G-E-150-OPE,"Agung, Wira, aji",,37,,10:49,153,30,30,0,6,5,9,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,G-E-150-OPE,"Agung, Wira, aji",,37,,10:49,153,30,30,0,0,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,G-E-150-OPE,"Agung, Wira, aji",,37,,10:49,153,30,30,0,0,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,G-E-150-OPE,"Agung, Wira, aji",,37,,10:49,153,30,30,0,0,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,G-E-150-OPE,"Agung, Wira, aji",,32,,10:58,211,10,15,0,20,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,G-E-150-OPE,"Agung, Wira, aji",,0334A,,11:08,216,10,5,2,18,0,0,NA,NA,NA
+post1,25/01/2021,KNDE,G,East,150m,buffer.core,GE 150 BC,"Agung, wira, sulinji",,,274/501,11:15,,5,5,13,7,0,0,,,
+post1,25/01/2021,KNDE,G,East,150m,buffer.core,GE 150 BC,"Agung, wira, sulinji",,,278/52,11:26,,10,10,5,15,0,0,,,
+post1,25/01/2021,KNDE,G,East,150m,buffer.core,GE 150 BC,"Agung, wira, sulinji",,,275/547,11:37,,5,5,14,6,0,0,,,
+post1,25/01/2021,KNDE,G,East,150m,OP.core,GE 150 OPC,"Agung, wira, sulinji",,,028/186,10:29,,10,10,1,16,2,1,,,
+post1,25/01/2021,KNDE,G,East,150m,OP.core,GE 150 OPC,"Agung, wira, sulinji",,,031/174,10:35,,5,5,4,16,0,0,,,
+post1,25/01/2021,KNDE,G,East,150m,OP.core,GE 150 OPC,"Agung, wira, sulinji",,,023/179,10:40,,10,15,0,16,1,3,,,
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,GE 150 OPE,"Agung, wira, sulinji",,,037/153,10:49,,30,30,0,6,5,9,,,
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,GE 150 OPE,"Agung, wira, sulinji",,,032/211,10:58,,10,15,0,20,0,0,,,
+post1,25/01/2021,KNDE,G,East,150m,OP.edge,GE 150 OPE,"Agung, wira, sulinji",,,033A/216,11:08,,10,5,2,18,0,0,,,
+post1,26/01/2021,KNDE,I,East,150m,buffer.core,I-E-150-BC,"Agung, Wira, aji",,103,,08:25,116,5,5,7,11,1,1,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,buffer.core,I-E-150-BC,"Agung, Wira, aji",,108,,08:30,82,5,5,3,16,1,0,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,buffer.core,I-E-150-BC,"Agung, Wira, aji",,106,,08:35,79,5,5,13,6,1,0,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,OP.core,I-E-150-OPC,"Agung, Wira, aji",,89,,09:01,197,30,20,0,11,9,0,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,OP.core,I-E-150-OPC,"Agung, Wira, aji",,88,,09:07,134,70,50,0,1,2,17,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,OP.core,I-E-150-OPC,"Agung, Wira, aji",,91,,09:14,159,50,20,0,19,0,1,NA,NA,NA
+post1,26/01/2021,KNDE,H,East,350m,OP.core,H-E-350-OPC,"Agung, Wira, aji",,70,,09:38,136,20,5,2,16,2,0,NA,NA,NA
+post1,26/01/2021,KNDE,H,East,350m,OP.core,H-E-350-OPC,"Agung, Wira, aji",,79,,09:44,132,10,10,1,14,2,3,NA,NA,NA
+post1,26/01/2021,KNDE,H,East,350m,OP.core,H-E-350-OPC,"Agung, Wira, aji",,74,,09:50,115,15,25,0,1,6,13,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,OP.edge,I-E-150-OPE,"Agung, Wira, aji",,99,,08:39,187,5,15,0,15,5,0,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,OP.edge,I-E-150-OPE,"Agung, Wira, aji",,101,,08:47,111,5,10,4,16,0,0,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,OP.edge,I-E-150-OPE,"Agung, Wira, aji",,96,,08:55,184,15,10,2,14,3,0,NA,NA,NA
+post1,26/01/2021,KNDE,H,East,350m,OP.edge,H-E-350-OPE,"Agung, Wira, aji",,82,,09:59,157,5,5,7,13,0,0,NA,NA,NA
+post1,26/01/2021,KNDE,H,East,350m,OP.edge,H-E-350-OPE,"Agung, Wira, aji",,082A,,10:06,153,5,5,3,15,2,0,NA,NA,NA
+post1,26/01/2021,KNDE,H,East,350m,OP.edge,H-E-350-OPE,"Agung, Wira, aji",,082B,,10:12,181,5,5,5,12,3,0,NA,NA,NA
+post1,26/01/2021,KNDE,I,East,150m,buffer.core,IE 150 BC,"Agung, wira, sulinji",,,103/116,08:25,,5,5,7,11,1,1,,,
+post1,26/01/2021,KNDE,I,East,150m,buffer.core,IE 150 BC,"Agung, wira, sulinji",,,108/82,08:30,,5,5,3,16,1,0,,,
+post1,26/01/2021,KNDE,I,East,150m,buffer.core,IE 150 BC,"Agung, wira, sulinji",,,106/79,08:35,,5,5,13,6,1,0,,,
+post1,26/01/2021,KNDE,I,East,150m,OP.core,IE 150 OPC,"Agung, wira, sulinji",,,089/197,09:01,,30,20,0,11,9,9,,,
+post1,26/01/2021,KNDE,I,East,150m,OP.core,IE 150 OPC,"Agung, wira, sulinji",,,088/134,09:07,,70,50,0,1,2,2,,,
+post1,26/01/2021,KNDE,I,East,150m,OP.core,IE 150 OPC,"Agung, wira, sulinji",,,091/159,09:14,,50,20,0,19,0,0,,,
+post1,26/01/2021,KNDE,H,East,350m,OP.core,HE 350 OPC,"Agung, wira, sulinji",,,070/136,09:38,,20,5,2,16,2,0,,,
+post1,26/01/2021,KNDE,H,East,350m,OP.core,HE 350 OPC,"Agung, wira, sulinji",,,079/132,09:44,,10,10,1,14,2,3,,,
+post1,26/01/2021,KNDE,H,East,350m,OP.core,HE 350 OPC,"Agung, wira, sulinji",,,074/115,09:50,,15,25,0,1,6,13,,,
+post1,26/01/2021,KNDE,I,East,150m,OP.edge,IE 150 OPE,"Agung, wira, sulinji",,,099/187,08:39,,5,15,0,15,5,0,,,
+post1,26/01/2021,KNDE,I,East,150m,OP.edge,IE 150 OPE,"Agung, wira, sulinji",,,101/111,08:47,,5,10,4,16,0,0,,,
+post1,26/01/2021,KNDE,I,East,150m,OP.edge,IE 150 OPE,"Agung, wira, sulinji",,,096/184,08:55,,15,10,2,14,3,0,,,
+post1,26/01/2021,KNDE,H,East,350m,OP.edge,HE 350 OPE,"Agung, wira, sulinji",,,082/157,09:59,,5,5,7,13,0,0,,,
+post1,26/01/2021,KNDE,H,East,350m,OP.edge,HE 350 OPE,"Agung, wira, sulinji",,,182A/153,10:06,,5,5,3,15,2,0,,,
+post1,26/01/2021,KNDE,H,East,350m,OP.edge,HE 350 OPE,"Agung, wira, sulinji",,,0823/181,10:12,,5,5,5,12,3,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,buffer.core,FE 150 BC,"Agung, wira, sulinji",,,258/517,09:04,,5,5,14,5,1,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,buffer.core,FE 150 BC,"Agung, wira, sulinji",,,257/525,09:14,,5,5,5,11,1,3,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,buffer.core,FE 150 BC,"Agung, wira, sulinji",,,262/493,09:25,,10,5,9,11,0,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,OP.core,FE 150 OPC,"Agung, wira, sulinji",,,010A/209,10:07,,5,5,4,16,0,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,OP.core,FE 150 OPC,"Agung, wira, sulinji",,,010/147,10:13,,10,20,0,15,5,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,OP.core,FE 150 OPC,"Agung, wira, sulinji",,,013/183,10:18,,5,5,8,12,0,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,OP.edge,FE 150 OPE,"Agung, wira, sulinji",,,006/142,09:40,,10,20,1,11,6,2,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,OP.edge,FE 150 OPE,"Agung, wira, sulinji",,,004/123,09:47,,10,20,2,18,0,0,,,
+interim.p1.p2,25/01/2022,KNDE,F,East,150m,OP.edge,FE 150 OPE,"Agung, wira, sulinji",,,008/207,09:52,,10,10,4,16,0,0,,,
+post2,26/04/2022,PLPE,D,East,150m,buffer.core,D-150-BC,"Aji, Aby, Novra",X,147,,08:57,423,5,15,9,11,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,buffer.core,D-150-BC,"Aji, Aby, Novra",Y,153,,09:15,395,5,5,15,5,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,buffer.core,D-150-BC,"Aji, Aby, Novra",Z,150,,09:27,426,5,5,17,3,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,OP.core,D-150-OPC,"Aji, Aby, Novra",X,172,,10:29,470,15,15,10,10,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,OP.core,D-150-OPC,"Aji, Aby, Novra",Y,178,,10:43,436,10,10,13,7,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,OP.core,D-150-OPC,"Aji, Aby, Novra",Z,175,,11:00,427,10,10,14,6,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,C,East,350m,OP.core,C-350-OPC,"Aby, Aji, Novran",X,136,,11:35,491,10,10,10,10,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,C,East,350m,OP.core,C-350-OPC,"Aby, Aji, Novran",Y,143,,11:55,550,5,5,8,12,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,C,East,350m,OP.core,C-350-OPC,"Aby, Aji, Novran",Z,138,,11:23,515,10,10,11,9,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,OP.edge,D-150-OPE,"Aji, Aby, Novra",X,157,,09:43,500,10,10,18,1,1,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,OP.edge,D-150-OPE,"Aji, Aby, Novra",Y,163,,10:00,457,5,5,15,4,1,0,NA,NA,NA
+post2,26/04/2022,PLPE,D,East,150m,OP.edge,D-150-OPE,"Aji, Aby, Novra",Z,160,,10:15,386,10,5,16,4,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,C,East,350m,OP.edge,C-E-350-OPE,"Aji, Aby, Novra",X,123,,08:19,466,5,5,17,3,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,C,East,350m,OP.edge,C-E-350-OPE,"Aji, Aby, Novra",Y,129,,08:30,472,5,5,15,5,0,0,NA,NA,NA
+post2,26/04/2022,PLPE,C,East,350m,OP.edge,C-E-350-OPE,"Aji, Aby, Novra",Z,126,,08:43,514,5,5,15,5,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,buffer.core,B-50-BC,"Aby, Aji, Novran",X,279,,11:40,460,10,10,15,5,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,buffer.core,B-50-BC,"Aby, Aji, Novran",Y,277,,11:55,560,10,10,14,5,1,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,buffer.core,B-50-BC,"Aby, Aji, Novran",Z,273,,12:09,515,10,10,16,4,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,buffer.core,A-250-BC,"Aby, Aji, Novran",X,255,,10:29,463,15,15,15,4,1,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,buffer.core,A-250-BC,"Aby, Aji, Novran",Y,260,,10:42,550,10,10,10,9,0,1,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,buffer.core,A-250-BC,"Aby, Aji, Novran",Z,253,,10:15,530,10,10,12,7,0,1,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,OP.core,B-50-OPC,"Aby, Aji, Novran",X,277,,10:55,460,5,5,13,6,1,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,OP.core,B-50-OPC,"Aby, Aji, Novran",Y,283,,11:10,432,5,5,12,8,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,OP.core,B-50-OPC,"Aby, Aji, Novran",Z,280,,11:25,298,5,5,17,3,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,OP.core,A-250-OPC,"Aby, Aji, Novran",X,254,,08:37,436,10,10,8,12,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,OP.core,A-250-OPC,"Aby, Aji, Novran",Y,259,,08:52,420,10,15,6,13,1,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,OP.core,A-250-OPC,"Aby, Aji, Novran",Z,256,,09:10,400,10,10,7,13,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,OP.edge,B-50-OPE,"Aby, Aji, Novran",X,270,,12:22,444,5,5,17,3,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,OP.edge,B-50-OPE,"Aby, Aji, Novran",Y,272,,12:34,410,5,5,20,0,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,B,West,50m,OP.edge,B-50-OPE,"Aby, Aji, Novran",Z,268,,12:49,315,5,5,18,2,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,OP.edge,A-250-OPE,"Aby, Aji, Novran",X,249,,09:28,505,5,5,18,2,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,OP.edge,A-250-OPE,"Aby, Aji, Novran",Y,242,,09:58,492,5,5,16,4,0,0,NA,NA,NA
+post2,27/04/2022,PLPE,A,West,250m,OP.edge,A-250-OPE,"Aby, Aji, Novran",Z,246,,09:42,455,5,5,14,5,1,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,buffer.core,D-350-BC,"Wira, Aby, Novran",X,182,,08:29,243,10,10,3,16,1,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,buffer.core,D-350-BC,"Wira, Aby, Novran",Y,188,,08:44,393,5,5,18,1,1,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,buffer.core,D-350-BC,"Wira, Aby, Novran",Z,184,,08:15,320,5,5,13,7,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,C,West,250m,OP.core,C-250-OPC,"Wira, Aby, Novran",X,351,,10:30,535,5,5,16,4,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,C,West,250m,OP.core,C-250-OPC,"Wira, Aby, Novran",Y,344,,10:58,529,5,5,13,7,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,C,West,250m,OP.core,C-250-OPC,"Wira, Aby, Novran",Z,354,,10:45,541,5,5,15,5,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,OP.core,D-350-OPC,"Wira, Aby, Novran",X,210,,10:15,482,5,5,14,6,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,OP.core,D-350-OPC,"Wira, Aby, Novran",Y,216,,09:45,465,5,5,18,2,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,OP.core,D-350-OPC,"Wira, Aby, Novran",Z,213,,10:00,462,5,5,16,4,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,C,West,250m,OP.edge,C-250-OPE,"Wira, Aby, Novran",X,339,,11:10,450,5,5,18,2,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,C,West,250m,OP.edge,C-250-OPE,"Wira, Aby, Novran",Y,345,,11:25,492,5,5,15,5,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,C,West,250m,OP.edge,C-250-OPE,"Wira, Aby, Novran",Z,340,,11:40,441,5,5,16,4,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,OP.edge,D-350-OPE,"Wira, Aby, Novran",X,193,,09:00,484,5,5,14,6,0,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,OP.edge,D-350-OPE,"Wira, Aby, Novran",Y,200,,09:15,449,5,5,7,9,4,0,NA,NA,NA
+post2,28/04/2022,PLPE,D,East,350m,OP.edge,D-350-OPE,"Wira, Aby, Novran",Z,196,,09:30,387,5,5,10,10,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,buffer.core,A-50-BC,"Aby, Aji, Novran",X,1,,08:15,600,10,10,11,8,1,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,buffer.core,A-50-BC,"Aby, Aji, Novran",Y,2,,08:30,540,10,10,12,8,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,buffer.core,A-50-BC,"Aby, Aji, Novran",Z,3,,08:45,610,10,10,14,6,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,OP.core,A-50-OPC,"Aby, Aji, Novran",X,231,,09:38,450,5,5,14,6,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,OP.core,A-50-OPC,"Aby, Aji, Novran",Y,230,,09:51,310,5,5,8,12,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,OP.core,A-50-OPC,"Aby, Aji, Novran",Z,233,,10:08,280,10,10,7,13,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,C,West,50m,OP.core,C-50-OPC,"Aji, Memo, Aby, Novran",X,331,,11:00,485,5,10,9,11,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,C,West,50m,OP.core,C-50-OPC,"Aji, Memo, Aby, Novran",Y,329,,11:15,410,5,10,10,10,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,C,West,50m,OP.core,C-50-OPC,"Aji, Memo, Aby, Novran",Z,333,,11:30,509,10,5,15,5,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,OP.edge,A-50-OPE,"Aby, Aji, Novran",X,210,,09:10,440,10,10,6,14,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,OP.edge,A-50-OPE,"Aby, Aji, Novran",Y,224,,09:00,400,5,5,14,5,1,0,NA,NA,NA
+post2,29/04/2022,PLPE,A,West,50m,OP.edge,A-50-OPE,"Aby, Aji, Novran",Z,220,,09:24,490,5,5,16,4,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,C,West,50m,OP.edge,C-50-OPE,"Aji, Memo, Aby, Novran",X,321,,10:45,492,5,5,15,5,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,C,West,50m,OP.edge,C-50-OPE,"Aji, Memo, Aby, Novran",Y,315,,10:32,420,5,5,9,11,0,0,NA,NA,NA
+post2,29/04/2022,PLPE,C,West,50m,OP.edge,C-50-OPE,"Aji, Memo, Aby, Novran",Z,318,,10:20,432,5,5,16,4,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,buffer.core,D-250-BC,"Aji, Memo, Aby, Novran",X,487,,08:42,480,5,5,17,3,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,buffer.core,D-250-BC,"Aji, Memo, Aby, Novran",Y,486,,08:56,460,5,5,14,6,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,buffer.core,D-250-BC,"Aji, Memo, Aby, Novran",Z,480,,09:10,420,5,5,13,7,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,OP.core,D-250-OPC,"Aji, Memo, Aby, Novran",X,426,,09:14,410,5,5,10,10,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,OP.core,D-250-OPC,"Aji, Memo, Aby, Novran",Y,432,,09:39,430,5,5,15,5,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,OP.core,D-250-OPC,"Aji, Memo, Aby, Novran",Z,428,,09:28,400,10,5,12,8,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,OP.edge,D-250-OPE,"Aji, Memo, Aby, Novran",X,412,,08:36,440,5,5,12,6,2,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,OP.edge,D-250-OPE,"Aji, Memo, Aby, Novran",Y,402,,08:24,450,5,5,11,9,0,0,NA,NA,NA
+post2,30/04/2022,PLPE,D,West,250m,OP.edge,D-250-OPE,"Aji, Memo, Aby, Novran",Z,409,,08:10,310,10,5,18,2,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,buffer.core,B-250-BC,"Aby, Aji, Wira, Memo",X,309,,10:30,533,10,10,10,10,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,buffer.core,B-250-BC,"Aby, Aji, Wira, Memo",Y,308,,10:50,570,10,10,10,7,0,3,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,buffer.core,B-250-BC,"Aby, Aji, Wira, Memo",Z,306,,10:10,513,10,10,14,6,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,OP.core,B-250-OPC,"Aby, Aji, Wira, Memo",X,310,,09:15,490,5,5,13,7,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,OP.core,B-250-OPC,"Aby, Aji, Wira, Memo",Y,301,,09:30,410,5,5,11,9,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,OP.core,B-250-OPC,"Aby, Aji, Wira, Memo",Z,304,,09:50,510,10,10,6,14,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,OP.edge,B-250-OPE,"Aby, Aji, Wira, Memo",X,300,,08:20,520,10,10,6,14,0,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,OP.edge,B-250-OPE,"Aby, Aji, Wira, Memo",Y,291,,08:40,550,10,10,8,11,1,0,NA,NA,NA
+post2,05/05/2022,PLPE,B,West,250m,OP.edge,B-250-OPE,"Aby, Aji, Wira, Memo",Z,292,,08:57,560,10,10,10,10,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,buffer.core,A-350-BC,"Rohman, Aby, Aji, Wira",X,37,,10:52,520,15,10,15,3,1,1,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,buffer.core,A-350-BC,"Rohman, Aby, Aji, Wira",Y,42,,10:35,540,5,5,17,3,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,buffer.core,A-350-BC,"Rohman, Aby, Aji, Wira",Z,39,,10:20,350,5,5,15,5,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.core,C-150-OPC,"Rohman, Aby, Aji, Wira",X,116,,09:28,448,5,10,9,9,1,1,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.core,C-150-OPC,"Rohman, Aby, Aji, Wira",X,116,,09:28,448,5,10,9,9,1,1,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.core,C-150-OPC,"Rohman, Aby, Aji, Wira",Y,112,,09:14,561,5,10,3,17,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.core,C-150-OPC,"Rohman, Aby, Aji, Wira",Z,115,,09:00,420,5,10,8,12,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,OP.core,A-350-OPC,"Rohman, Aby, Aji, Wira",X,32,,11:25,430,5,5,10,8,2,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,OP.core,A-350-OPC,"Rohman, Aby, Aji, Wira",Y,30,,11:45,424,5,5,16,4,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,OP.core,A-350-OPC,"Rohman, Aby, Aji, Wira",Z,44,,11:10,442,5,5,10,8,2,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,OP.core,A-350-OPC,"Rohman, Aby, Aji, Wira",X,40,,08:25,540,5,5,14,6,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,OP.core,A-350-OPC,"Rohman, Aby, Aji, Wira",Y,44,,08:40,499,5,5,12,8,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,A,East,350m,OP.core,A-350-OPC,"Rohman, Aby, Aji, Wira",Z,42,,08:10,460,5,5,12,8,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.edge,C-150-OPE,"Rohman, Aby, Aji, Wira",X,107,,09:55,540,5,5,14,6,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.edge,C-150-OPE,"Rohman, Aby, Aji, Wira",Y,101,,10:10,470,5,5,17,3,0,0,NA,NA,NA
+post2,07/05/2022,PLPE,C,East,150m,OP.edge,C-150-OPE,"Rohman, Aby, Aji, Wira",Z,104,,09:40,460,5,5,4,16,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,buffer.core,D-50-BC,"Memo, Aby, Aji",X,364,,11:24,472,5,5,16,4,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,buffer.core,D-50-BC,"Memo, Aby, Aji",Y,371,,11:37,480,5,10,11,9,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,buffer.core,D-50-BC,"Memo, Aby, Aji",Z,367,,11:10,440,5,5,16,4,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,buffer.core,A-150-BC,"Memo, Aby, Aji",X,22,,08:45,580,10,10,14,3,0,3,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,buffer.core,A-150-BC,"Memo, Aby, Aji",Y,25,,09:00,610,10,10,14,2,1,2,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,buffer.core,A-150-BC,"Memo, Aby, Aji",Z,23,,09:17,610,10,10,14,6,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,OP.core,D-50-OPC,"Memo, Aby, Aji",X,398,,12:52,280,5,10,10,10,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,OP.core,D-50-OPC,"Memo, Aby, Aji",Y,393,,12:38,400,5,5,15,4,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,OP.core,D-50-OPC,"Memo, Aby, Aji",Z,391,,13:10,380,5,5,15,5,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,OP.core,A-150-OPC,"Memo, Aby, Aji",X,17,,10:27,420,10,10,7,13,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,OP.core,A-150-OPC,"Memo, Aby, Aji",Y,23,,10:42,400,10,10,9,11,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,OP.core,A-150-OPC,"Memo, Aby, Aji",Z,20,,10:55,417,10,10,10,7,0,3,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,OP.edge,D-50-OPE,"Memo, Aby, Aji",X,375,,12:10,430,10,10,10,10,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,OP.edge,D-50-OPE,"Memo, Aby, Aji",Y,373,,11:52,430,10,10,10,10,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,D,West,50m,OP.edge,D-50-OPE,"Memo, Aby, Aji",Z,376,,12:25,410,5,5,16,4,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,OP.edge,A-150-OPE,"Memo, Aby, Aji",X,6,,09:34,480,5,5,19,1,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,OP.edge,A-150-OPE,"Memo, Aby, Aji",Y,11,,09:49,420,5,5,19,1,0,0,NA,NA,NA
+post2,09/05/2022,PLPE,A,East,150m,OP.edge,A-150-OPE,"Memo, Aby, Aji",Z,4,,10:05,340,5,5,17,3,0,0,NA,NA,NA
+post2,13/05/2022,PLPE,B,East,150m,buffer.core,B-150-BC,"Memo, Aby, Aji",X,66,,08:05,560,10,10,15,5,0,0,NA,NA,NA
+post2,13/05/2022,PLPE,B,East,150m,buffer.core,B-150-BC,"Memo, Aby, Aji",Y,71,,08:20,573,5,5,11,9,0,0,NA,NA,NA
+post2,13/05/2022,PLPE,B,East,150m,buffer.core,B-150-BC,"Memo, Aby, Aji",Z,69,,08:35,555,5,5,18,2,0,0,NA,NA,NA
+post2,13/05/2022,PLPE,B,East,350m,buffer.core,B-350-BC,"Memo, Aby, Aji",X,92,,09:00,524,10,10,10,8,0,2,NA,NA,NA
+post2,13/05/2022,PLPE,B,East,350m,buffer.core,B-350-BC,"Memo, Aby, Aji",Y,93,,09:15,536,10,5,12,7,1,0,NA,NA,NA
+post2,13/05/2022,PLPE,B,East,350m,buffer.core,B-350-BC,"Memo, Aby, Aji",Z,95,,09:30,507,10,10,5,12,1,2,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,150m,OP.core,B-150-OPC,,X,67,,11:10,400,5,5,13,7,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,150m,OP.core,B-150-OPC,,Y,61,,10:50,420,5,5,13,6,1,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,150m,OP.core,B-150-OPC,,Z,64,,10:35,450,5,5,14,6,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,350m,OP.core,B-350-OPC,,X,94,,08:05,506,5,5,12,8,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,350m,OP.core,B-350-OPC,,Y,88,,08:20,467,5,5,13,7,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,350m,OP.core,B-350-OPC,,Z,91,,08:35,624,5,5,12,8,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,150m,OP.edge,B-150-OPE,,X,56,,10:05,282,5,5,17,3,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,150m,OP.edge,B-150-OPE,,Y,51,,10:20,517,5,5,18,2,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,150m,OP.edge,B-150-OPE,,Z,54,,09:45,380,5,5,12,7,0,1,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,350m,OP.edge,B-350-OPE,,X,71,,09:10,340,5,5,17,3,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,350m,OP.edge,B-350-OPE,,Y,79,,09:25,410,5,5,14,6,0,0,NA,NA,NA
+post2,14/05/2022,PLPE,B,East,350m,OP.edge,B-350-OPE,,Z,78,,08:50,348,5,5,12,8,0,0,NA,NA,NA
+interim.p1.p2,30/08/2022,KNDE,H,East,350m,OP.core,H 350 OPC,"Ari, llis, Hohmann",,Y,139/440,09:05,,10,5,8,9,2,1,,,
+interim.p1.p2,30/08/2022,KNDE,H,East,350m,OP.core,H 350 OPC,"Ari, llis, Hohmann",,Z,139/405,09:18,,5,5,8,9,3,0,,,
+interim.p1.p2,30/08/2022,KNDE,H,East,350m,OP.core,H 350 OPC,"Ari, llis, Hohmann",,X,141/590,09:30,,5,5,6,13,1,0,,,
+interim.p1.p2,30/08/2022,KNDE,H,East,350m,OP.edge,H.E 350 OPE,"Ari, llis, Hohmann",,Z,129/430,09:45,,10,5,8,11,1,0,,,
+interim.p1.p2,30/08/2022,KNDE,H,East,350m,OP.edge,H.E 350 OPE,"Ari, llis, Hohmann",,X,132/390,10:00,,5,5,13,7,0,0,,,
+interim.p1.p2,30/08/2022,KNDE,H,East,350m,OP.edge,H.E 350 OPE,"Ari, llis, Hohmann",,Y,/160,10:13,,10,15,5,12,3,-,,,
+interim.p1.p2,01/09/2022,KNDE,G,West,50m,OP.core,G.W. 50 OPC,"Ali, Roman, Alif",,Z,273/350,08:27,,10,10,2,4,5,9,,,
+interim.p1.p2,01/09/2022,KNDE,G,West,50m,OP.core,G.W. 50 OPC,"Ali, Roman, Alif",,X,269/420,08:45,,5,5,9,11,0,0,,,
+interim.p1.p2,01/09/2022,KNDE,G,West,50m,OP.core,G.W. 50 OPC,"Ali, Roman, Alif",,Y,271/324,08:57,,5,5,3,17,0,0,,,
+interim.p1.p2,01/09/2022,KNDE,G,West,50m,OP.edge,G.W. 50 OPE,"Ali, Roman, Alif",,Z,283/427,09:08,,5,10,2,9,6,3,,,
+interim.p1.p2,01/09/2022,KNDE,G,West,50m,OP.edge,G.W. 50 OPE,"Ali, Roman, Alif",,Y,289/487,09:20,,5,5,5,12,3,0,,,
+interim.p1.p2,01/09/2022,KNDE,G,West,50m,OP.edge,G.W. 50 OPE,"Ali, Roman, Alif",,,280/400,09:31,,5,5,6,13,1,0,,,
+post2,22/08/2023,KNDE,H,East,150m,OP.core,H 150 OPC,"Ali, Roman, Alif",,,109/390,08:56,,95,90,6,4,9,1,,,
+post2,22/08/2023,KNDE,H,East,150m,OP.core,H 150 OPC,"Ali, Roman, Alif",,,007/400,09:07,,80,70,5,4,5,6,,,
+post2,22/08/2023,KNDE,H,East,150m,OP.core,H 150 OPC,"Ali, Roman, Alif",,,105/350,09:18,,70,60,3,2,5,10,,,
+post2,22/08/2023,KNDE,F,West,50m,OP.core,F 50 OPC,"Ari, Kohman, Alit",,X,222/127/305,10:50,,5,5,13,7,0,0,,,
+post2,22/08/2023,KNDE,F,West,50m,OP.core,F 50 OPC,"Ari, Kohman, Alit",,,228/400,10:10,,5,5,3,13,4,0,,,
+post2,22/08/2023,KNDE,F,West,50m,OP.core,F 50 OPC,"Ari, Kohman, Alit",,,224/440,,,5,5,12,8,0,0,,,
+post2,22/08/2023,KNDE,H,East,150m,OP.edge,H 150 OPE,,,Z,117/360,09:28,,10,10,13,3,3,1,,,
+post2,22/08/2023,KNDE,H,East,150m,OP.edge,H 150 OPE,,,Y,113/375,09:40,,5,10,7,4,5,4,,,
+post2,22/08/2023,KNDE,H,East,150m,OP.edge,H 150 OPE,,,X,115/405,09:52,,10,25,13,4,3,0,,,
+post2,22/08/2023,KNDE,F,West,50m,OP.edge,F 50 OPE,"Ari, Kohman, Alit",,Y,229/410,10:10,,10,10,9,7,2,2,,,
+post2,22/08/2023,KNDE,F,West,50m,OP.edge,F 50 OPE,"Ari, Kohman, Alit",,X,235/405,10:25,,5,5,17,1,2,0,,,
+post2,22/08/2023,KNDE,F,West,50m,OP.edge,F 50 OPE,"Ari, Kohman, Alit",,,237/415,10:35,,10,10,15,5,0,0,,,
+post2,24/08/2023,KNDE,F,West,250m,OP.core,FW 250 OPC,"Ali, Roman, Alif",,Y,247/410,10:50,,15,10,9,11,0,0,,,
+post2,24/08/2023,KNDE,F,West,250m,OP.core,FW 250 OPC,"Ali, Roman, Alif",,Z,244/390,11:02,,5,5,8,10,2,0,,,
+post2,24/08/2023,KNDE,F,West,250m,OP.core,FW 250 OPC,"Ali, Roman, Alif",,X,241/400,11:15,,10,15,9,6,5,0,,,
+post2,24/08/2023,KNDE,G,East,350m,OP.core,G 350 OPC,Ali,,Z,070/435,09:40,,10,25,5,5,9,1,,,
+post2,24/08/2023,KNDE,G,East,350m,OP.core,G 350 OPC,Ali,,Y,075/430,09:51,,15,10,11,6,3,0,,,
+post2,24/08/2023,KNDE,G,East,350m,OP.core,G 350 OPC,Ali,,X,074/400,10:01,,5,10,10,5,4,1,,,
+post2,24/08/2023,KNDE,F,West,250m,OP.edge,FW 250 OPE,"Ali, Roman, Alif",,X,260/460,10:18,,5,5,14,6,0,0,,,
+post2,24/08/2023,KNDE,F,West,250m,OP.edge,FW 250 OPE,"Ali, Roman, Alif",,Y,254/455,10:30,,5,5,7,12,1,0,,,
+post2,24/08/2023,KNDE,F,West,250m,OP.edge,FW 250 OPE,"Ali, Roman, Alif",,Z,261/472,10:38,,5,10,10,5,4,1,,,
+post2,24/08/2023,KNDE,G,East,350m,OP.edge,G 350 OPE,Ari,,,088/407,08:55,,5,10,9,10,1,0,,,
+post2,24/08/2023,KNDE,G,East,350m,OP.edge,G 350 OPE,Ari,,Y,090/300,09:08,,10,15,10,5,5,0,,,
+post2,24/08/2023,KNDE,G,East,350m,OP.edge,G 350 OPE,Ari,,X,085/480,09:19,,15,20,9,2,2,7,,,
+post2,26/08/2023,KNDE,F,East,150m,OP.core,FE 150 OPC,"Ali, Roman",,Z,16/430,10:47,,10,15,1,13,3,3,,,
+post2,26/08/2023,KNDE,F,East,150m,OP.core,FE 150 OPC,"Ali, Roman",,Y,23/330,11:00,,15,20,5,13,2,0,,,
+post2,26/08/2023,KNDE,F,East,150m,OP.core,FE 150 OPC,"Ali, Roman",,X,19/420,11:12,,10,5,6,11,3,0,,,
+post2,26/08/2023,KNDE,G,West,250m,OP.core,GW 250 OPC,"Alif, Ali, Roman",,X,311/400cm,09:20,,15,5,10,7,2,1,,,
+post2,26/08/2023,KNDE,G,West,250m,OP.core,GW 250 OPC,"Alif, Ali, Roman",,Y,305/545,09:33,,10,15,3,14,3,0,,,
+post2,26/08/2023,KNDE,G,West,250m,OP.core,GW 250 OPC,"Alif, Ali, Roman",,Z,308/440,09:47,,10,15,10,10,0,0,,,
+post2,26/08/2023,KNDE,F,East,150m,OP.edge,FE 150 OPE,"Alif, Ali, Roman",,Y,05/420,10:08,,5,5,10,9,1,0,,,
+post2,26/08/2023,KNDE,F,East,150m,OP.edge,FE 150 OPE,"Alif, Ali, Roman",,X,07/390,10:19,,10,5,6,14,0,0,,,
+post2,26/08/2023,KNDE,F,East,150m,OP.edge,FE 150 OPE,"Alif, Ali, Roman",,Z,11/450,10:32,,5,5,8,12,0,0,,,
+post2,26/08/2023,KNDE,G,West,250m,OP.edge,GW 250 OPE,"Ali, Alif, Roman",,Z,295/430cm,08:45,,5,5,4,16,0,0,,,
+post2,26/08/2023,KNDE,G,West,250m,OP.edge,GW 250 OPE,"Ali, Alif, Roman",,X,290/445cm,08:57,,5,5,6,14,0,0,,,
+post2,26/08/2023,KNDE,G,West,250m,OP.edge,GW 250 OPE,"Ali, Alif, Roman",,Y,297/430,09:08,,5,5,12,8,0,0,,,
+post2,29/08/2023,KNDE,I,East,150m,OP.core,I 150 OPC,Ari,,Z,153/400,09:26,,10,20,9,5,2,4,,,
+post2,29/08/2023,KNDE,I,East,150m,OP.core,I 150 OPC,Ari,,Y,150/410,09:35,,15,10,7,12,1,0,,,
+post2,29/08/2023,KNDE,I,East,150m,OP.core,I 150 OPC,Ari,,X,156/400,09:43,,10,20,6,5,5,4,,,
+post2,29/08/2023,KNDE,H,West,250m,OP.core,H 250 OPC,Ari,,,356/400,10:48,,10,10,5,12,3,0,,,
+post2,29/08/2023,KNDE,H,West,250m,OP.core,H 250 OPC,Ari,,,349/455,11:00,,10,10,5,9,6,0,,,
+post2,29/08/2023,KNDE,H,West,250m,OP.core,H 250 OPC,Ari,,,351/450,11:08,,15,10,13,7,0,0,,,
+post2,29/08/2023,KNDE,I,East,150m,OP.edge,I 150 OPE,Ari,,Z,160/440,08:50,,10,20,6,9,4,1,,,
+post2,29/08/2023,KNDE,I,East,150m,OP.edge,I 150 OPE,Ari,,Y,157/455,09:01,,10,10,7,7,6,0,,,
+post2,29/08/2023,KNDE,I,East,150m,OP.edge,I 150 OPE,Ari,,X,163/400,09:09,,10,5,3,7,9,1,,,
+post2,29/08/2023,KNDE,H,West,250m,OP.edge,H 250 OPE,Ari,,Z,343/330,10:06,,5,5,12,7,1,0,,,
+post2,29/08/2023,KNDE,H,West,250m,OP.edge,H 250 OPE,Ari,,X,340/450,10:15,,5,5,12,8,0,0,,,
+post2,29/08/2023,KNDE,H,West,250m,OP.edge,H 250 OPE,Ari,,Y,339/420,10:27,,10,5,13,7,0,0,,,
+post2,01/09/2023,KNDE,F,East,350m,OP.core,F 350 OPC,"Ali, Roman, Alif",,Z,31/415,09:42,,5,5,7,11,2,0,,,
+post2,01/09/2023,KNDE,F,East,350m,OP.core,F 350 OPC,"Ali, Roman, Alif",,Y,29/440,09:50,,5,5,16,4,0,0,,,
+post2,01/09/2023,KNDE,F,East,350m,OP.core,F 350 OPC,"Ali, Roman, Alif",,X,26/470,10:03,,5,5,11,6,2,0,,,
+post2,01/09/2023,KNDE,F,East,350m,OP.edge,F 350 OPE,"Ali, Roman, Alif",,Z,40/301,10:16,,5,5,14,6,0,0,,,
+post2,01/09/2023,KNDE,F,East,350m,OP.edge,F 350 OPE,"Ali, Roman, Alif",,X,43/342,10:25,,5,5,10,7,3,0,,,
+post2,01/09/2023,KNDE,F,East,350m,OP.edge,F 350 OPE,"Ali, Roman, Alif",,Y,39/220,10:40,,5,5,19,1,0,0,,,
+post2,03/09/2023,KNDE,G,East,150m,OP.core,G 150 OPC,"Abi, wira, Ali",,X,71/490,09:10,,5,10,2,18,0,0,,,
+post2,03/09/2023,KNDE,G,East,150m,OP.core,G 150 OPC,"Abi, wira, Ali",,Y,62/480,09:20,,10,10,3,16,1,0,,,
+post2,03/09/2023,KNDE,G,East,150m,OP.core,G 150 OPC,"Abi, wira, Ali",,Z,72/435,09:30,,10,10,6,10,4,0,,,
+post2,03/09/2023,KNDE,H,West,50m,OP.core,H 50 OPC,"Abi, wira, Ali",,Z,321/440,10:25,,10,10,8,11,1,0,,,
+post2,03/09/2023,KNDE,H,West,50m,OP.core,H 50 OPC,"Abi, wira, Ali",,X,318/290,10:37,,15,15,0,7,2,2,,,
+post2,03/09/2023,KNDE,H,West,50m,OP.core,H 50 OPC,"Abi, wira, Ali",,Y,324/497,10:50,,5,5,10,8,1,1,,,
+post2,03/09/2023,KNDE,G,East,150m,OP.edge,G 150 OPE,"Abi, wira, Ali",,Z,54/320,09:45,,10,10,5,14,1,0,,,
+post2,03/09/2023,KNDE,G,East,150m,OP.edge,G 150 OPE,"Abi, wira, Ali",,X,58/490,09:55,,5,5,2,17,1,0,,,
+post2,03/09/2023,KNDE,G,East,150m,OP.edge,G 150 OPE,"Abi, wira, Ali",,Y,52/570,10:05,,10,10,5,13,0,2,,,
+post2,03/09/2023,KNDE,H,West,50m,OP.edge,H 50 OPE,"Abi, wira, Ali",,Z,333/510,11:05,,5,5,12,4,1,3,,,
+post2,03/09/2023,KNDE,H,West,50m,OP.edge,H 50 OPE,"Abi, wira, Ali",,Y,330/410,11:20,,5,5,5,13,2,0,,,
+post2,03/09/2023,KNDE,H,West,50m,OP.edge,H 50 OPE,"Abi, wira, Ali",,X,336/380,11:35,,5,5,11,8,0,1,,,
+post2,07/09/2023,KNDE,I,East,350m,OP.core,I.E. 350 OPC,"Abi, Ali",,Z,211/450,10:43,,10,10,2,18,0,0,,,
+post2,07/09/2023,KNDE,I,East,350m,OP.core,I.E. 350 OPC,"Abi, Ali",,Y,215/410,11:00,,5,10,7,13,0,0,,,
+post2,07/09/2023,KNDE,I,East,350m,OP.core,I.E. 350 OPC,"Abi, Ali",,X,208/400,11:14,,5,5,10,10,0,0,,,
+post2,07/09/2023,KNDE,I,West,50m,OP.core,I.W. 50 OPC,"Abi, Ali",,Z,386/485,09:00,,5,5,7,12,0,1,,,
+post2,07/09/2023,KNDE,I,West,50m,OP.core,I.W. 50 OPC,"Abi, Ali",,X,350/500,09:10,,5,5,3,17,0,0,,,
+post2,07/09/2023,KNDE,I,West,50m,OP.core,I.W. 50 OPC,"Abi, Ali",,Y,392/429,09:22,,5,5,9,11,0,0,,,
+post2,07/09/2023,KNDE,I,East,350m,OP.edge,I.E. 350 OPE,"Abi, Ali",,X,198/363,10:12,,5,10,2,15,0,3,,,
+post2,07/09/2023,KNDE,I,East,350m,OP.edge,I.E. 350 OPE,"Abi, Ali",,Z,200/400,10:25,,5,5,6,14,0,0,,,
+post2,07/09/2023,KNDE,I,East,350m,OP.edge,I.E. 350 OPE,"Abi, Ali",,Y,195/360,10:37,,5,5,2,17,0,1,,,
+post2,07/09/2023,KNDE,I,West,50m,OP.edge,I.W. 50 OPE,"Abi, Ali",,Z,376/420,09:38,,5,5,17,3,0,0,,,
+post2,07/09/2023,KNDE,I,West,50m,OP.edge,I.W. 50 OPE,"Abi, Ali",,X,379/405,09:52,,5,5,18,2,0,0,,,
+post2,07/09/2023,KNDE,I,West,50m,OP.edge,I.W. 50 OPE,"Abi, Ali",,Y,373/500,10:05,,10,10,1,15,3,1,,,
+,,KNDE,I,West,250m,OP.core,I 250 OPC,,,,426/ 48D,10:28,,10,10,5,15,0,0,,,
+,,KNDE,I,West,250m,OP.core,I 250 OPC,,,,426/ 48D,10:28,,10,10,5,15,0,0,,,
+,,KNDE,I,West,250m,OP.core,I 250 OPC,,,,423/ 440,10:40,,15,10,4,12,2,2,,,
+,,KNDE,I,West,250m,OP.core,I 250 OPC,,,,429/429,10:55,,5,5,11,9,0,0,,,
+,,KNDE,I,West,250m,OP.edge,I 250 OPE,,,,417/525,11:08,,10,10,7,8,3,2,,,
+,,KNDE,I,West,250m,OP.edge,I 250 OPE,,,,420/400,11:20,,15,20,4,10,6,0,,,
+,,KNDE,I,West,250m,OP.edge,I 250 OPE,,,,402/ 455,11:31,,25,30,1,8,5,6,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,8,11,0,1,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,7,11,2,0,,,
