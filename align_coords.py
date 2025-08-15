@@ -45,6 +45,8 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
     canopy_df_filtered = pd.read_csv(canopy_path)
     coordinates_gdf = gpd.read_file(coordinates_path)
 
+    print(f"File loaded from: {canopy_path}")
+
     # Define the columns to average
     openness_cols = ['canopy.openness.to.river', 'canopy.openness.from.river', 'canopy.openness.right', 'canopy.openness.left']
 
@@ -69,6 +71,8 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
         canopy_df_filtered = canopy_df_filtered[canopy_df_filtered['timepoint'].str.contains(timepoint, case=False, na=False)]
     elif type(timepoint) is int:
         canopy_df_filtered = canopy_df_filtered[canopy_df_filtered['date'].str.contains(str(timepoint), case=False, na=False)]
+
+    print(f"Filter for timeframe {timepoint}")
     #print(canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
 
 
@@ -82,8 +86,8 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
     canopy_df_filtered = canopy_df_filtered.merge(coordinates_gdf, left_on='point.label', right_on='name', how='left')
     canopy_df_filtered = canopy_df_filtered.drop(columns='name')  # Drop 'name' columns to prevent redundancy with point.label
 
-    print(canopy_df_filtered)
-    # print('Final dataframe : ', canopy_df_filtered)  # Display the first few rows of the filtered DataFrame
+    print('Coordinates merged')
+    print('Final dataframe : \n', canopy_df_filtered.head())  # Display the first few rows of the final DataFrame
 
     # Create a GeoDataFrame and save as a gpkg file
     merged_gdf = gpd.GeoDataFrame(canopy_df_filtered, geometry='geometry')

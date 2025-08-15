@@ -47,7 +47,8 @@ def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_di
         buffer_geom = buffer_geom.merge(gpkg_vector, left_on='name', right_on='point.label', how='inner')
         buffer_geom.drop(columns='name', inplace=True)
         # --- Use pre-defined buffer geometries ---
-        print(buffer_geom.head())
+        print("Applying convex hull to buffer geometries...")
+
         buffer_df = []
         
         for name, group in buffer_geom.groupby("point.label"):
@@ -58,19 +59,21 @@ def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_di
 
         # Create GeoDataFrame with both name and geometry
         buffered = gpd.GeoDataFrame(buffer_df, crs=buffer_geom.crs)
-        print(buffered.head())
 
     else:
         # --- Create buffer around each point ---
+        print(f"Creating buffer around each point with distance {buffer_distance}...")
         buffered = points.copy()
         buffered['geometry'] = buffered.geometry.buffer(12.5)
     
     #buffered = buffered[buffered['name'].str.contains("A|B|C|D", case=True, na=False)]
     # Saving buffer
     buffered.to_file(output_buffer_gpkg, driver="GPKG")
+    print(f"Buffer geometries created and saved to {output_buffer_gpkg}")
+
     return buffered
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, buffer_geom_path = None, create_plots=False, save_plots=False): 
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, buffer_geom_path = None, show_plots=False, save_plots=False): 
     '''
     
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
@@ -98,16 +101,28 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     if points.crs.is_geographic:
         points = points.to_crs(points.estimate_utm_crs())
 
-    print("Vector CRS:", points.crs)
 
+    print(f"\n \n Calculating Zonal Statistics for {output_zonal_gpkg}")
     #--- Create buffer around each point ---
-    buffered = gpd.read_file(buffer_geom_path) if (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all() else create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+    try:
+        buffered = gpd.read_file(buffer_geom_path) if (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all() else create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+
+    except Exception as e:
+        print(f"Error creating buffer geometries: {e}")
+        return None
 
     results = [] # Store results for each buffer, each element being a dictionary
     region_data = defaultdict(list) # Stores all pixels which belong to a region
-        
+    
+    
     with rasterio.open(raster_path) as src:
+        print(f"Point CRS: f{points.crs}")
         print(f"Raster CRS: {src.crs}")
+        if points.crs != src.crs:
+            print("⚠️ Warning: CRS of points and raster do not match!")
+        else:
+            print("✅ CRS of points and raster match.")
+
         for idx, row in buffered.iterrows():
             try:
                 region_name = row.get('treatment', f'Treatment {idx}')
@@ -166,7 +181,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
 
     # Create plots if requested
     figures = []
-    if create_plots and region_data:
+    if (show_plots or save_plots) and region_data:
         print("\nCreating distribution plots...")
         
         # Create plots using pre-processed data
@@ -202,6 +217,7 @@ def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_pa
         matplotlib.figure.Figure: The created figure.
 
     """
+    output_path = output_path.replace('Data', 'Results')
     n_regions = len(region_data)
     if n_regions == 0:
         return None
@@ -252,6 +268,7 @@ def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_pa
         plt.suptitle(f'{os.path.basename(output_path).replace(".gpkg", "")} by Treatment Region', fontsize=16, fontweight='bold', y=1.02)
         if save_plots:
             plt.savefig(output_path.replace('.gpkg', '_distributions.png'), dpi=300, bbox_inches='tight')
+            print(f"Distribution plots saved to: {output_path.replace('.gpkg', '_distributions.png')}")
 
     return fig
 
@@ -268,6 +285,8 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
     Returns:
         matplotlib.figure.Figure: The created figure.
     """
+
+    output_path = output_path.replace('Data', 'Results')
     if not region_data:
         return None
     
@@ -275,32 +294,33 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
     data_lists = [region_data[region] for region in regions]
     
     fig, ax = plt.subplots(figsize=figsize)
-    
-    box_plot = ax.boxplot(data_lists, labels=regions, patch_artist=True)
-    
+
+    box_plot = ax.boxplot(data_lists, labels=[f"Treatment {region}" for region in regions], patch_artist=True)
+
     # Customize colors
     colors = plt.cm.Set3(np.linspace(0, 1, len(regions)))
     for patch, color in zip(box_plot['boxes'], colors):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
+
+    ax.set_xlabel('Treatment Region', fontsize=12)
+    ax.set_ylabel('Elevation (m)', fontsize=12)
+    ax.grid(True, alpha=0.3)
+ 
+    ax.tick_params(axis='x', labelsize=13)
     
+    # Add sample size annotations
+    for i, (region, data) in enumerate(region_data.items()):
+        ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
+    
+    plt.tight_layout()
     if output_path:
         ax.set_title(f'{os.path.basename(output_path).replace(".gpkg", "")} Comparison Across Treatment Regions', 
                 fontsize=14, fontweight='bold')
         if save_plots:
             plt.savefig(output_path.replace('.gpkg', '_boxplot.png'), dpi=300, bbox_inches='tight')
+            print(f"Boxplot saved to: {output_path.replace('.gpkg', '_boxplot.png')}")
 
-    ax.set_xlabel('Treatment Region', fontsize=12)
-    ax.set_ylabel('Elevation (m)', fontsize=12)
-    ax.grid(True, alpha=0.3)
-    
-    plt.xticks(rotation=45, ha='right')
-    
-    # Add sample size annotations
-    for i, (region, data) in enumerate(region_data.items()):
-        ax.text(i+1, ax.get_ylim()[0], f'n={len(data)}', ha='center', va='top', fontsize=10)
-    
-    plt.tight_layout()
     return fig
 
 
@@ -311,10 +331,10 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
 # # Use optimized functions for better performance
 # zonal_gdf, figures = zonal_statistics(
 #     gpkg_path=1,
-#     raster_path="D:/Jerry/UROP Rerta Palapa July2025 DEM.tif", 
+#     raster_path="D:/Jerry/UROP Rerta Palapa June2019 CHM.tif", 
 #     output_buffer_path=0, 
 #     filtering_logic=clip_below_zero,
-#     output_zonal_gpkg="Results/Palapa July2025 DEM Statistics.gpkg", 
+#     output_zonal_gpkg="Results/Palapa June2019 CHM Statistics.gpkg", 
 #     buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg",
 #     create_plots=True,
 #     save_plots=True

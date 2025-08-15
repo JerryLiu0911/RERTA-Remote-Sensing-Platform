@@ -149,8 +149,9 @@ def main(paths):
                         output_buffer_path=paths['buffered_points'], 
                         filtering_logic=gis.clip_below_zero,
                         output_zonal_gpkg=paths['CHM'],
-                        buffer_geom_path=paths['result_data'])
-    
+                        buffer_geom_path=paths['result_data'],
+                        save_plots=True)
+
     zonal_gdf, figures = gis.zonal_statistics(gpkg_path=paths['canopy_openness_result'],
                         raster_path="G:/My Drive/UROP/UROP RERTA Palapa June2019 ExG.tif",
                         output_buffer_path=paths['buffered_points'], 
@@ -176,7 +177,7 @@ def main(paths):
             #('DEM', paths['DEM']),
             ('CHM', paths['CHM'])], filter = "OPE|BC")
 
-    print(merged_df.columns)
+    print(f"Finished merging columns : {merged_df.columns}")
 
     # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
     # print(BC_df.head())

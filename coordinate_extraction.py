@@ -83,6 +83,9 @@ def extract_central_coords(source_path, destination_path):
   # Display the result
   result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
   result_gdf.to_file(destination_path, driver="GPKG")
+
+  print(f"Centre points of vegetation plots saved to: {destination_path}")
+
   return result_gdf
 
 
@@ -113,6 +116,9 @@ def extract_corner_coords(source_path, destination_path):
   # Display the result
   result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
   result_gdf.to_file(destination_path, driver="GPKG")
+
+  print(f"Corner points of vegetation plots saved to: {destination_path}")
+
   return result_gdf
 
 def extract_ABCD_coords(source_path, destination_path):
@@ -141,4 +147,7 @@ def extract_ABCD_coords(source_path, destination_path):
     # Display the result
     result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
     result_gdf.to_file(destination_path, driver="GPKG")
+    
+    print(f"Coordinates of each treatment region is saved to : {destination_path}")
+
     return result_gdf
