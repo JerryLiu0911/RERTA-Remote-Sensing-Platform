@@ -16,7 +16,7 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
 
 
-def load_data(dataframes, filter = None):
+def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_openness", "Frog.richness", "Frog.abundance"]):
   '''
   Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
     
@@ -47,15 +47,23 @@ def load_data(dataframes, filter = None):
 
       if i == 0:
           merged_df = df
-          merged_df = merged_df.rename(columns={f'average_canopy_openness_{name}': 'average_canopy_openness'})
           merged_df = merged_df.rename(columns={f'geometry_{name}': 'geometry'})
           merged_df = merged_df.rename(columns={f'treatment_{name}': 'treatment'})
+
+          for column in dependent_variables:
+              merged_df = merged_df.rename(columns={f'{column}_{name}': column})
+              if column not in merged_df.columns:
+                print(f"Warning !!!!! : {column} not found in {name} columns.")
           print(f"Loaded data from {name}")
+
       else:
           if np.allclose(merged_df['average_canopy_openness'], df[f'average_canopy_openness_{name}'], equal_nan=True) & check_geometries(merged_df['geometry'], df[f'geometry_{name}']):
               # If they are the same, drop one and rename the other
               merged_df = merged_df.merge(df, on='point.label', how='inner')
-              merged_df = merged_df.drop(columns=[f'average_canopy_openness_{name}'])
+              for column in dependent_variables:
+                merged_df = merged_df.rename(columns={f'{column}_{name}': column})
+              if column not in merged_df.columns:
+                print(f"Warning !!!!! : {column} not found in merged_df columns.")
               merged_df = merged_df.drop(columns=[f'geometry_{name}'])
               merged_df = merged_df.drop(columns=[f'treatment_{name}'])
               print(f"No discrepancies found in {name}, merged successfully.")
@@ -333,6 +341,8 @@ def multi_linear_regression_display(df, target, variables, display = False):
   best_model = []
   
   for variable_name in variables:
+    print(f"Correlation of {variable_name} with {target}:")
+    print(df[target].corr(df[variable_name], method='spearman'))
     x = np.array(df[variable_name])
     y = np.array(df[target])
     m, b = simple_linear_regression(x, y)

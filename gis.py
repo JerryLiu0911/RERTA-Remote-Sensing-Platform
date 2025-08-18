@@ -23,28 +23,47 @@ def clip_below_zero(data):
         print("❌ Filtering failed!")
     return data[data >= 0]
 
-def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
+def clip_and_remove_outliers(data):
+    """
+    Clips the input data array to remove negative values.
+    """
+    clipped_data = data[data >= 0]
+    negative_count = (clipped_data < 0).sum()
+    print(f"Filtering check: {negative_count} buffers with negative mins (should be 0)")
+    if negative_count == 0:
+        print("✅ Filtering working correctly!")
+    else:
+        print("❌ Filtering failed!")
+    
+    # Remove outliers using 2*IQR
+    Q1 = np.percentile(clipped_data, 25)
+    Q3 = np.percentile(clipped_data, 75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    return data[(data >= 0) & (data >= lower_bound) & (data <= upper_bound)]
+
+def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
     """
     Creates a buffer around each point in the GeoPackage file, or uses pre-defined buffer geometries if provided with outer convex hulls.
 
     Args:
         gpkg_vector (gpd.GeoDataFrame): GeoDataFrame containing the input points.
-        buffer_distance (float): Distance to buffer around each point in meters.
         output_buffer_gpkg (str): Path to save the buffered geometries.
-        buffer_points (gpd.GeoDataFrame): Optional GeoDataFrame containing pre-defined buffer geometries.
-
+        buffer_geom (gpd.GeoDataFrame): Optional GeoDataFrame containing pre-defined buffer geometries.
+        buffer_distance (float): Distance to buffer around each point in meters.
+        
     Returns:
         gpd.GeoDataFrame: A GeoDataFrame containing the buffered geometries.
         
     """
-    points = gpkg_vector
     if points.crs.is_geographic:
         points = points.to_crs(points.estimate_utm_crs())
 
 
     if buffer_geom is not None:
-        gpkg_vector = gpkg_vector.drop(columns='geometry')
-        buffer_geom = buffer_geom.merge(gpkg_vector, left_on='name', right_on='point.label', how='inner')
+        points = points.drop(columns='geometry')
+        buffer_geom = buffer_geom.merge(points, left_on='name', right_on='point.label', how='inner') #Merges columns in vector geopackage if contains data (e.g. Canopy openness)
         buffer_geom.drop(columns='name', inplace=True)
         # --- Use pre-defined buffer geometries ---
         print("Applying convex hull to buffer geometries...")
@@ -73,7 +92,7 @@ def create_buffer(gpkg_vector, output_buffer_gpkg, buffer_geom = None, buffer_di
 
     return buffered
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, buffer_geom_path = None, show_plots=False, save_plots=False): 
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, buffer_geom_path = None, show_plots=False, value='y', save_plots=False): 
     '''
     
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
@@ -89,6 +108,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         output_zonal_gpkg (str): Path to save the zonal statistics results.
         filtering_logic (function) : A function that takes a DataFrame and returns a filtered DataFrame.
         buffer_geom_path (str, optional): Path to a GeoPackage containing pre-defined buffer geometries.
+        value (str) : Name of the variable being plotted.
         create_plots (bool): Whether to create distribution plots by treatment region.
         save_plots (bool): Whether to save the distribution plots.
 
@@ -98,6 +118,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     '''
     #--- Load and reproject point data ---
     points = gpd.read_file(gpkg_path)
+    print(points)
     if points.crs.is_geographic:
         points = points.to_crs(points.estimate_utm_crs())
 
@@ -105,7 +126,16 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     print(f"\n \n Calculating Zonal Statistics for {output_zonal_gpkg}")
     #--- Create buffer around each point ---
     try:
-        buffered = gpd.read_file(buffer_geom_path) if (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all() else create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+        if (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all():
+            points = points.drop(columns='geometry')
+            print(points)
+            buffered = gpd.read_file(buffer_geom_path)
+            print(buffered)
+            buffered = buffered.merge(points, left_on='name', right_on='point.label', how='inner') #Merges columns in vector geopackage if contains data (e.g. Canopy openness)
+            buffered.drop(columns='name', inplace=True)
+            print(buffered)
+        else:
+            buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
 
     except Exception as e:
         print(f"Error creating buffer geometries: {e}")
@@ -116,12 +146,6 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     
     
     with rasterio.open(raster_path) as src:
-        print(f"Point CRS: f{points.crs}")
-        print(f"Raster CRS: {src.crs}")
-        if points.crs != src.crs:
-            print("⚠️ Warning: CRS of points and raster do not match!")
-        else:
-            print("✅ CRS of points and raster match.")
 
         for idx, row in buffered.iterrows():
             try:
@@ -176,7 +200,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
 
     # --- Save result ---
-    zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG")
+    zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG", overwrite=True)
     print(f"Saved zonal statistics to: {output_zonal_gpkg}")
 
     # Create plots if requested
@@ -185,30 +209,44 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         print("\nCreating distribution plots...")
         
         # Create plots using pre-processed data
-        fig1 = create_distribution_plots_from_data(region_data, output_path=output_zonal_gpkg, save_plots=save_plots)
+        fig1 = create_distribution_plots_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
         if fig1:
             figures.append(fig1)
-            if save_plots:
-                fig1.savefig(output_zonal_gpkg.replace('.gpkg', '_distributions.png'), 
-                           dpi=300, bbox_inches='tight')
-        
-        fig2 = create_boxplot_from_data(region_data, output_path=output_zonal_gpkg, save_plots=save_plots)
+
+        fig2 = create_boxplot_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
         if fig2:
             figures.append(fig2)
-            if save_plots:
-                fig2.savefig(output_zonal_gpkg.replace('.gpkg', '_boxplot.png'), 
-                           dpi=300, bbox_inches='tight')
-        
-        plt.show()
-    
+
+        if show_plots:
+            plt.show()
+
     return zonal_gdf, figures
 
-def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_path=None, save_plots=False):
+def get_region_data(gpkg_path, value_column):
+    """
+    Extract region data from the zonal GeoDataFrame.
+
+    Args:
+        zonal_gdf (GeoDataFrame): The zonal GeoDataFrame containing the results.
+
+    Returns:
+        dict: A dictionary with region names as keys and their data as values.
+    """
+    gdf = gpd.read_file(gpkg_path)
+
+    region_data = defaultdict(list)
+    for index, row in gdf.iterrows():
+        region_name = row.get('treatment', f'Treatment {index}')
+        region_data[region_name].append(row[value_column])
+    return region_data
+
+def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), output_path=None, save_plots=False):
     """
     Create distribution plots from pre-processed data.
 
     Args:
         region_data (dict): A dictionary containing region names as keys and their data as values.
+        value (str): The name of the variable being plotted.
         figsize (tuple): The size of the figure to create.
         output_path (str): The path to save the figure.
         save_plots (bool): Whether to save the plots.
@@ -217,7 +255,7 @@ def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_pa
         matplotlib.figure.Figure: The created figure.
 
     """
-    output_path = output_path.replace('Data', 'Results')
+    output_path = output_path.replace('Data', 'Results') if output_path else None
     n_regions = len(region_data)
     if n_regions == 0:
         return None
@@ -254,7 +292,7 @@ def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_pa
                   label=f"Mean: {mean_val:.2f}m")
         
         ax.set_title(f'{region_name}', fontsize=12, fontweight='bold')
-        ax.set_xlabel('Canopy Height (m)')
+        ax.set_xlabel(value)
         ax.set_ylabel('Frequency')
         ax.grid(True, alpha=0.3)
         ax.legend()
@@ -272,12 +310,13 @@ def create_distribution_plots_from_data(region_data, figsize=(15, 10), output_pa
 
     return fig
 
-def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, save_plots=False):
+def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=None, save_plots=False):
     """
     Create boxplot from pre-processed data.
 
     Args:
         region_data (dict): A dictionary containing region names as keys and their data as values.
+        value (str): The name of the variable being plotted.
         figsize (tuple): The size of the figure to create.
         output_path (str): The path to save the figure.
         save_plots (bool): Whether to save the plots.
@@ -286,7 +325,7 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
         matplotlib.figure.Figure: The created figure.
     """
 
-    output_path = output_path.replace('Data', 'Results')
+    output_path = output_path.replace('Data', 'Results') if output_path else None
     if not region_data:
         return None
     
@@ -304,7 +343,7 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
         patch.set_alpha(0.7)
 
     ax.set_xlabel('Treatment Region', fontsize=12)
-    ax.set_ylabel('Elevation (m)', fontsize=12)
+    ax.set_ylabel(value, fontsize=12)
     ax.grid(True, alpha=0.3)
  
     ax.tick_params(axis='x', labelsize=13)
@@ -326,18 +365,18 @@ def create_boxplot_from_data(region_data, figsize=(12, 8), output_path=None, sav
 
 # Example usage - Comment out when not testing
 # Test the plotting functions
-# print("Creating CHM distribution plots...")
+print("Creating CHM distribution plots...")
 
-# # Use optimized functions for better performance
-# zonal_gdf, figures = zonal_statistics(
-#     gpkg_path=1,
-#     raster_path="D:/Jerry/UROP Rerta Palapa June2019 CHM.tif", 
-#     output_buffer_path=0, 
-#     filtering_logic=clip_below_zero,
-#     output_zonal_gpkg="Results/Palapa June2019 CHM Statistics.gpkg", 
-#     buffer_geom_path="G:/My Drive/UROP/TreatmentRegions.gpkg",
-#     create_plots=True,
-#     save_plots=True
-# )
+# Use optimized functions for better performance
+zonal_gdf, figures = zonal_statistics(
+    gpkg_path="Frogs_result.gpkg",
+    raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 
+    output_buffer_path=0, 
+    filtering_logic=clip_and_remove_outliers,
+    output_zonal_gpkg="Data/Palapa June2019 CHM Statistics.gpkg", 
+    buffer_geom_path="Data/Palapa_transects_buffer.gpkg",
+    show_plots=True,
+    save_plots=True
+)
 
 # print("Plots created and saved successfully!")
