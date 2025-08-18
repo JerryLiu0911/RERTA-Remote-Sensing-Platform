@@ -259,6 +259,7 @@ def main(paths):
     #                     buffer_geom_path=paths['result_data'],
     #                     save_plots=True)
 
+
     # zonal_gdf, figures = gis.zonal_statistics(gpkg_path=paths['canopy_openness_result'],
     #                     raster_path="G:/My Drive/UROP/UROP RERTA Palapa June2019 ExG.tif",
     #                     output_buffer_path=paths['buffered_points'], 
@@ -298,9 +299,10 @@ def main(paths):
     selected_features = smart_feature_selection_pipeline(merged_df, 'average_canopy_openness', features)
 
 
+
     ### Statistical Modelling ###
 
-    statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', ['canopy_openness_CHM', 'mean_ExG', 'mean_CHM'])
+    #statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', ['canopy_openness_CHM', 'mean_ExG', 'mean_CHM'])
     # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'average_canopy_openness']], display=False)
@@ -309,8 +311,8 @@ def main(paths):
 paths = {
 'canopy_openness': "Data/3.4-canopy.openness.csv",
 'frog_biodiversity': "Data/3.4-frog.biodiversity.csv",
-'coordinates': "Data/Rerta_veg_plots.gpkg", #"Data/Rerta koordinate 2018_09_24.gpkg",
-'abcd_coordinates': "Data/Rerta_ABCD.gpkg", 
+'coordinates': "Data/Palapa_veg_plots.gpkg", #"Data/Rerta koordinate 2018_09_24.gpkg",
+'abcd_coordinates': "Data/Palapa_ABCD.gpkg", 
 'result_data': "result_data.gpkg",
 'canopy_openness_result': "canopy_openness_result.gpkg",
 'buffered_points': "buffered_points.gpkg",

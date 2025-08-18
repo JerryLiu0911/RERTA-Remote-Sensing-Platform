@@ -10,7 +10,7 @@ As each csv file is different, this function will need to be edited for each csv
 
 def standardize_names_for_canopy_openness(name):
     """
-    Standardizes the 'point.label' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
+    Standardizes the 'point.label  ' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
     from the GeoDataFrame by replacing specific patterns. 
     ***SPECIFICALLY FOR 3.4-canopy-openness.csv***
     """
@@ -24,13 +24,22 @@ def standardize_names_for_canopy_openness(name):
             identifier[3] = "OPC"
     identifier[2] = re.findall(r'\d+', identifier[2])[0]  #Only keep the numeric part
     
-    # Remove later
-    # edit 2 : forgot why I swapped the orders
-    # temp = identifier[2]
-    # identifier[2] = identifier[1]
-    # identifier[1] = temp
+    name = '-'.join(identifier)
+    return name
 
-    
+def standardize_names_for_frogs(name):
+    """
+    Standardizes the 'point.label  ' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
+    from the GeoDataFrame by replacing specific patterns. 
+    ***SPECIFICALLY FOR 3.4-frogs.csv***
+    """
+    identifier = name.split('-')
+    if len(identifier) >= 2:
+        identifier[1] = identifier[1].upper()
+    if re.search("Opc", identifier[3], re.IGNORECASE):
+        identifier[3] = "OPC"
+    identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
+
     name = '-'.join(identifier)
     return name
 
@@ -78,13 +87,13 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
 
     # Standardize names in the 'point.label' column
     canopy_df_filtered['point.label'] = canopy_df_filtered['point.label'].apply(standardize_names_for_canopy_openness)
-    # Average across time points for a given point.label
+    # Average across time points for a given'point.label   
     # Maybe consider other methods of averaging if there are multiple time points?
     canopy_df_filtered = canopy_df_filtered.groupby('point.label').agg({'average_canopy_openness': 'max','treatment': 'first'}).reset_index()
 
     # Merge with coordinates_gdf to attach geometry
-    canopy_df_filtered = canopy_df_filtered.merge(coordinates_gdf, left_on='point.label', right_on='name', how='left')
-    canopy_df_filtered = canopy_df_filtered.drop(columns='name')  # Drop 'name' columns to prevent redundancy with point.label
+    canopy_df_filtered = canopy_df_filtered.merge(coordinates_gdf, left_on='point.label', right_on='name', how='inner')
+    canopy_df_filtered = canopy_df_filtered.drop(columns='name')  # Drop 'name' columns to prevent redundancy with'point.label 
 
     print('Coordinates merged')
     print('Final dataframe : \n', canopy_df_filtered.head())  # Display the first few rows of the final DataFrame
@@ -99,3 +108,37 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
     print(f"Error: The file was not found at {canopy_path}")
   except Exception as e:
     print(f"An error occurred: {e}")
+
+def frogs(frogs_path, coordinates_path, destination_path):
+    '''
+    Extracts frog data from a CSV file, calculates the average frog count, and filters by timepoint.
+    '''
+    try:
+        frogs_df = pd.read_csv(frogs_path)
+        coordinates_gdf = gpd.read_file(coordinates_path)
+
+        print(f"File loaded from: {frogs_path}")
+
+        for col in frogs_df.columns:
+            frogs_df[col] = pd.to_numeric(frogs_df[col], errors='coerce')
+        
+        frogs_df['Line_transect'] = frogs_df['Line_transect'].apply(standardize_names_for_frogs)
+
+        # Merge with coordinates_gdf to attach geometry
+        frogs_df = frogs_df.merge(coordinates_gdf, left_on='Line_transect', right_on='name', how='inner')
+        frogs_df = frogs_df.rename(columns={'Line_transect': 'point.label'})
+        frogs_df = frogs_df.drop(columns='name')  # Drop 'name' columns to prevent redundancy with'point.label 
+
+        print('Coordinates merged')
+        print('Final dataframe : \n', frogs_df.head())  # Display the first few rows of the final DataFrame
+
+        # Create a GeoDataFrame and save as a gpkg file
+        merged_gdf = gpd.GeoDataFrame(frogs_df, geometry='geometry')
+        merged_gdf.to_file(destination_path, driver="GPKG")
+
+        return merged_gdf
+
+    except FileNotFoundError:
+        print(f"Error: The file was not found at {frogs_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
