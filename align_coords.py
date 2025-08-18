@@ -20,7 +20,7 @@ def standardize_names_for_canopy_openness(name):
     else:
         identifier = name.split('-')
         identifier[1] = identifier[1].upper()
-        if re.search("Opc",identifier[3], re.IGNORECASE):
+        if re.search("Opc",identifier[3], re.IGNORECASE): # Typo for OPc. 
             identifier[3] = "OPC"
     identifier[2] = re.findall(r'\d+', identifier[2])[0]  #Only keep the numeric part
     
@@ -31,13 +31,23 @@ def standardize_names_for_frogs(name):
     """
     Standardizes the 'point.label  ' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
     from the GeoDataFrame by replacing specific patterns. 
-    ***SPECIFICALLY FOR 3.4-frogs.csv***
+    ***SPECIFICALLY FOR 4.3_Frogs.csv***
     """
     identifier = name.split('-')
+    if identifier[1] == 'E':
+        identifier[1] = 'EAST'
+        # Accounting for the mislabelled data on the east side. 
+        if identifier[2] == '150':
+            identifier[2] = '50'
+        elif identifier[2] == '350':
+            identifier[2] = '250'
+    elif identifier[1] == 'W':
+      identifier[1] = 'WEST'
     if len(identifier) >= 2:
         identifier[1] = identifier[1].upper()
-    if re.search("Opc", identifier[3], re.IGNORECASE):
-        identifier[3] = "OPC"
+    if len(identifier) <= 3:
+        identifier.extend(i for i in identifier.pop().split(' '))
+        print(identifier)
     identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
 
     name = '-'.join(identifier)
@@ -109,36 +119,45 @@ def canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="
   except Exception as e:
     print(f"An error occurred: {e}")
 
-def frogs(frogs_path, coordinates_path, destination_path):
+def frogs(frogs_path, coordinates_path, destination_path, timepoint=None):
     '''
     Extracts frog data from a CSV file, calculates the average frog count, and filters by timepoint.
     '''
-    try:
-        frogs_df = pd.read_csv(frogs_path)
-        coordinates_gdf = gpd.read_file(coordinates_path)
 
-        print(f"File loaded from: {frogs_path}")
+    frogs_df = pd.read_csv(frogs_path)
+    coordinates_gdf = gpd.read_file(coordinates_path)
 
-        for col in frogs_df.columns:
+    print(f"File loaded from: {frogs_path}")
+    
+    frogs_df['Line_transect'] = frogs_df['Line_transect'].apply(standardize_names_for_frogs)
+
+    if timepoint is not None:
+        # Filter by 'timepoint' after calculating the average
+        if type(timepoint) is str:
+            frogs_df = frogs_df[frogs_df['timepoint'].str.contains(timepoint, case=False, na=False)]
+        elif type(timepoint) is int:
+            frogs_df = frogs_df[frogs_df['date'].str.contains(str(timepoint), case=False, na=False)]
+
+    for col in ['Frog.abundance', 'Frog.richness']:
+        if col in frogs_df.columns:
             frogs_df[col] = pd.to_numeric(frogs_df[col], errors='coerce')
-        
-        frogs_df['Line_transect'] = frogs_df['Line_transect'].apply(standardize_names_for_frogs)
+        else:
+            print(f"Warning: {col} not found in DataFrame columns.")
+    frogs_df = frogs_df.groupby('Line_transect').agg({'Frog.abundance': 'mean','Frog.richness': 'mean','treatment': 'first'}).reset_index()
 
-        # Merge with coordinates_gdf to attach geometry
-        frogs_df = frogs_df.merge(coordinates_gdf, left_on='Line_transect', right_on='name', how='inner')
-        frogs_df = frogs_df.rename(columns={'Line_transect': 'point.label'})
-        frogs_df = frogs_df.drop(columns='name')  # Drop 'name' columns to prevent redundancy with'point.label 
+    print(frogs_df)  # Display the first few rows of the DataFrame
 
-        print('Coordinates merged')
-        print('Final dataframe : \n', frogs_df.head())  # Display the first few rows of the final DataFrame
+    # Merge with coordinates_gdf to attach geometry
+    frogs_df = frogs_df.merge(coordinates_gdf, left_on='Line_transect', right_on='name', how='inner')
+    frogs_df = frogs_df.rename(columns={'Line_transect': 'point.label'})
+    frogs_df = frogs_df.drop([column for column in frogs_df.columns if column not in ['point.label', 'Frog.abundance', 'Frog.richness', 'treatment', 'geometry']], axis=1)  # Drop 'name' columns to prevent redundancy with 'point.label'
 
-        # Create a GeoDataFrame and save as a gpkg file
-        merged_gdf = gpd.GeoDataFrame(frogs_df, geometry='geometry')
-        merged_gdf.to_file(destination_path, driver="GPKG")
+    print('Coordinates merged')
+    print('Final dataframe : \n', frogs_df)  # Display the first few rows of the final DataFrame
 
-        return merged_gdf
+    # Create a GeoDataFrame and save as a gpkg file
+    merged_gdf = gpd.GeoDataFrame(frogs_df, geometry='geometry')
+    merged_gdf.to_file(destination_path, driver="GPKG")
+    print(f"Saved to {destination_path}")
 
-    except FileNotFoundError:
-        print(f"Error: The file was not found at {frogs_path}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    return merged_gdf

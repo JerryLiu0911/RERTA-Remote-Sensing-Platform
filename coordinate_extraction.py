@@ -79,6 +79,8 @@ def standardize_names_for_extract_transect_coords(name):
       identifier[3] = 'OPE'
     elif re.search("BC", identifier[3], re.IGNORECASE):
       identifier[3] = 'BC'
+    elif re.search("river", identifier[3], re.IGNORECASE):
+        identifier[3] = "RV"
 
     # temp = identifier[2]
     # identifier[2] = identifier[1]
@@ -210,6 +212,3 @@ def extract_transect_coords(source_path, destination_path):
     print(f"Transect coordinates saved to: {destination_path}")
 
     return result_gdf
-
-
-extract_transect_coords("Data/Palapa_transects.gpkg", "result_data.gpkg")
