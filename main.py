@@ -90,7 +90,7 @@ def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_log
     return zonal_gdf, figures
 
 def main(paths):
-    preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
+    # preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
     # preprocess_dataset(paths, 'Palapa June2019 GLI', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
     # preprocess_dataset(paths, 'Palapa June2019 ExG', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
 
@@ -126,10 +126,11 @@ def main(paths):
 
     ### Statistical Modelling ###
 
-    statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', ['canopy_openness_CHM', 'mean_CHM'])
+    # statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', ['canopy_openness_CHM', 'mean_CHM'])
     # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
+    statistical_modelling.enhanced_multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
 
 
 paths = {

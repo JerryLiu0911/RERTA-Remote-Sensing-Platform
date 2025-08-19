@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV, LeaveOneOut
+import statsmodels.api as sm
 
 
 
@@ -14,6 +15,7 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
     to account for floating point differences
     """
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
+
 
 
 def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_openness", "Frog.richness", "Frog.abundance"]):
@@ -72,6 +74,7 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
   return merged_df
 
 
+
 def simple_linear_regression(x, y):
   """
   Performs simple linear regression using the matrix method.
@@ -88,27 +91,124 @@ def simple_linear_regression(x, y):
     raise ValueError("Input arrays must have the same length.")
 
   # Add a column of ones for the intercept term
-  X = np.vstack([np.ones(n), x]).T
+  # X = np.vstack([np.ones(n), x]).T
+  x = sm.add_constant(x)  # Add constant term for intercept
+
 
   # Calculate coefficients using the matrix method: (X^T * X)^(-1) * X^T * y
   # X.T is the transpose of X
   # np.linalg.inv() calculates the inverse of a matrix
   # @ is the matrix multiplication operator
-  coefficients = np.linalg.inv(X.T @ X) @ X.T @ y
+  # coefficients = np.linalg.inv(X.T @ X) @ X.T @ y
 
   # The coefficients are [b, m]
-  b, m = coefficients
+  # b, m = coefficients
 
-  return m, b
+  results = sm.OLS(y, x).fit()  # Fit the model
 
-def random_forest_regression(df, target, variables, display=True, test_size=0.2, random_state=42):
+  return results
+
+
+def multi_linear_regression_display(df, target, features, display = False):
+  '''
+  Performs multiple linear regression and displays the results.
+  Outputs the best model based on R-squared value.
+    Args:
+        df: Pandas DataFrame containing the data.
+        target: Name of the target variable (dependent variable).
+        features: List of independent variable names (features).
+        display: Whether to display the feature importance plot (default: False).
+
+    Returns:
+        best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
+    """
+  '''
+  best_model = []
+  
+  for variable_name in features:
+    print(f"Correlation of {variable_name} with {target}:")
+    print(df[target].corr(df[variable_name], method='spearman'))
+    x = np.array(df[variable_name])
+    y = np.array(df[target])
+    results = simple_linear_regression(x, y)
+    b, m = results.params[0], results.params[1]
+    y_pred = m * x + b
+    mse = mean_squared_error(y, y_pred)
+    rmse = np.sqrt(mse)
+    r2 = r2_score(y, y_pred)
+    print(f"Results for {variable_name}:")
+    print(results.summary())
+    
+    if len(best_model)==0:
+      best_model = [variable_name, m, b, mse, rmse, r2]
+    elif r2 > best_model[5]:
+      best_model = [variable_name, m, b, mse, rmse, r2]
+
+    if display:
+      plt.figure(figsize=(10, 6))
+      plt.scatter(x, y, label='Data')
+      plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
+
+      # Add labels and title for the plot
+      plt.xlabel(variable_name)
+      plt.ylabel(target)
+      plt.title(f'Linear Regression of {variable_name} vs. {target}')
+
+      # Add text annotations for metrics
+      plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+      plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+      plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
+              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+      
+      plt.legend()
+      plt.grid(True)
+      plt.show()
+
+  if not display: 
+    x = np.array(df[best_model[0]])
+    y_pred = best_model[1] * x + best_model[2]
+    mse = best_model[3]
+    rmse = best_model[4]
+    r2 = best_model[5]
+    plt.figure(figsize=(10, 6))
+    plt.scatter(x, y, label='Data')
+    plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
+
+    # Add labels and title for the plot
+    plt.xlabel(best_model[0])
+    plt.ylabel(target)
+    plt.title(f'Linear Regression of {best_model[0]} vs. {target}')
+
+    # Add text annotations for metrics
+    plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+    plt.grid(True)
+    plt.show()
+       
+  print(f'Best model: {best_model}')
+
+  # Assuming you have your x and y data and the calculated slope (m) and intercept (b)
+
+  x = np.array(df[best_model[0]])
+  y = np.array(df[target])
+  m = best_model[1]
+  b = best_model[2]
+
+
+def random_forest_regression(df, target, features, display=True, test_size=0.2, random_state=42):
     """
     Performs random forest regression using scikit-learn.
 
     Args:
         df: Pandas DataFrame containing the data.
         target: Name of the target variable (dependent variable).
-        variables: List of independent variable names (features).
+        features: List of independent variable names (features).
         display: Whether to display the feature importance plot (default: True).
         n_estimators: Number of trees in the forest (default: 100)
         test_size: Proportion of dataset to include in the test split (default: 0.2)
@@ -123,7 +223,7 @@ def random_forest_regression(df, target, variables, display=True, test_size=0.2,
             - y_pred: Predicted values
     """
     y = np.array(df[target])
-    x = np.array(df[variables])
+    x = np.array(df[features])
 
     print(x)
     print(y)
@@ -144,7 +244,7 @@ def random_forest_regression(df, target, variables, display=True, test_size=0.2,
 
     # Get feature importances
     importances = model.feature_importances_
-    features = df[variables].columns
+    features = df[features].columns
 
     # Calculate metrics
     mse = mean_squared_error(y_train, y_pred)
@@ -197,7 +297,9 @@ def random_forest_regression(df, target, variables, display=True, test_size=0.2,
 
     return model, mse, rmse, r2, y_pred
 
-def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.2, random_state=42):
+
+
+def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2, random_state=42):
     """
     This function performs k-fold cross-validation on the training data, training a separate Random Forest model on each fold and recording its validation score. After all models are trained,
     each one makes predictions on the test set, and these predictions are combined using a weighted average, where the weights are based on the models’ respective validation scores. This results in an ensemble prediction on the test set, with better-performing models (on their own folds) contributing more to the final output.
@@ -207,7 +309,7 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
     Args:
         df: Pandas DataFrame containing the data.
         target: Name of the target variable (dependent variable).
-        variables: List of independent variable names (features).
+        features: List of independent variable names (features).
         n_estimators: Number of trees in the forest (default: 100)
         test_size: Proportion of dataset to include in the test split (default: 0.2)
         random_state: Random state for reproducibility (default: 42)
@@ -215,11 +317,11 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
     Returns:
         y_pred_sum: Sum of predicted values from the ensemble model.
     """
-    # Reshape variables to be a 2D array
-    # x = variables.reshape(-1, 1)
+    # Reshape features to be a 2D array
+    # x = features.reshape(-1, 1)
     # y = target
     y = np.array(df[target])
-    x = np.array(df[variables])
+    x = np.array(df[features])
 
 
     # Split the data
@@ -280,6 +382,8 @@ def random_forest_ensemble(df, target, variables, n_estimators=100, test_size=0.
 
     return models, y_pred, preds
 
+
+
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
@@ -323,85 +427,162 @@ def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     return rs.best_estimator_, rs.best_score_
 
 
-
-def multi_linear_regression_display(df, target, variables, display = False):
-  '''
-  Performs multiple linear regression and displays the results.
-  Outputs the best model based on R-squared value.
-    Args:
-        df: Pandas DataFrame containing the data.
-        target: Name of the target variable (dependent variable).
-        variables: List of independent variable names (features).
-        display: Whether to display the feature importance plot (default: False).
-
-    Returns:
-        best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
+def general_linear_model(df, target, features, display=False):
     """
-  '''
-  best_model = []
-  
-  for variable_name in variables:
-    print(f"Correlation of {variable_name} with {target}:")
-    print(df[target].corr(df[variable_name], method='spearman'))
-    x = np.array(df[variable_name])
-    y = np.array(df[target])
-    m, b = simple_linear_regression(x, y)
-    y_pred = m * x + b
-    mse = mean_squared_error(y, y_pred)
-    rmse = np.sqrt(mse)
-    r2 = r2_score(y, y_pred)
+    General linear model function.
+    """
+    X = df[features]
+    y = df[target]
+    model = sm.OLS(y, sm.add_constant(X)).fit()
+    print(model.summary())
+    return model
+
+
+def enhanced_multi_linear_regression_display(df, target, features, display=True):
+    """
+    Enhanced version of your function with proper diagnostics and model selection
+    """
     
-    if len(best_model)==0:
-      best_model = [variable_name, m, b, mse, rmse, r2]
-    elif r2 > best_model[5]:
-      best_model = [variable_name, m, b, mse, rmse, r2]
+    print(f"=== ENHANCED REGRESSION ANALYSIS: {target} ===")
+    
+    # First, diagnose the target variable
+    target_data = df[target].dropna()
+    
+    print(f"\nTARGET VARIABLE DIAGNOSTICS:")
+    print(f"Mean: {target_data.mean():.3f}")
+    print(f"Median: {target_data.median():.3f}")
+    print(f"Std: {target_data.std():.3f}")
+    print(f"Skewness: {target_data.skew():.3f}")
+    print(f"Min: {target_data.min()}, Max: {target_data.max()}")
+    print(f"Zeros: {(target_data == 0).sum()} ({(target_data == 0).mean()*100:.1f}%)")
+    
+    # Recommend analysis approach
+    is_count = (target_data == target_data.astype(int)).all() and (target_data >= 0).all()
+    is_highly_skewed = abs(target_data.skew()) > 2
+    has_many_zeros = (target_data == 0).mean() > 0.3
+    
+    print(f"\nRECOMMENDATIONS:")
+    if is_count:
+        if has_many_zeros:
+            print("✅ Use Zero-Inflated Poisson or Negative Binomial GLM")
+        else:
+            print("✅ Use Poisson or Negative Binomial GLM")
+    
+    if is_highly_skewed:
+        print("✅ Consider log transformation or GLM with appropriate family")
+    
+    # Analyze each feature
+    best_models = {}
+    
+    for feature in features:
+        print(f"\n{'='*50}")
+        print(f"ANALYZING: {feature}")
+        print(f"{'='*50}")
+        
+        # Correlation analysis
+        correlations = {}
+        for method in ['pearson', 'spearman', 'kendall']:
+            corr = df[target].corr(df[feature], method=method)
+            correlations[method] = corr
+            print(f"{method.capitalize()} correlation: {corr:.4f}")
+        
+        models = {}
+        
+        # 1. OLS (your current method)
+        try:
+            X = sm.add_constant(df[feature])
+            y = df[target]
+            ols_model = sm.OLS(y, X).fit()
+            models['OLS'] = ols_model
+            
+            print(f"\nOLS Results:")
+            print(f"  R²: {ols_model.rsquared:.4f}")
+            print(f"  p-value: {ols_model.f_pvalue:.4f}")
+            print(f"  AIC: {ols_model.aic:.2f}")
+            
+        except Exception as e:
+            print(f"OLS failed: {e}")
+        
+        # 2. Poisson GLM (for count data)
+        if is_count:
+            try:
+                poisson_model = sm.GLM(y, X, family=sm.families.Poisson()).fit()
+                models['Poisson'] = poisson_model
+                
+                print(f"\nPoisson GLM Results:")
+                print(f"  Pseudo R²: {1 - poisson_model.deviance/poisson_model.null_deviance:.4f}")
+                print(f"  p-value: {poisson_model.pvalues.iloc[1]:.4f}")
+                print(f"  AIC: {poisson_model.aic:.2f}")
+                
+            except Exception as e:
+                print(f"Poisson GLM failed: {e}")
+        
+        # 3. Log-transformed OLS (for skewed data)
+        if is_highly_skewed:
+            try:
+                y_log = np.log1p(y)  # log(y+1)
+                log_ols_model = sm.OLS(y_log, X).fit()
+                models['Log_OLS'] = log_ols_model
+                
+                print(f"\nLog-transformed OLS Results:")
+                print(f"  R²: {log_ols_model.rsquared:.4f}")
+                print(f"  p-value: {log_ols_model.f_pvalue:.4f}")
+                print(f"  AIC: {log_ols_model.aic:.2f}")
+                
+            except Exception as e:
+                print(f"Log-transformed OLS failed: {e}")
+        
+        # Select best model for this feature
+        if models:
+            # Select based on AIC for GLMs, R² for OLS
+            if 'Poisson' in models and models['Poisson'].aic < models.get('OLS', type('obj', (object,), {'aic': float('inf')})).aic:
+                best_model = ('Poisson', models['Poisson'])
+            elif 'Log_OLS' in models and models['Log_OLS'].rsquared > models.get('OLS', type('obj', (object,), {'rsquared': 0})).rsquared:
+                best_model = ('Log_OLS', models['Log_OLS'])
+            else:
+                best_model = ('OLS', models['OLS'])
+            
+            best_models[feature] = best_model
+            print(f"\nBEST MODEL for {feature}: {best_model[0]}")
+        
+        # Plotting
+        if display and models:
+            plt.figure(figsize=(15, 5))
+            
+            x_vals = df[feature]
+            y_vals = df[target]
+            
+            for i, (model_name, model) in enumerate(models.items(), 1):
+                plt.subplot(1, len(models), i)
+                
+                plt.scatter(x_vals, y_vals, alpha=0.6)
+                
+                # Predictions
+                if model_name == 'Log_OLS':
+                    y_pred_log = model.predict(X)
+                    y_pred = np.expm1(y_pred_log)  # Transform back
+                else:
+                    y_pred = model.predict(X)
+                
+                plt.plot(x_vals, y_pred, 'r-', linewidth=2)
+                
+                # Statistics
+                if hasattr(model, 'rsquared'):
+                    r2 = model.rsquared
+                    p_val = model.f_pvalue
+                else:
+                    r2 = 1 - model.deviance/model.null_deviance
+                    p_val = model.pvalues[1]
+                
+                plt.title(f'{model_name}\nR²={r2:.3f}, p={p_val:.4f}')
+                plt.xlabel(feature)
+                plt.ylabel(target)
+                plt.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            plt.show()
+    
+    return best_models
 
-    if display:
-      plt.figure(figsize=(10, 6))
-      plt.scatter(x, y, label='Data')
-      plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
-
-      # Add labels and title for the plot
-      plt.xlabel(variable_name)
-      plt.ylabel(target)
-      plt.title(f'Linear Regression of {variable_name} vs. {target}')
-
-      # Add text annotations for metrics
-      plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
-              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      
-      plt.legend()
-      plt.grid(True)
-      plt.show()
-  if not display: 
-    x = np.array(df[best_model[0]])
-    y_pred = best_model[1] * x + best_model[2]
-    mse = best_model[3]
-    rmse = best_model[4]
-    r2 = best_model[5]
-    plt.figure(figsize=(10, 6))
-    plt.scatter(x, y, label='Data')
-    plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
-
-    # Add labels and title for the plot
-    plt.xlabel(best_model[0])
-    plt.ylabel(target)
-    plt.title(f'Linear Regression of {best_model[0]} vs. {target}')
-
-    # Add text annotations for metrics
-    plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.grid(True)
-    plt.show()
-       
-  print(f'Best model: {best_model}')
-
-  # Assuming you have your x and y data and the calculated slope (m) and intercept (b)
+# Replace your function call with:
+# best_models = enhanced_multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=True)
