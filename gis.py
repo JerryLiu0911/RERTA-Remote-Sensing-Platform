@@ -365,18 +365,18 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
 
 # Example usage - Comment out when not testing
 # Test the plotting functions
-print("Creating CHM distribution plots...")
+# print("Creating CHM distribution plots...")
 
-# Use optimized functions for better performance
-zonal_gdf, figures = zonal_statistics(
-    gpkg_path="Frogs_result.gpkg",
-    raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 
-    output_buffer_path=0, 
-    filtering_logic=clip_and_remove_outliers,
-    output_zonal_gpkg="Data/Palapa June2019 CHM Statistics.gpkg", 
-    buffer_geom_path="Data/Palapa_transects_buffer.gpkg",
-    show_plots=True,
-    save_plots=True
-)
+# # Use optimized functions for better performance
+# zonal_gdf, figures = zonal_statistics(
+#     gpkg_path="Frogs_result.gpkg",
+#     raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 
+#     output_buffer_path=0, 
+#     filtering_logic=clip_and_remove_outliers,
+#     output_zonal_gpkg="Data/Palapa June2019 CHM Statistics.gpkg", 
+#     buffer_geom_path="Data/Palapa_transects_buffer.gpkg",
+#     show_plots=True,
+#     save_plots=True
+# )
 
 # print("Plots created and saved successfully!")
