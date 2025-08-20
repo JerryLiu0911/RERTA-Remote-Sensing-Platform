@@ -108,6 +108,17 @@ def main(paths):
             ('CHM', paths['CHM'])], filter = "OPE|BC")
 
     print(f"Finished merging columns : {merged_df.columns}")
+    pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df)
+    
+    # Option 2: Use specific features
+    # features = ['mean_CHM', 'std_CHM', 'max_CHM', 'average_canopy_openness']
+    # pca_results, interpretation = comprehensive_PCA_analysis(merged_df, target_columns=features)
+    
+    # You can also access specific results:
+    print(f"\nKey findings:")
+    print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
+    print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
+    print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
     # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
     # print(BC_df.head())

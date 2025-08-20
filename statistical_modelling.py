@@ -17,7 +17,6 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
 
 
-
 def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_openness", "Frog.richness", "Frog.abundance"]):
   '''
   Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
@@ -72,7 +71,6 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
           else:
               print(f"discrepancies found in {name}, NOT MERGED.")
   return merged_df
-
 
 
 def simple_linear_regression(x, y):
@@ -383,7 +381,6 @@ def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2
     return models, y_pred, preds
 
 
-
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
@@ -427,13 +424,13 @@ def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     return rs.best_estimator_, rs.best_score_
 
 
-def general_linear_model(df, target, features, display=False):
+def generalised_linear_model(df, target, features, display=False):
     """
     General linear model function.
     """
     X = df[features]
     y = df[target]
-    model = sm.OLS(y, sm.add_constant(X)).fit()
+    model = sm.GLM(y, sm.add_constant(X)).fit()
     print(model.summary())
     return model
 
@@ -584,5 +581,408 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
     
     return best_models
 
-# Replace your function call with:
-# best_models = enhanced_multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=True)
+def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_components=None, display=True):
+    """
+    Performs Principal Component Analysis to investigate relationships between treatments
+    and identify trends in the data.
+    
+    Args:
+        df: Pandas DataFrame containing the data
+        target_columns: List of columns to include in PCA. If None, uses all numeric columns except treatment
+        treatment_column: Name of the treatment column for grouping and coloring
+        n_components: Number of principal components to compute. If None, computes all
+        display: Whether to display plots and detailed results
+    
+    Returns:
+        dict: Dictionary containing PCA results, loadings, explained variance, etc.
+    """
+    
+    from sklearn.decomposition import PCA
+    from sklearn.preprocessing import StandardScaler
+    import seaborn as sns
+    
+    print("="*80)
+    print("PRINCIPAL COMPONENT ANALYSIS (PCA)")
+    print("="*80)
+    
+    # Prepare data
+    if target_columns is None:
+        # Use all numeric columns except treatment and geometry
+        numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+        exclude_cols = [treatment_column, 'geometry', 'point.label']
+        target_columns = [col for col in numeric_cols if col not in exclude_cols]
+    
+    print(f"Variables included in PCA: {target_columns}")
+    print(f"Treatment column: {treatment_column}")
+    
+    # Remove rows with missing values
+    df_clean = df[target_columns + [treatment_column]].dropna()
+    print(f"Sample size after removing missing values: {len(df_clean)}")
+    
+    # Separate features and treatments
+    X = df_clean[target_columns]
+    treatments = df_clean[treatment_column]
+    
+    # Standardize the features (important for PCA)
+    print(f"\nStandardizing features...")
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    # Perform PCA
+    if n_components is None:
+        n_components = min(len(target_columns), len(df_clean))
+    
+    pca = PCA(n_components=n_components)
+    X_pca = pca.fit_transform(X_scaled)
+    
+    # Calculate results
+    explained_variance_ratio = pca.explained_variance_ratio_
+    cumulative_variance = np.cumsum(explained_variance_ratio)
+    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+    
+    print(f"\nPCA RESULTS:")
+    print(f"Number of components: {n_components}")
+    print(f"Total variance explained by all components: {cumulative_variance[-1]:.3f}")
+    
+    # Show explained variance for each component
+    print(f"\nExplained variance by component:")
+    for i in range(min(5, len(explained_variance_ratio))):  # Show first 5 components
+        print(f"  PC{i+1}: {explained_variance_ratio[i]:.3f} ({explained_variance_ratio[i]*100:.1f}%)")
+        print(f"  Cumulative: {cumulative_variance[i]:.3f} ({cumulative_variance[i]*100:.1f}%)")
+    
+    if display:
+        # 1. Scree plot
+        plt.figure(figsize=(15, 12))
+        
+        plt.subplot(2, 3, 1)
+        plt.plot(range(1, len(explained_variance_ratio) + 1), explained_variance_ratio, 'bo-')
+        plt.plot(range(1, len(explained_variance_ratio) + 1), cumulative_variance, 'ro-')
+        plt.xlabel('Principal Component')
+        plt.ylabel('Explained Variance Ratio')
+        plt.title('Scree Plot')
+        plt.legend(['Individual', 'Cumulative'])
+        plt.grid(True, alpha=0.3)
+        
+        # Add 80% variance line
+        plt.axhline(y=0.8, color='g', linestyle='--', alpha=0.7, label='80% variance')
+        
+        # 2. PCA Biplot (PC1 vs PC2)
+        plt.subplot(2, 3, 2)
+        
+        # Get unique treatments and assign colors
+        unique_treatments = treatments.unique()
+        colors = plt.cm.Set1(np.linspace(0, 1, len(unique_treatments)))
+        
+        for treatment, color in zip(unique_treatments, colors):
+            mask = treatments == treatment
+            plt.scatter(X_pca[mask, 0], X_pca[mask, 1], 
+                       c=[color], label=treatment, alpha=0.7, s=50)
+        
+        plt.xlabel(f'PC1 ({explained_variance_ratio[0]*100:.1f}% variance)')
+        plt.ylabel(f'PC2 ({explained_variance_ratio[1]*100:.1f}% variance)')
+        plt.title('PCA Biplot: PC1 vs PC2')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        # Add loading vectors
+        for i, feature in enumerate(target_columns):
+            plt.arrow(0, 0, loadings[i, 0]*3, loadings[i, 1]*3, 
+                     head_width=0.1, head_length=0.1, fc='red', ec='red', alpha=0.6)
+            plt.text(loadings[i, 0]*3.2, loadings[i, 1]*3.2, feature, 
+                    fontsize=8, ha='center', va='center')
+        
+        # 3. PC1 vs PC3
+        if n_components >= 3:
+            plt.subplot(2, 3, 3)
+            for treatment, color in zip(unique_treatments, colors):
+                mask = treatments == treatment
+                plt.scatter(X_pca[mask, 0], X_pca[mask, 2], 
+                           c=[color], label=treatment, alpha=0.7, s=50)
+            
+            plt.xlabel(f'PC1 ({explained_variance_ratio[0]*100:.1f}% variance)')
+            plt.ylabel(f'PC3 ({explained_variance_ratio[2]*100:.1f}% variance)')
+            plt.title('PCA: PC1 vs PC3')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+        
+        # 4. Loadings heatmap
+        plt.subplot(2, 3, 4)
+        n_components_to_show = min(5, n_components)
+        loadings_df = pd.DataFrame(
+            loadings[:, :n_components_to_show],
+            columns=[f'PC{i+1}' for i in range(n_components_to_show)],
+            index=target_columns
+        )
+        
+        sns.heatmap(loadings_df, annot=True, cmap='RdBu_r', center=0, 
+                   fmt='.2f', cbar_kws={'label': 'Loading'})
+        plt.title('Variable Loadings on Principal Components')
+        plt.ylabel('Variables')
+        
+        # 5. Treatment separation analysis
+        plt.subplot(2, 3, 5)
+        
+        # Calculate centroids for each treatment
+        treatment_centroids = {}
+        for treatment in unique_treatments:
+            mask = treatments == treatment
+            centroid_pc1 = X_pca[mask, 0].mean()
+            centroid_pc2 = X_pca[mask, 1].mean()
+            treatment_centroids[treatment] = (centroid_pc1, centroid_pc2)
+            
+            # Plot individual points
+            plt.scatter(X_pca[mask, 0], X_pca[mask, 1], 
+                       c=[colors[list(unique_treatments).index(treatment)]], 
+                       label=f'{treatment} (n={mask.sum()})', alpha=0.5, s=30)
+            
+            # Plot centroid
+            plt.scatter(centroid_pc1, centroid_pc2, 
+                       c=[colors[list(unique_treatments).index(treatment)]], 
+                       s=200, marker='X', edgecolors='black', linewidth=2)
+        
+        plt.xlabel(f'PC1 ({explained_variance_ratio[0]*100:.1f}% variance)')
+        plt.ylabel(f'PC2 ({explained_variance_ratio[1]*100:.1f}% variance)')
+        plt.title('Treatment Centroids and Distributions')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        # 6. Variable contribution to PC1 and PC2
+        plt.subplot(2, 3, 6)
+        
+        # Calculate variable contributions (squared loadings)
+        contributions_pc1 = loadings[:, 0]**2
+        contributions_pc2 = loadings[:, 1]**2
+        
+        x = np.arange(len(target_columns))
+        width = 0.35
+        
+        plt.bar(x - width/2, contributions_pc1, width, label='PC1', alpha=0.7)
+        plt.bar(x + width/2, contributions_pc2, width, label='PC2', alpha=0.7)
+        
+        plt.xlabel('Variables')
+        plt.ylabel('Squared Loading (Contribution)')
+        plt.title('Variable Contributions to PC1 and PC2')
+        plt.xticks(x, target_columns, rotation=45, ha='right')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.show()
+    
+    # Statistical analysis of treatment separation
+    print(f"\n" + "="*60)
+    print("TREATMENT SEPARATION ANALYSIS")
+    print(f"="*60)
+    
+    # Calculate treatment centroids in PC space
+    treatment_stats = {}
+    for treatment in unique_treatments:
+        mask = treatments == treatment
+        treatment_data = X_pca[mask]
+        
+        treatment_stats[treatment] = {
+            'n_samples': mask.sum(),
+            'pc1_mean': treatment_data[:, 0].mean(),
+            'pc1_std': treatment_data[:, 0].std(),
+            'pc2_mean': treatment_data[:, 1].mean(),
+            'pc2_std': treatment_data[:, 1].std(),
+        }
+        
+        print(f"\n{treatment}:")
+        print(f"  Sample size: {mask.sum()}")
+        print(f"  PC1: {treatment_data[:, 0].mean():.3f} ± {treatment_data[:, 0].std():.3f}")
+        print(f"  PC2: {treatment_data[:, 1].mean():.3f} ± {treatment_data[:, 1].std():.3f}")
+    
+    # Perform MANOVA-like analysis
+    print(f"\n" + "="*60)
+    print("MOST IMPORTANT VARIABLES")
+    print(f"="*60)
+    
+    # Variables most important for PC1 and PC2
+    pc1_importance = np.abs(loadings[:, 0])
+    pc2_importance = np.abs(loadings[:, 1])
+    
+    pc1_top_vars = sorted(zip(target_columns, pc1_importance), key=lambda x: x[1], reverse=True)
+    pc2_top_vars = sorted(zip(target_columns, pc2_importance), key=lambda x: x[1], reverse=True)
+    
+    print(f"Most important variables for PC1:")
+    for i, (var, importance) in enumerate(pc1_top_vars[:5]):
+        print(f"  {i+1}. {var}: {importance:.3f}")
+    
+    print(f"\nMost important variables for PC2:")
+    for i, (var, importance) in enumerate(pc2_top_vars[:5]):
+        print(f"  {i+1}. {var}: {importance:.3f}")
+    
+    # Calculate distances between treatment centroids
+    print(f"\n" + "="*60)
+    print("TREATMENT DISTANCES (Euclidean distance between centroids)")
+    print(f"="*60)
+    
+    treatment_list = list(unique_treatments)
+    for i in range(len(treatment_list)):
+        for j in range(i+1, len(treatment_list)):
+            t1, t2 = treatment_list[i], treatment_list[j]
+            
+            # Distance in PC1-PC2 space
+            dist = np.sqrt(
+                (treatment_stats[t1]['pc1_mean'] - treatment_stats[t2]['pc1_mean'])**2 +
+                (treatment_stats[t1]['pc2_mean'] - treatment_stats[t2]['pc2_mean'])**2
+            )
+            print(f"{t1} ↔ {t2}: {dist:.3f}")
+    
+    # Return comprehensive results
+    results = {
+        'pca_model': pca,
+        'scaler': scaler,
+        'loadings': loadings,
+        'loadings_df': pd.DataFrame(
+            loadings, 
+            columns=[f'PC{i+1}' for i in range(n_components)],
+            index=target_columns
+        ),
+        'explained_variance_ratio': explained_variance_ratio,
+        'cumulative_variance': cumulative_variance,
+        'transformed_data': X_pca,
+        'treatment_stats': treatment_stats,
+        'variable_names': target_columns,
+        'treatments': treatments,
+        'pc1_top_variables': pc1_top_vars,
+        'pc2_top_variables': pc2_top_vars
+    }
+    
+    return results
+
+
+def PCA_interpretation(pca_results, alpha=0.05):
+    """
+    Provides detailed interpretation of PCA results
+    
+    Args:
+        pca_results: Dictionary returned from PCA_analysis
+        alpha: Significance level for determining important loadings
+    
+    Returns:
+        dict: Interpretation summary
+    """
+    
+    print("="*80)
+    print("PCA INTERPRETATION")
+    print("="*80)
+    
+    explained_var = pca_results['explained_variance_ratio']
+    loadings_df = pca_results['loadings_df']
+    treatment_stats = pca_results['treatment_stats']
+    
+    interpretation = {}
+    
+    # 1. How many components to retain?
+    cumvar = pca_results['cumulative_variance']
+    
+    # Kaiser criterion (eigenvalue > 1)
+    eigenvalues = pca_results['pca_model'].explained_variance_
+    kaiser_components = np.sum(eigenvalues > 1)
+    
+    # 80% variance criterion
+    var_80_components = np.argmax(cumvar >= 0.8) + 1
+    
+    print(f"COMPONENT RETENTION CRITERIA:")
+    print(f"  Kaiser criterion (eigenvalue > 1): {kaiser_components} components")
+    print(f"  80% variance criterion: {var_80_components} components")
+    print(f"  PC1 + PC2 explain: {cumvar[1]*100:.1f}% of total variance")
+    
+    # 2. Interpret PC1
+    pc1_loadings = loadings_df['PC1'].abs().sort_values(ascending=False)
+    significant_pc1 = pc1_loadings[pc1_loadings > pc1_loadings.quantile(1-alpha)]
+    
+    print(f"\nPC1 INTERPRETATION:")
+    print(f"  Explains {explained_var[0]*100:.1f}% of variance")
+    print(f"  Key variables (top loadings):")
+    for var in significant_pc1.index[:5]:
+        loading = loadings_df.loc[var, 'PC1']
+        print(f"    {var}: {loading:.3f}")
+    
+    # 3. Interpret PC2
+    pc2_loadings = loadings_df['PC2'].abs().sort_values(ascending=False)
+    significant_pc2 = pc2_loadings[pc2_loadings > pc2_loadings.quantile(1-alpha)]
+    
+    print(f"\nPC2 INTERPRETATION:")
+    print(f"  Explains {explained_var[1]*100:.1f}% of variance")
+    print(f"  Key variables (top loadings):")
+    for var in significant_pc2.index[:5]:
+        loading = loadings_df.loc[var, 'PC2']
+        print(f"    {var}: {loading:.3f}")
+    
+    # 4. Treatment separation
+    print(f"\nTREATMENT SEPARATION:")
+    
+    treatments = list(treatment_stats.keys())
+    max_separation = 0
+    most_separated_pair = None
+    
+    for i in range(len(treatments)):
+        for j in range(i+1, len(treatments)):
+            t1, t2 = treatments[i], treatments[j]
+            
+            # Calculate separation in PC1-PC2 space
+            pc1_diff = abs(treatment_stats[t1]['pc1_mean'] - treatment_stats[t2]['pc1_mean'])
+            pc2_diff = abs(treatment_stats[t1]['pc2_mean'] - treatment_stats[t2]['pc2_mean'])
+            total_separation = np.sqrt(pc1_diff**2 + pc2_diff**2)
+            
+            if total_separation > max_separation:
+                max_separation = total_separation
+                most_separated_pair = (t1, t2)
+    
+    if most_separated_pair:
+        print(f"  Most separated treatments: {most_separated_pair[0]} and {most_separated_pair[1]}")
+        print(f"  Separation distance: {max_separation:.3f}")
+    
+    # 5. Recommendations
+    print(f"\nRECOMMENDATIONS:")
+    
+    if explained_var[0] > 0.4:
+        print(f"  ✅ PC1 captures substantial variance - focus on its key variables")
+    else:
+        print(f"  ⚠️  PC1 captures low variance - consider more variables or different approach")
+    
+    if cumvar[1] > 0.6:
+        print(f"  ✅ PC1+PC2 explain most variance - 2D visualization is informative")
+    else:
+        print(f"  ⚠️  PC1+PC2 explain little variance - consider additional components")
+    
+    if max_separation > 2.0:
+        print(f"  ✅ Clear treatment separation - PCA successfully distinguishes treatments")
+    elif max_separation > 1.0:
+        print(f"  📊 Moderate treatment separation - some treatment differences visible")
+    else:
+        print(f"  ❌ Poor treatment separation - treatments are similar in this variable space")
+    
+    print(f"  💡 Focus research on variables with high PC1/PC2 loadings")
+    print(f"  💡 Consider interaction effects between key variables")
+    
+    interpretation = {
+        'recommended_components': max(kaiser_components, var_80_components),
+        'pc1_key_variables': significant_pc1.index.tolist(),
+        'pc2_key_variables': significant_pc2.index.tolist(),
+        'most_separated_treatments': most_separated_pair,
+        'separation_quality': 'High' if max_separation > 2 else 'Medium' if max_separation > 1 else 'Low'
+    }
+    
+    return interpretation
+
+
+# Add this to your main function or create a separate analysis function:
+def comprehensive_PCA_analysis(df, target_columns=None, treatment_column='treatment'):
+    """
+    Performs complete PCA analysis with interpretation
+    """
+    
+    print("🔬 COMPREHENSIVE PCA ANALYSIS")
+    
+    # Perform PCA
+    pca_results = PCA_analysis(df, target_columns, treatment_column, display=True)
+    
+    # Interpret results
+    interpretation = PCA_interpretation(pca_results)
+    
+    return pca_results, interpretation
+
