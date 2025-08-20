@@ -93,9 +93,9 @@ def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_log
     return zonal_gdf, figures
 
 def main(paths):
-    preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+    # preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
     # preprocess_dataset(paths, 'Palapa June2019 GLI', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
-    preprocess_dataset(paths, 'Palapa June2019 ExG', 'frogs', timepoint=2019, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa June2019 ExG', 'frogs', timepoint=2019, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
 
     ### Combining and analyzing data into dataframes ###
     region_data = gis.get_region_data(paths['frogs_result'], 'Frog.abundance')
@@ -116,13 +116,13 @@ def main(paths):
     # Option 2: Use specific features
     features = ['canopy_openness_CHM', 'Frog.abundance', 'Frog.richness']
     features.extend([col for col in merged_df.columns if 'ExG' in col])
-    pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features)
+    # pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features)
     
-    # You can also access specific results:
-    print(f"\nKey findings:")
-    print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
-    print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
-    print(f"Treatment separation quality: {interpretation['separation_quality']}")
+    # # You can also access specific results:
+    # print(f"\nKey findings:")
+    # print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
+    # print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
+    # print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
     # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
     # print(BC_df.head())
@@ -132,11 +132,19 @@ def main(paths):
 
     features = [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment', 'Frog.abundance', 'Frog.richness']]
     print(features)
+    statistical_modelling.smart_feature_selection_pipeline(merged_df, 'Frog.abundance', features)
     # feature_diagnostics(merged_df, 'average_canopy_openness', features)
     # print("\n \n \n \n \n \n \n")
     # analyze_chm_correlations(merged_df, features)
     # selected_features = smart_feature_selection_pipeline(merged_df, 'average_canopy_openness', features)
-
+    # call the check function with a treatment column called 'treatment'
+    diagnostics = statistical_modelling.data_diagnostics(merged_df, dependent='Frog.abundance', group='treatment')
+    print(diagnostics)
+    plt.hist(merged_df['Frog.abundance'], bins=50, alpha=0.7, color='blue')
+    plt.title('Distribution of Frog Abundance')
+    plt.xlabel('Frog Abundance')
+    plt.ylabel('Frequency')
+    plt.show()
 
 
     ### Statistical Modelling ###

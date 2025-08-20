@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import stats
 from sklearn.metrics import mean_squared_error, r2_score, make_scorer
 import geopandas as gpd
 import pandas as pd
@@ -16,61 +17,399 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
     """
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
 
+def analyze_chm_correlations(merged_df, features):
+    """Analyze correlations in your CHM features specifically"""
+
+    print("=== CHM FEATURE CORRELATION ANALYSIS ===")
+
+    corr_matrix = merged_df[features].corr()
+
+    # Identify correlation clusters
+    print("Correlation matrix:")
+    print(corr_matrix.round(3))
+
+    # Find redundant features
+    redundant_pairs = []
+    for i, feat1 in enumerate(features):
+        for j, feat2 in enumerate(features[i+1:], i+1):
+            corr = abs(corr_matrix.iloc[i, j])
+            if corr > 0.9:
+                redundant_pairs.append((feat1, feat2, corr))
+
+    if redundant_pairs:
+        print(f"\n🚨 HIGHLY REDUNDANT FEATURES:")
+        for feat1, feat2, corr in redundant_pairs:
+            print(f"   {feat1} ↔ {feat2}: {corr:.3f}")
+
+        print(f"\nImpact on Random Forest:")
+        print(f"• Feature importance unreliable")
+        print(f"• CV results highly variable") 
+        print(f"• Overfitting more likely")
+        print(f"• Poor generalization")
+
+    # Suggest feature reduction
+    print(f"\n=== FEATURE REDUCTION RECOMMENDATIONS ===")
+
+    # Group highly correlated features
+    correlation_groups = []
+    used_features = set()
+
+    for feat1 in features:
+        if feat1 in used_features:
+            continue
+
+        group = [feat1]
+        used_features.add(feat1)
+
+        for feat2 in features:
+            if feat2 != feat1 and feat2 not in used_features:
+                corr = abs(corr_matrix.loc[feat1, feat2])
+                if corr > 0.8:
+                    group.append(feat2)
+                    used_features.add(feat2)
+
+        if len(group) > 1:
+            correlation_groups.append(group)
+
+    print(f"Correlation groups found: {len(correlation_groups)}")
+    for i, group in enumerate(correlation_groups):
+        print(f"  Group {i+1}: {group}")
+
+        # Suggest which to keep
+        target_corrs = []
+        for feat in group:
+            target_corr = abs(merged_df['average_canopy_openness'].corr(merged_df[feat]))
+            target_corrs.append((feat, target_corr))
+
+        best_feature = max(target_corrs, key=lambda x: x[1])
+        print(f"    → Keep: {best_feature[0]} (target correlation: {best_feature[1]:.3f})")
+        print(f"    → Remove: {[f for f, _ in target_corrs if f != best_feature[0]]}")
+
+def feature_diagnostics(merged_df, target, features):
+    print("=== CRITICAL DATASET ANALYSIS ===")
+    print(f"Total samples: {len(merged_df)}")
+    print(f"Total features: {len(features)}")
+    print(f"Sample-to-feature ratio: {len(merged_df)/len(features):.1f}")
+    print(f"Features: {features}")
+
+    # Check for the exact problem
+    if len(merged_df) < 30:
+        print("🚨 DATASET TOO SMALL FOR RELIABLE CV!")
+        print("Cross-validation becomes meaningless with tiny datasets")
+        print("Each CV fold has ~2-5 samples - no statistical power")
+
+    # Check feature correlations
+    print(f"\n=== FEATURE CORRELATION ANALYSIS ===")
+    feature_corr_matrix = merged_df[features].corr()
+    high_corr_pairs = []
+
+    for i in range(len(features)):
+        for j in range(i+1, len(features)):
+            corr_val = abs(feature_corr_matrix.iloc[i, j])
+            if corr_val > 0.8:
+                high_corr_pairs.append((features[i], features[j], corr_val))
+
+    if high_corr_pairs:
+        print("🚨 HIGHLY CORRELATED FEATURES DETECTED:")
+        for feat1, feat2, corr in high_corr_pairs:
+            print(f"   {feat1} ↔ {feat2}: {corr:.3f}")
+        print("This causes multicollinearity and unstable CV results!")
+
+    # Check target-feature relationships
+    print(f"\n=== TARGET-FEATURE RELATIONSHIPS ===")
+    for feature in features:
+        corr = merged_df['average_canopy_openness'].corr(merged_df[feature])
+        print(f"{feature}: {corr:.3f}")
+
+def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
+    """
+    Multi-stage feature selection appropriate for small datasets
+    """
+    print("=== SMART FEATURE SELECTION FOR SMALL DATASETS ===")
+    
+    n_samples = len(merged_df)
+    print(f"Dataset size: {n_samples} samples")
+    
+    # STAGE 1: Theory-based pre-filtering
+    print(f"\n📚 STAGE 1: THEORY-BASED PRE-FILTERING")
+    
+    # Based on canopy openness literature, these should be most relevant:
+    theory_based_candidates = {
+        'height_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['mean', 'median', 'max'])],
+        'variability_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['std', 'range', 'cv'])],
+        'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['ExG', 'NDVI', 'GLI'])],
+        'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity'])]
+    }
+    
+    # Select BEST representative from each category
+    stage1_features = []
+    for category, candidates in theory_based_candidates.items():
+        if candidates:
+            print(f"  {category}: {len(candidates)} candidates → selecting best 1-2")
+            
+            # Calculate target correlations for candidates in this category
+            category_corrs = []
+            for feat in candidates:
+                if feat in merged_df.columns:
+                    corr = abs(merged_df[target].corr(merged_df[feat]))
+                    category_corrs.append((feat, corr))
+            
+            # Take top 1-2 from each category
+            category_corrs.sort(key=lambda x: x[1], reverse=True)
+            selected_from_category = [feat for feat, _ in category_corrs[:2]]
+            stage1_features.extend(selected_from_category)
+            
+            for feat, corr in category_corrs[:2]:
+                print(f"    ✅ {feat}: {corr:.3f}")
+    
+    print(f"  Stage 1 result: {len(stage1_features)} features")
+    
+    # STAGE 2: Correlation-based refinement
+    print(f"\n📊 STAGE 2: CORRELATION-BASED REFINEMENT")
+    
+    # Remove highly correlated features within our selected set
+    if len(stage1_features) > 1:
+        feature_corr_matrix = merged_df[stage1_features].corr()
+        
+        # Find and remove redundant features
+        to_remove = set()
+        for i, feat1 in enumerate(stage1_features):
+            for j, feat2 in enumerate(stage1_features[i+1:], i+1):
+                if feat1 not in to_remove and feat2 not in to_remove:
+                    corr = abs(feature_corr_matrix.iloc[i, j])
+                    if corr > 0.85:  # High correlation threshold
+                        # Keep the one with higher target correlation
+                        target_corr1 = abs(merged_df[target].corr(merged_df[feat1]))
+                        target_corr2 = abs(merged_df[target].corr(merged_df[feat2]))
+                        
+                        if target_corr1 >= target_corr2:
+                            to_remove.add(feat2)
+                            print(f"  Removing {feat2} (corr with {feat1}: {corr:.3f})")
+                        else:
+                            to_remove.add(feat1)
+                            print(f"  Removing {feat1} (corr with {feat2}: {corr:.3f})")
+        
+        stage2_features = [f for f in stage1_features if f not in to_remove]
+    else:
+        stage2_features = stage1_features
+    
+    print(f"  Stage 2 result: {len(stage2_features)} features")
+    
+    # STAGE 3: Sample size validation
+    print(f"\n⚖️ STAGE 3: SAMPLE SIZE VALIDATION")
+    
+    ratio = n_samples / len(stage2_features) if stage2_features else 0
+    print(f"  Sample-to-feature ratio: {ratio:.1f}:1")
+    
+    if ratio < 5:
+        print(f"  🚨 Still too many features for dataset size!")
+        print(f"  Further reducing to top {min(3, n_samples//5)} features...")
+        
+        # Final ranking by target correlation
+        final_rankings = []
+        for feat in stage2_features:
+            corr = abs(merged_df[target].corr(merged_df[feat]))
+            final_rankings.append((feat, corr))
+        
+        final_rankings.sort(key=lambda x: x[1], reverse=True)
+        max_features = min(3, n_samples//5, len(final_rankings))
+        stage3_features = [feat for feat, _ in final_rankings[:max_features]]
+        
+        print(f"  Final selection:")
+        for feat, corr in final_rankings[:max_features]:
+            print(f"    ✅ {feat}: {corr:.3f}")
+    else:
+        stage3_features = stage2_features
+        print(f"  ✅ Feature count appropriate for dataset size")
+    
+    print(f"\n🎯 FINAL RESULT: {len(stage3_features)} high-quality features")
+    print(f"   Features: {stage3_features}")
+    print(f"   Final ratio: {n_samples/len(stage3_features):.1f}:1")
+    
+    return stage3_features
+
+def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
+    """
+    Run basic checks for one-way ANOVA suitability.
+    Returns dict with diagnostics and a recommendation.
+    """
+
+    out = {}
+    sub = df[[dependent, group]].dropna()
+    if sub.shape[0] == 0:
+        raise ValueError("No data for the requested columns.")
+    # split groups
+    groups = [g[dependent].astype(float).values for _, g in sub.groupby(group)]
+    labels = list(sub[group].unique())
+    ns = [len(g) for g in groups]
+    out['n_per_group'] = dict(zip(labels, ns))
+    out['total_n'] = sub.shape[0]
+
+    # Requirement checks
+    out['groups_count'] = len(groups)
+    out['independence_note'] = "Check study design: observations must be independent (cannot be tested automatically)."
+
+    # Normality per group (Shapiro if sample small, D'Agostino for larger)
+    normal_results = {}
+    for i, g in enumerate(groups):
+        name = labels[i] if i < len(labels) else f'G{i}'
+        if len(g) < 3:
+            normal_results[name] = {'test': None, 'pvalue': None, 'normal': None, 'note': 'too few samples'}
+            continue
+        try:
+            if len(g) <= 5000:
+                stat, p = stats.shapiro(g)
+                test_name = 'shapiro'
+            else:
+                stat, p = stats.normaltest(g)
+                test_name = 'normaltest'
+            normal_results[name] = {'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > alpha)}
+        except Exception as e:
+            normal_results[name] = {'test': 'error', 'error': str(e), 'normal': None}
+    out['normality_per_group'] = normal_results
+
+    # Homogeneity of variances - Levene (median is robust)
+    try:
+        lev_stat, lev_p = stats.levene(*groups, center='median')
+        out['levene'] = {'stat': float(lev_stat), 'pvalue': float(lev_p), 'homogeneous': (lev_p > alpha)}
+    except Exception as e:
+        out['levene'] = {'error': str(e)}
+
+    # Outliers via IQR per group
+    outliers = {}
+    for i, g in enumerate(groups):
+        name = labels[i] if i < len(labels) else f'G{i}'
+        if len(g) == 0:
+            outliers[name] = {'count': 0}
+            continue
+        q1, q3 = np.percentile(g, [25,75])
+        iqr = q3 - q1
+        lower, upper = q1 - 1.5*iqr, q3 + 1.5*iqr
+        cnt = np.sum((g < lower) | (g > upper))
+        outliers[name] = {'count': int(cnt), 'lower': float(lower), 'upper': float(upper)}
+    out['outliers_per_group'] = outliers
+
+    # Fit OLS and ANOVA table (type II)
+    try:
+        formula = f'{dependent} ~ C({group})'
+        model = smf.ols(formula, data=sub).fit()
+        anova_table = sm.stats.anova_lm(model, typ=2)
+        out['anova_table'] = anova_table.to_dict()
+        # residual tests
+        resid = model.resid
+        if len(resid) >= 3:
+            try:
+                r_stat, r_p = stats.shapiro(resid) if len(resid) <= 5000 else stats.normaltest(resid)
+                out['residual_normality'] = {'test': 'shapiro' if len(resid)<=5000 else 'normaltest',
+                                             'stat': float(r_stat), 'pvalue': float(r_p), 'normal': (r_p > alpha)}
+            except Exception as e:
+                out['residual_normality'] = {'error': str(e)}
+        else:
+            out['residual_normality'] = {'note': 'too few residuals for test'}
+    except Exception as e:
+        out['anova_error'] = str(e)
+
+    # Recommendation logic
+    normals = [v['normal'] for v in normal_results.values() if isinstance(v.get('normal'), (bool, np.bool_))]
+    all_normal = all(normals) if normals else None
+    hom = out.get('levene', {}).get('homogeneous', None)
+
+    if all_normal is True and hom is True:
+        rec = "One-way ANOVA is appropriate (assumptions satisfied)."
+    elif hom is False and all_normal is True:
+        rec = "Variances unequal -> use Welch's ANOVA or robust methods."
+    elif all_normal is False and hom is True:
+        rec = "Non-normal groups -> Kruskal-Wallis may be preferable (nonparametric)."
+    elif all_normal is False and hom is False:
+        rec = "Both normality and homogeneity violated -> consider nonparametric tests or transform data."
+    else:
+        rec = "Insufficient info; inspect plots and group sizes."
+
+    out['recommendation'] = rec
+
+    # Optional plots
+    if make_plots:
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        # boxplot by group
+        plt.figure(figsize=(6,4))
+        sns.boxplot(x=group, y=dependent, data=sub)
+        plt.title('Boxplot by group')
+        plt.show()
+        # QQ plot of residuals if model exists
+        if 'anova_table' in out:
+            sm.qqplot(model.resid, line='s')
+            plt.title('QQ plot of residuals')
+            plt.show()
+        # hist per group
+        for lab in labels:
+            arr = sub[sub[group]==lab][dependent].astype(float).dropna().values
+            plt.figure()
+            plt.hist(arr, bins=30)
+            plt.title(f'Histogram: {lab}')
+            plt.show()
+
+    return out
+
 
 def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_openness", "Frog.richness", "Frog.abundance"]):
-  '''
-  Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
+    '''
+    Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
+        
     
-  
-  Args:
-    dataframes: A list of tuples specifying the dataframes you wish to merge with paths. Input should be of the form [('name','path'),('name2','path2')]
-    filter: A string to filter the point.label column using regex, selects only those column names included in the expression. (e.g. "OPE|BC"). If None, no filtering is done.
+    Args:
+        dataframes: A list of tuples specifying the dataframes you wish to merge with paths. Input should be of the form [('name','path'),('name2','path2')]
+        filter: A string to filter the point.label column using regex, selects only those column names included in the expression. (e.g. "OPE|BC"). If None, no filtering is done.
 
-  Returns:
-    merged_df: A pandas DataFrame containing the merged data.
-  '''
+    Returns:
+        merged_df: A pandas DataFrame containing the merged data.
+    '''
 
-  print(f"\n \n Loading and merging data {[name for name, path in dataframes]}...")
-  merged_df = pd.DataFrame()
-  for i in range(len(dataframes)):
-      name, path = dataframes[i]
-      try:
-        df = gpd.read_file(path)
-      except Exception as e:
-        print(f"Error reading file {path}: {e}")
-        continue
+    print(f"\n \n Loading and merging data {[name for name, path in dataframes]}...")
+    merged_df = pd.DataFrame()
+    for i in range(len(dataframes)):
+        name, path = dataframes[i]
+        try:
+            df = gpd.read_file(path)
+        except Exception as e:
+            print(f"Error reading file {path}: {e}")
+            continue
 
 
-      df = df.dropna() # Remove rows with NaN values
-      if filter != None:
-        df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
-      df = df.rename(columns={col: f'{col}_{name}' for col in df.columns if col != 'point.label'})
+        df = df.dropna() # Remove rows with NaN values
+        if filter != None:
+            df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
+        df = df.rename(columns={col: f'{col}_{name}' for col in df.columns if col != 'point.label'})
 
-      if i == 0:
-          merged_df = df
-          merged_df = merged_df.rename(columns={f'geometry_{name}': 'geometry'})
-          merged_df = merged_df.rename(columns={f'treatment_{name}': 'treatment'})
+        if i == 0:
+            merged_df = df
+            merged_df = merged_df.rename(columns={f'geometry_{name}': 'geometry'})
+            merged_df = merged_df.rename(columns={f'treatment_{name}': 'treatment'})
 
-          for column in dependent_variables:
-              merged_df = merged_df.rename(columns={f'{column}_{name}': column})
-              if column not in merged_df.columns:
-                print(f"Warning !!!!! : {column} not found in {name} columns.")
-          print(f"Loaded data from {name}")
-
-      else:
-          if np.allclose(merged_df['average_canopy_openness'], df[f'average_canopy_openness_{name}'], equal_nan=True) & check_geometries(merged_df['geometry'], df[f'geometry_{name}']):
-              # If they are the same, drop one and rename the other
-              merged_df = merged_df.merge(df, on='point.label', how='inner')
-              for column in dependent_variables:
+            for column in dependent_variables:
                 merged_df = merged_df.rename(columns={f'{column}_{name}': column})
-              if column not in merged_df.columns:
-                print(f"Warning !!!!! : {column} not found in merged_df columns.")
-              merged_df = merged_df.drop(columns=[f'geometry_{name}'])
-              merged_df = merged_df.drop(columns=[f'treatment_{name}'])
-              print(f"No discrepancies found in {name}, merged successfully.")
-          else:
-              print(f"discrepancies found in {name}, NOT MERGED.")
-  return merged_df
+                if column not in merged_df.columns:
+                    print(f"Warning !!!!! : {column} not found in {name} columns.")
+            print(f"Loaded data from {name}")
+
+        else:
+            print(df)
+            #if np.allclose(merged_df['average_canopy_openness'], df[f'average_canopy_openness_{name}'], equal_nan=True) & check_geometries(merged_df['geometry'], df[f'geometry_{name}']):
+            if check_geometries(merged_df['geometry'], df[f'geometry_{name}']):
+                # If they are the same, drop one and rename the other
+                for column in dependent_variables:
+                    if f'{column}_{name}' in df.columns:
+                        df = df.drop(columns=[f'{column}_{name}'], axis=1)
+                        print(f"dropping columns {column}")
+                        print("remaining columns : ", df.columns)
+                    else:
+                        print(f"Warning !!!!! : {column} not found in merged_df columns.")
+                df = df.drop(columns=[f'geometry_{name}', f'treatment_{name}'], axis=1)  # Drop geometry and treatment columns from df
+                merged_df = merged_df.merge(df, on='point.label', how='inner')
+                print(f"No discrepancies found in {name}, merged successfully.")
+            else:
+                print(f"discrepancies found in {name}, NOT MERGED.")
+    return merged_df
 
 
 def simple_linear_regression(x, y):
@@ -294,7 +633,6 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
       plt.show()
 
     return model, mse, rmse, r2, y_pred
-
 
 
 def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2, random_state=42):
@@ -705,14 +1043,21 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
             plt.legend()
             plt.grid(True, alpha=0.3)
         
-        # 4. Loadings heatmap
+        # 4. Loadings heatmap - FIXED VERSION
         plt.subplot(2, 3, 4)
-        n_components_to_show = min(5, n_components)
+        n_components_to_show = min(5, n_components, len(target_columns))
+        
+        # Create loadings dataframe with correct dimensions
         loadings_df = pd.DataFrame(
-            loadings[:, :n_components_to_show],
+            loadings[:, :n_components_to_show],  # This should be [n_variables, n_components]
             columns=[f'PC{i+1}' for i in range(n_components_to_show)],
-            index=target_columns
+            index=target_columns  # This should match the number of rows in loadings
         )
+        
+        # Debug print to verify dimensions
+        print(f"DEBUG: loadings shape: {loadings.shape}")
+        print(f"DEBUG: target_columns length: {len(target_columns)}")
+        print(f"DEBUG: n_components_to_show: {n_components_to_show}")
         
         sns.heatmap(loadings_df, annot=True, cmap='RdBu_r', center=0, 
                    fmt='.2f', cbar_kws={'label': 'Loading'})
@@ -767,6 +1112,7 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
         plt.grid(True, alpha=0.3)
         
         plt.tight_layout()
+        plt.savefig("Results/PCA_analysis_results.png")
         plt.show()
     
     # Statistical analysis of treatment separation
@@ -968,7 +1314,6 @@ def PCA_interpretation(pca_results, alpha=0.05):
     }
     
     return interpretation
-
 
 # Add this to your main function or create a separate analysis function:
 def comprehensive_PCA_analysis(df, target_columns=None, treatment_column='treatment'):
