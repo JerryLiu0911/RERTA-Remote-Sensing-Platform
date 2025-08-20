@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import defaultdict
 import pandas as pd
+from skimage.feature import graycomatrix, graycoprops
 
 
 def clip_below_zero(data):
@@ -23,25 +24,39 @@ def clip_below_zero(data):
         print("❌ Filtering failed!")
     return data[data >= 0]
 
-def clip_and_remove_outliers(data):
+def clip_above_num(data, upper_bound=20):
     """
-    Clips the input data array to remove negative values.
+    Clips the input data array to remove values above a specified upper bound.
     """
-    clipped_data = data[data >= 0]
-    negative_count = (clipped_data < 0).sum()
-    print(f"Filtering check: {negative_count} buffers with negative mins (should be 0)")
-    if negative_count == 0:
+    clipped_data = data[data <= upper_bound]
+    above_count = (clipped_data > upper_bound).sum()
+    print(f"Filtering check: {above_count} buffers with values above {upper_bound} (should be 0)")
+    if above_count == 0:
         print("✅ Filtering working correctly!")
     else:
         print("❌ Filtering failed!")
+    return data[data <= upper_bound]
+
+def remove_outliers(data, thresh=50):
+    """
+    Clips the input data array to remove negative values.
+    """
     
     # Remove outliers using 2*IQR
-    Q1 = np.percentile(clipped_data, 25)
-    Q3 = np.percentile(clipped_data, 75)
+    Q1 = np.percentile(data, 25)
+    Q3 = np.percentile(data, 75)
     IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-    return data[(data >= 0) & (data >= lower_bound) & (data <= upper_bound)]
+    lower_bound = Q1 - thresh * IQR
+    upper_bound = Q3 + thresh * IQR
+    return data[(data >= lower_bound) & (data <= upper_bound)]
+
+def combine_filters(filters):
+    """
+    Combines multiple filtering functions into a single function.
+    """
+    for f in filters:
+        data = f(data)
+    return data
 
 def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
     """
@@ -92,7 +107,33 @@ def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distanc
 
     return buffered
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, buffer_geom_path = None, show_plots=False, value='y', save_plots=False): 
+def canopy_openness_proxy(data):
+    return {
+        'canopy_openness': float(len(data[data < 0.8])) / len(data) * 100  # Percentage of positive values
+    }
+
+def GLCM(data, levels = 16):
+    if data.dtype != np.uint16:
+        vmin = float(np.nanmin(data))
+        vmax = float(np.nanmax(data))
+        if vmin == vmax:
+            return None  # constant image
+        bins = np.linspace(vmin, vmax + 1e-12, levels + 1)
+        q = np.clip(np.digitize(data, bins) - 1, 0, levels - 1)
+        dtype = np.uint8 if levels <= 256 else np.uint16
+        data = q.astype(dtype, copy=False)
+    print("Using GLCM for texture analysis")
+    glcm = graycomatrix(data, distances=[1], angles=[0], levels=levels, symmetric=True, normed=True)
+    return {
+        'contrast': graycoprops(glcm, 'contrast')[0, 0],
+        'dissimilarity': graycoprops(glcm, 'dissimilarity')[0, 0],
+        'homogeneity': graycoprops(glcm, 'homogeneity')[0, 0],
+        'energy': graycoprops(glcm, 'energy')[0, 0],
+        'correlation': graycoprops(glcm, 'correlation')[0, 0],
+        'ASM': graycoprops(glcm, 'ASM')[0, 0]
+    }
+
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='y', save_plots=False): 
     '''
     
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
@@ -107,6 +148,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         output_buffer_path (str): Path to save the buffered geometries.
         output_zonal_gpkg (str): Path to save the zonal statistics results.
         filtering_logic (function) : A function that takes a DataFrame and returns a filtered DataFrame.
+        proxies (func): A function which returns a dictionary of proxy functions to apply to the data, e.g. gis.canopy_openness_proxy
         buffer_geom_path (str, optional): Path to a GeoPackage containing pre-defined buffer geometries.
         value (str) : Name of the variable being plotted.
         create_plots (bool): Whether to create distribution plots by treatment region.
@@ -155,13 +197,20 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 masked_data, masked_transform = rasterio.mask.mask(
                     src, [row.geometry], crop=True, nodata=src.nodata
                 )
-                
-
-                # Flatten the array and remove nodata, vectorising for better performance
+                # Masked data is now the only data we care about
+                valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data
+                # # Flatten the array and remove nodata, vectorising for better performance
                 valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
                 
+
+                valid_data = np.asarray(valid_data, dtype=float)  # Ensure data is 1D
+                finite_mask = np.isfinite(valid_data)
+                valid_data = valid_data[finite_mask]
+        
+
                 # Apply your custom clipping (remove values < 0)
                 clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
+
 
                 if len(clipped_data) > 0:
                     region_data[region_name].extend(clipped_data)
@@ -174,9 +223,19 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         'median': float(np.median(clipped_data)),
                         'range': float(np.max(clipped_data) - np.min(clipped_data)),
                         'count': len(clipped_data),
-                        'canopy_openness': float(len(clipped_data[clipped_data < 0.8])) / len(clipped_data) * 100  # Percentage of positive values
                     }
-
+                    if proxies:
+                        try:
+                            stats = stats | proxies(masked_data[0])
+                        except Exception as e:
+                            print(f"Error applying proxies: {e}")
+                            continue
+                            # print('try 1d')
+                            # try:
+                            #     stats = stats | proxies(clipped_data)
+                            # except Exception as e:
+                            #     print(f"Error applying proxies: {e}")
+                            #     continue
                 else:
                     # No valid data in this buffer
                     stats = {
@@ -194,10 +253,11 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 print(f"Processed buffer {int(idx/16)+1}    {idx+1}/{len(buffered)}")
                 
             except Exception as e:
-                print(f"Error processing buffer {idx}: {e}")
+                print(f"Error processing buffer {idx}, at {row.get('point.label')} : {e}")
                 continue
             
     zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
+    region_data = {k: region_data[k] for k in sorted(region_data.keys())}
 
     # --- Save result ---
     zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG", overwrite=True)
@@ -273,23 +333,45 @@ def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), ou
     
     for idx, (region_name, data) in enumerate(region_data.items()):
         ax = axes[idx]
-        data_array = np.array(data)
         
-        # Create histogram
-        ax.hist(data_array, bins=50, alpha=0.7, color=plt.cm.Set3(idx), 
-               edgecolor='black', linewidth=0.5)
-        
-        # Statistics
-        mean_val = np.mean(data_array)
-        std_val = np.std(data_array)
-        count_val = len(data_array)
-        
+        # Ensure numeric and remove non-finite values (NaN, +inf, -inf)
+        data_array = np.asarray(data, dtype=float)
+        finite_mask = np.isfinite(data_array)
+        data_to_plot = data_array[finite_mask]
+
+        # If nothing left to plot, annotate and skip plotting to avoid histogram errors
+        if data_to_plot.size == 0:
+            mean_val = np.nan
+            std_val = np.nan
+            count_val = 0
+            ax.text(0.02, 0.98, "No finite data", transform=ax.transAxes,
+                    verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+            ax.set_title(f'{region_name}', fontsize=12, fontweight='bold')
+            ax.set_xlabel(value)
+            ax.set_ylabel('Frequency')
+            ax.grid(True, alpha=0.3)
+            continue
+
+        # Create histogram with only finite values
+        try:
+            ax.hist(data_to_plot, bins=50, alpha=0.7, color=plt.cm.Set3(idx),
+                    edgecolor='black', linewidth=0.5)
+        except Exception as e:
+            print(f"Histogram error for region {region_name}: {e}")
+            # Fallback: simple density plot
+            sns.kdeplot(data_to_plot, ax=ax, fill=True, color=plt.cm.Set3(idx))
+
+        # Statistics (on finite values)
+        mean_val = float(np.mean(data_to_plot))
+        std_val = float(np.std(data_to_plot))
+        count_val = int(data_to_plot.size)
+         
         stats_text = f"Mean: {mean_val:.2f}m\nStd: {std_val:.2f}m\nCount: {count_val}"
         ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, 
                 verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
         ax.axvline(mean_val, color='red', linestyle='--', linewidth=2, 
-                  label=f"Mean: {mean_val:.2f}m")
+                label=f"Mean: {mean_val:.2f}m")
         
         ax.set_title(f'{region_name}', fontsize=12, fontweight='bold')
         ax.set_xlabel(value)
@@ -370,13 +452,14 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
 # # Use optimized functions for better performance
 # zonal_gdf, figures = zonal_statistics(
 #     gpkg_path="Frogs_result.gpkg",
-#     raster_path="G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif", 
+#     raster_path="D:/Jerry/Palapa July2025 Clre.tif", 
 #     output_buffer_path=0, 
-#     filtering_logic=clip_and_remove_outliers,
-#     output_zonal_gpkg="Data/Palapa June2019 CHM Statistics.gpkg", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Data/Palapa June2025 Clre Statistics.gpkg", 
 #     buffer_geom_path="Data/Palapa_transects_buffer.gpkg",
-#     show_plots=True,
-#     save_plots=True
+#     #proxies=canopy_openness_proxy,
+#     show_plots=True
+#     #save_plots=True
 # )
 
 # print("Plots created and saved successfully!")
