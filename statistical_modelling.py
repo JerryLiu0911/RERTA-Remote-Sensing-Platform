@@ -153,7 +153,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     stage1_features = []
     for category, candidates in theory_based_candidates.items():
         if candidates:
-            print(f"  {category}: {len(candidates)} candidates → selecting best 1-2")
+            print(f"  {category}: {len(candidates)} candidates → selecting best 2-3")
             
             # Calculate target correlations for candidates in this category
             category_corrs = []
@@ -185,7 +185,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
             for j, feat2 in enumerate(stage1_features[i+1:], i+1):
                 if feat1 not in to_remove and feat2 not in to_remove:
                     corr = abs(feature_corr_matrix.iloc[i, j])
-                    if corr > 0.85:  # High correlation threshold
+                    if corr > 0.8:  # High correlation threshold
                         # Keep the one with higher target correlation
                         target_corr1 = abs(merged_df[target].corr(merged_df[feat1]))
                         target_corr2 = abs(merged_df[target].corr(merged_df[feat2]))
@@ -912,6 +912,10 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
     y_pred = model.predict(x_train)
 
     # Get feature importances
+    import shap
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(x_train)
+    shap_importance = np.mean(np.abs(shap_values), axis=0)
     importances = model.feature_importances_
     features = df[features].columns
 
@@ -960,7 +964,21 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
                   va='center',
                   fontsize=10)
       plt.xlabel('Importance Score')
-      plt.title('Feature Relevance to Canopy Openness')
+      plt.title(f'Feature Relevance to {target}')
+      plt.tight_layout()
+
+      plt.figure(figsize=(10,6))
+      bars = plt.barh(features, shap_importance)
+      for bar in bars:
+          width = bar.get_width()
+          plt.text(width, 
+                  bar.get_y() + bar.get_height()/2,
+                  f'{width:.3f}',
+                  ha='left',
+                  va='center',
+                  fontsize=10)
+      plt.xlabel('Importance Score')
+      plt.title(f'Feature Relevance to {target}')
       plt.tight_layout()
       plt.show()
 
@@ -1142,6 +1160,7 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
     best_models = {}
     
     for feature in features:
+        df[target]=df[target].dropna()
         print(f"\n{'='*50}")
         print(f"ANALYZING: {feature}")
         print(f"{'='*50}")
@@ -1154,10 +1173,10 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
             print(f"{method.capitalize()} correlation: {corr:.4f}")
         
         models = {}
+        X = sm.add_constant(df[feature].dropna())
         
         # 1. OLS (your current method)
         try:
-            X = sm.add_constant(df[feature])
             y = df[target]
             ols_model = sm.OLS(y, X).fit()
             models['OLS'] = ols_model
@@ -1169,17 +1188,17 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
             
         except Exception as e:
             print(f"OLS failed: {e}")
-        
-        # 2. Poisson GLM (for count data)
+
+        # 2. Negative Binomial GLM (for count data)
         if is_count:
             try:
-                poisson_model = sm.GLM(y, X, family=sm.families.Poisson()).fit()
-                models['Poisson'] = poisson_model
-                
-                print(f"\nPoisson GLM Results:")
-                print(f"  Pseudo R²: {1 - poisson_model.deviance/poisson_model.null_deviance:.4f}")
-                print(f"  p-value: {poisson_model.pvalues.iloc[1]:.4f}")
-                print(f"  AIC: {poisson_model.aic:.2f}")
+                negative_binomial_model = sm.GLM(y, X, family=sm.families.NegativeBinomial()).fit()
+                models['Negative_Binomial'] = negative_binomial_model
+
+                print(f"\nNegative Binomial GLM Results:")
+                print(f"  Pseudo R²: {1 - negative_binomial_model.deviance/negative_binomial_model.null_deviance:.4f}")
+                print(f"  p-value: {negative_binomial_model.pvalues.iloc[1]:.4f}")
+                print(f"  AIC: {negative_binomial_model.aic:.2f}")
                 
             except Exception as e:
                 print(f"Poisson GLM failed: {e}")
@@ -1202,8 +1221,8 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
         # Select best model for this feature
         if models:
             # Select based on AIC for GLMs, R² for OLS
-            if 'Poisson' in models and models['Poisson'].aic < models.get('OLS', type('obj', (object,), {'aic': float('inf')})).aic:
-                best_model = ('Poisson', models['Poisson'])
+            if 'Negative_Binomial' in models and models['Negative_Binomial'].aic < models.get('OLS', type('obj', (object,), {'aic': float('inf')})).aic:
+                best_model = ('Negative_Binomial', models['Negative_Binomial'])
             elif 'Log_OLS' in models and models['Log_OLS'].rsquared > models.get('OLS', type('obj', (object,), {'rsquared': 0})).rsquared:
                 best_model = ('Log_OLS', models['Log_OLS'])
             else:

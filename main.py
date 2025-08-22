@@ -1,3 +1,4 @@
+import os
 import align_coords
 import coordinate_extraction
 import statistical_modelling
@@ -120,7 +121,7 @@ def main(paths):
     # )
 
     # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint='post3')
-    preprocess_dataset(paths, 'Palapa July2025 DEM', 'frogs', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+    # preprocess_dataset(paths, 'Palapa July2025 DEM', 'frogs', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
     # preprocess_dataset(paths, 'Palapa July2025 GLI', 'frogs', timepoint='post3', filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
 
     ### Combining and analyzing data into dataframes ###
@@ -132,8 +133,8 @@ def main(paths):
     print(gis.gpd.read_file(paths['Palapa July2025 DEM']).head())
     merged_df = statistical_modelling.load_data(
             [#('GLI', paths['GLI']),
-            ('CHM', paths['CHM']),
-            ('ExG', paths['ExG'])
+            ('CHM', paths['Palapa July2025 DEM']),
+            ('GLI', paths['Palapa July2025 GLI'])
             #('DEM', paths['DEM']),
             ],
             filter = None)
@@ -143,7 +144,7 @@ def main(paths):
     
     # Option 2: Use specific features
     all_features = ['canopy_openness_CHM', 'Frog.abundance', 'Frog.richness']
-    all_features.extend([col for col in merged_df.columns if 'ExG' in col])
+    all_features.extend([col for col in merged_df.columns if 'GLI' in col])
 
 
     # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
@@ -155,6 +156,7 @@ def main(paths):
     features = [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment', 'Frog.abundance', 'Frog.richness']]
     print(features)
     print(merged_df['point.label'])
+    statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', features=features)
     features = statistical_modelling.smart_feature_selection_pipeline(merged_df, 'Frog.abundance', features)
     pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features)
     
@@ -163,9 +165,9 @@ def main(paths):
     print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
     print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
     print(f"Treatment separation quality: {interpretation['separation_quality']}")
-    sns.heatmap(merged_df[features].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
-
-    # plt.show()
+    sns.heatmap(merged_df[[column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment']]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
+    plt.show()
+    
     # feature_diagnostics(merged_df, 'average_canopy_openness', features)
     # print("\n \n \n \n \n \n \n")
     # analyze_chm_correlations(merged_df, features)
@@ -182,11 +184,10 @@ def main(paths):
 
     ### Statistical Modelling ###
 
-    # statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', features=features)
     # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
-    # statistical_modelling.enhanced_multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
+    statistical_modelling.enhanced_multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
 
 
 paths = {
@@ -256,3 +257,11 @@ paths = {
 
 #preprocess_dataset(paths, 'CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
 main(paths)
+# for key, value in paths.items():
+#     print(f"Processing {key}: {value}")
+#     if os.path.exists(value):
+#         print(f"  Path exists.")
+#         is_writable = os.access(value, os.W_OK)
+#         print(f"{key} writable: {is_writable}")
+#     else:
+#         print(f" {value}Path does not exist.")

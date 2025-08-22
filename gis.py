@@ -224,12 +224,12 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
 
                     stats = {
                         'mean': float(np.mean(clipped_data)),
-                        'min': float(np.min(clipped_data)),
-                        'max': float(np.max(clipped_data)),
-                        'std': float(np.std(clipped_data)),
-                        'median': float(np.median(clipped_data)),
+                        #'min': float(np.min(clipped_data)),
+                        #'max': float(np.max(clipped_data)),
+                        #'std': float(np.std(clipped_data)),
+                        #'median': float(np.median(clipped_data)),
                         'range': float(np.max(clipped_data) - np.min(clipped_data)),
-                        'count': len(clipped_data),
+                        #'count': len(clipped_data),
                         'cv': float(np.std(clipped_data) / np.mean(clipped_data)) if np.mean(clipped_data) != 0 else 0
                     }
                     if proxies:
@@ -299,10 +299,13 @@ def get_region_data(gpkg_path, value_column):
     """
     gdf = gpd.read_file(gpkg_path)
 
+
     region_data = defaultdict(list)
     for index, row in gdf.iterrows():
         region_name = row.get('treatment', f'Treatment {index}')
         region_data[region_name].append(row[value_column])
+
+    region_data = {k: region_data[k] for k in sorted(region_data.keys())}
     return region_data
 
 def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), output_path=None, save_plots=False):
@@ -370,13 +373,13 @@ def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), ou
         mean_val = float(np.mean(data_to_plot))
         std_val = float(np.std(data_to_plot))
         count_val = int(data_to_plot.size)
-         
-        stats_text = f"Mean: {mean_val:.2f}m\nStd: {std_val:.2f}m\nCount: {count_val}"
-        ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, 
+
+        stats_text = f"Mean: {mean_val:.2f}\nStd: {std_val:.2f}\nCount: {count_val}"
+        ax.text(0.02, 0.98, stats_text, transform=ax.transAxes,
                 verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
         ax.axvline(mean_val, color='red', linestyle='--', linewidth=2, 
-                label=f"Mean: {mean_val:.2f}m")
+                label=f"Mean: {mean_val:.2f}")
         
         ax.set_title(f'{region_name}', fontsize=12, fontweight='bold')
         ax.set_xlabel(value)
