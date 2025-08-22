@@ -15,6 +15,15 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
     Compare two geometries using equals_exact with a small tolerance
     to account for floating point differences
     """
+
+    is_exact = [g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2)]
+
+    for i, (g1, g2) in enumerate(zip(geom1, geom2)):
+        if not g1.equals_exact(g2, tolerance):
+            print(f"Geometry mismatch at index {i}:")
+            print(f"  Geometry 1: {g1}")
+            print(f"  Geometry 2: {g2}")
+
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
 
 def analyze_chm_correlations(merged_df, features):
@@ -133,14 +142,13 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     # STAGE 1: Theory-based pre-filtering
     print(f"\n📚 STAGE 1: THEORY-BASED PRE-FILTERING")
     
-    # Based on canopy openness literature, these should be most relevant:
+    # Based on literature, these should be most relevant:
     theory_based_candidates = {
         'height_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['mean', 'median', 'max'])],
         'variability_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['std', 'range', 'cv'])],
         'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['ExG', 'NDVI', 'GLI'])],
-        'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity'])]
+        'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity', 'dissimilarity', 'ASM', 'energy', 'correlation'])],
     }
-    
     # Select BEST representative from each category
     stage1_features = []
     for category, candidates in theory_based_candidates.items():
@@ -151,15 +159,15 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
             category_corrs = []
             for feat in candidates:
                 if feat in merged_df.columns:
-                    corr = abs(merged_df[target].corr(merged_df[feat]))
+                    corr = abs(merged_df[target].corr(merged_df[feat], method='spearman'))
                     category_corrs.append((feat, corr))
             
             # Take top 1-2 from each category
             category_corrs.sort(key=lambda x: x[1], reverse=True)
-            selected_from_category = [feat for feat, _ in category_corrs[:2]]
+            selected_from_category = [feat for feat, _ in category_corrs[:3]]
             stage1_features.extend(selected_from_category)
             
-            for feat, corr in category_corrs[:2]:
+            for feat, corr in category_corrs[:3]:
                 print(f"    ✅ {feat}: {corr:.3f}")
     
     print(f"  Stage 1 result: {len(stage1_features)} features")
@@ -228,7 +236,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     
     return stage3_features
 
-def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
+def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=0.05, make_plots=False):
     """
     Run basic checks for one-way ANOVA suitability.
     Returns dict with diagnostics and a recommendation.
@@ -238,7 +246,8 @@ def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
     sub = df[[dependent, group]].dropna()
     if sub.shape[0] == 0:
         raise ValueError("No data for the requested columns.")
-    # split groups
+    
+    # Split groups
     groups = [g[dependent].astype(float).values for _, g in sub.groupby(group)]
     labels = list(sub[group].unique())
     ns = [len(g) for g in groups]
@@ -248,6 +257,44 @@ def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
     # Requirement checks
     out['groups_count'] = len(groups)
     out['independence_note'] = "Check study design: observations must be independent (cannot be tested automatically)."
+
+    # Enhanced descriptive statistics per group
+    desc_stats = {}
+    for i, g in enumerate(groups):
+        name = labels[i] if i < len(labels) else f'G{i}'
+        if len(g) == 0:
+            desc_stats[name] = {'count': 0}
+            continue
+            
+        stats_dict = {
+            'count': len(g),
+            'mean': float(np.mean(g)),
+            'median': float(np.median(g)),
+            'std': float(np.std(g)),
+            'min': float(np.min(g)),
+            'max': float(np.max(g)),
+            'range': float(np.max(g) - np.min(g)),
+            'q1': float(np.percentile(g, 25)),
+            'q3': float(np.percentile(g, 75)),
+            'iqr': float(np.percentile(g, 75) - np.percentile(g, 25)),
+            'skewness': float(stats.skew(g)),
+            'kurtosis': float(stats.kurtosis(g)),
+            'cv': float(np.std(g) / np.mean(g)) if np.mean(g) != 0 else np.nan
+        }
+        desc_stats[name] = stats_dict
+    
+    out['descriptive_stats'] = desc_stats
+    
+    # Print descriptive statistics summary
+    print("\nDESCRIPTIVE STATISTICS BY GROUP:")
+    for group_name, stats_dict in desc_stats.items():
+        print(f"\n{group_name} (n={stats_dict.get('count', 0)}):")
+        print(f"  Mean ± SD: {stats_dict.get('mean', np.nan):.3f} ± {stats_dict.get('std', np.nan):.3f}")
+        print(f"  Median [Q1, Q3]: {stats_dict.get('median', np.nan):.3f} [{stats_dict.get('q1', np.nan):.3f}, {stats_dict.get('q3', np.nan):.3f}]")
+        print(f"  Range: {stats_dict.get('min', np.nan):.3f} - {stats_dict.get('max', np.nan):.3f}")
+        print(f"  Skewness: {stats_dict.get('skewness', np.nan):.3f}")
+        print(f"  Kurtosis: {stats_dict.get('kurtosis', np.nan):.3f}")
+        print(f"  CV: {stats_dict.get('cv', np.nan):.3f}")
 
     # Normality per group (Shapiro if sample small, D'Agostino for larger)
     normal_results = {}
@@ -292,7 +339,7 @@ def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
     # Fit OLS and ANOVA table (type II)
     try:
         formula = f'{dependent} ~ C({group})'
-        model = smf.ols(formula, data=sub).fit()
+        model = sm.OLS.from_formula(formula, data=sub).fit()
         anova_table = sm.stats.anova_lm(model, typ=2)
         out['anova_table'] = anova_table.to_dict()
         # residual tests
@@ -308,6 +355,222 @@ def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
             out['residual_normality'] = {'note': 'too few residuals for test'}
     except Exception as e:
         out['anova_error'] = str(e)
+
+    # Distribution identification
+    if identify_distributions:
+        import warnings
+        warnings.filterwarnings('ignore')  # Suppress distribution fitting warnings
+        
+        distributions = {}
+        # Candidate distributions to test - include both standard and GLM-relevant distributions
+        candidate_dists = [
+            stats.norm, stats.lognorm, stats.expon, stats.gamma, 
+            stats.beta, stats.weibull_min, stats.t, stats.chi2,
+            stats.nbinom, stats.poisson
+        ]
+        dist_names = ['Normal', 'Log-normal', 'Exponential', 'Gamma', 
+                      'Beta', 'Weibull', 'Student\'s t', 'Chi-squared',
+                      'Negative Binomial', 'Poisson']
+        
+        # Map distributions to GLM families
+        glm_family_map = {
+            'Normal': {'family': 'Gaussian', 'default_link': 'identity'},
+            'Log-normal': {'family': 'Gaussian', 'default_link': 'log', 'transform': 'log'},
+            'Gamma': {'family': 'Gamma', 'default_link': 'inverse'},
+            'Exponential': {'family': 'Gamma', 'default_link': 'log'},
+            'Poisson': {'family': 'Poisson', 'default_link': 'log'},
+            'Negative Binomial': {'family': 'NegativeBinomial', 'default_link': 'log'},
+            'Beta': {'family': 'Beta', 'default_link': 'logit'}
+        }
+        
+        for i, g in enumerate(groups):
+            name = labels[i] if i < len(labels) else f'G{i}'
+            if len(g) < 5:  # Need enough data for fitting
+                distributions[name] = {'best_fit': None, 'note': 'too few samples'}
+                continue
+                
+            g_cleaned = g[~np.isnan(g)]  # Remove NaNs
+            if len(g_cleaned) < 3:
+                distributions[name] = {'best_fit': None, 'note': 'too few non-NaN samples'}
+                continue
+                
+            # Check if this is count data
+            is_count = np.all(g_cleaned == np.round(g_cleaned)) and np.all(g_cleaned >= 0)
+            is_binary = np.all(np.isin(g_cleaned, [0, 1]))
+            is_proportion = np.all((g_cleaned >= 0) & (g_cleaned <= 1))
+            
+            # Rescale data for distributions with bounded support
+            g_min, g_max = np.min(g_cleaned), np.max(g_cleaned)
+            g_range = g_max - g_min
+            
+            # Scale to [0,1] for Beta
+            if g_range > 0:
+                g_scaled_01 = (g_cleaned - g_min) / g_range
+            else:
+                g_scaled_01 = np.zeros_like(g_cleaned)
+            
+            # Scale to positive for gamma, lognorm, etc.
+            if g_min <= 0:
+                g_scaled_pos = g_cleaned - g_min + 0.01  # Shift to positive
+            else:
+                g_scaled_pos = g_cleaned
+                
+            # Fit distributions and calculate AIC
+            results = []
+            
+            # Calculate additional GLM-relevant statistics
+            mean_val = np.mean(g_cleaned)
+            var_val = np.var(g_cleaned)
+            dispersion = var_val / mean_val if mean_val > 0 else np.nan
+            zero_prop = np.mean(g_cleaned == 0)
+            
+            for j, dist in enumerate(candidate_dists):
+                try:
+                    # Skip distributions that don't match data characteristics
+                    if is_count and dist not in [stats.poisson, stats.nbinom]:
+                        continue
+                    if is_binary and dist not in [stats.bernoulli, stats.binom]:
+                        continue
+                    if is_proportion and dist not in [stats.beta]:
+                        continue
+                        
+                    # Use appropriate data scaling for each distribution
+                    if dist == stats.beta:
+                        data_to_fit = g_scaled_01
+                    elif dist in [stats.lognorm, stats.gamma, stats.weibull_min, stats.chi2, stats.expon]:
+                        data_to_fit = g_scaled_pos
+                    elif dist == stats.poisson or dist == stats.nbinom:
+                        if not is_count:
+                            continue
+                        data_to_fit = g_cleaned
+                    else:
+                        data_to_fit = g_cleaned
+                        
+                    # Fit distribution
+                    params = dist.fit(data_to_fit)
+                    
+                    # Calculate log-likelihood
+                    log_likelihood = np.sum(dist.logpdf(data_to_fit, *params))
+                    
+                    # Calculate AIC
+                    k = len(params)
+                    aic = 2 * k - 2 * log_likelihood
+                    
+                    # K-S test
+                    ks_stat, ks_p = stats.kstest(data_to_fit, dist.cdf, args=params)
+                    
+                    results.append({
+                        'distribution': dist_names[j],
+                        'params': params,
+                        'aic': aic,
+                        'ks_stat': ks_stat,
+                        'ks_p': ks_p,
+                        'dist_obj': dist,
+                        'scaled_data': data_to_fit
+                    })
+                except Exception as e:
+                    continue  # Skip failed fits
+                    
+            # Find best fit (lowest AIC)
+            if results:
+                results.sort(key=lambda x: x['aic'])
+                best_fit = results[0]
+                
+                # Get GLM family information if available
+                glm_family = glm_family_map.get(best_fit['distribution'], 
+                                              {'family': 'Unknown', 'default_link': 'identity'})
+                
+                # Override family based on data characteristics
+                if is_count and dispersion > 1.5:  # Overdispersion detected
+                    glm_family = {'family': 'Negative Binomial', 'default_link': 'log'}
+                elif is_count:
+                    glm_family = {'family': 'Poisson', 'default_link': 'log'}
+                elif is_binary:
+                    glm_family = {'family': 'Binomial', 'default_link': 'logit'}
+                elif is_proportion:
+                    glm_family = {'family': 'Beta', 'default_link': 'logit'}
+                    
+                # Handle zero-inflation
+                if is_count and zero_prop > 0.3:
+                    glm_family['zero_inflated'] = True
+                    glm_family['family'] = f"Zero-inflated {glm_family['family']}"
+                
+                distributions[name] = {
+                    'best_fit': best_fit['distribution'],
+                    'aic': best_fit['aic'],
+                    'ks_p': best_fit['ks_p'],
+                    'params': best_fit['params'],
+                    'dist_obj': best_fit['dist_obj'],
+                    'all_fits': results,
+                    'scaled_data': best_fit['scaled_data'],
+                    'glm_family': glm_family,
+                    'is_count': is_count,
+                    'is_binary': is_binary,
+                    'is_proportion': is_proportion,
+                    'dispersion': dispersion,
+                    'zero_proportion': zero_prop
+                }
+                
+                # Interpret skewness and kurtosis
+                skew = stats_dict.get('skewness', 0)
+                kurt = stats_dict.get('kurtosis', 0)
+                
+                skew_interp = "approximately symmetric"
+                if skew > 1:
+                    skew_interp = "highly positively skewed"
+                elif skew > 0.5:
+                    skew_interp = "moderately positively skewed"
+                elif skew < -1:
+                    skew_interp = "highly negatively skewed"
+                elif skew < -0.5:
+                    skew_interp = "moderately negatively skewed"
+                    
+                kurt_interp = "mesokurtic (normal-like)"
+                if kurt > 3:
+                    kurt_interp = "leptokurtic (heavy-tailed)"
+                elif kurt < -0.5:
+                    kurt_interp = "platykurtic (light-tailed)"
+                    
+                distributions[name]['shape_interp'] = {
+                    'skewness': skew_interp,
+                    'kurtosis': kurt_interp
+                }
+            else:
+                distributions[name] = {'best_fit': None, 'note': 'fitting failed for all distributions'}
+                
+        out['distributions'] = distributions
+        
+        # Print distribution analysis
+        print("\nDISTRIBUTION AND GLM ANALYSIS:")
+        for group_name, dist_info in distributions.items():
+            print(f"\n{group_name}:")
+            if dist_info.get('best_fit'):
+                print(f"  Best fit: {dist_info['best_fit']}")
+                print(f"  AIC: {dist_info.get('aic', 'N/A'):.3f}")
+                print(f"  KS test p-value: {dist_info.get('ks_p', 'N/A'):.3f}")
+                
+                if 'glm_family' in dist_info:
+                    glm_family = dist_info['glm_family']
+                    print(f"  Recommended GLM family: {glm_family['family']}")
+                    print(f"  Recommended link function: {glm_family['default_link']}")
+                    
+                    # Additional GLM diagnostics
+                    if dist_info.get('is_count'):
+                        print(f"  Data type: Count data")
+                        print(f"  Dispersion: {dist_info.get('dispersion', 'N/A'):.3f}")
+                        if dist_info.get('dispersion', 1) > 1.5:
+                            print(f"  ⚠️ Overdispersion detected - consider Negative Binomial")
+                        if dist_info.get('zero_proportion', 0) > 0.3:
+                            print(f"  ⚠️ Zero-inflation detected ({dist_info.get('zero_proportion', 0)*100:.1f}%)")
+                    elif dist_info.get('is_binary'):
+                        print(f"  Data type: Binary data")
+                    elif dist_info.get('is_proportion'):
+                        print(f"  Data type: Proportion data")
+                        
+                if 'shape_interp' in dist_info:
+                    print(f"  Distribution shape: {dist_info['shape_interp']['skewness']}, {dist_info['shape_interp']['kurtosis']}")
+            else:
+                print(f"  {dist_info.get('note', 'No distribution identified')}")
 
     # Recommendation logic
     normals = [v['normal'] for v in normal_results.values() if isinstance(v.get('normal'), (bool, np.bool_))]
@@ -331,22 +594,92 @@ def data_diagnostics(df, dependent, group, alpha=0.05, make_plots=False):
     if make_plots:
         import matplotlib.pyplot as plt
         import seaborn as sns
-        # boxplot by group
-        plt.figure(figsize=(6,4))
-        sns.boxplot(x=group, y=dependent, data=sub)
-        plt.title('Boxplot by group')
-        plt.show()
-        # QQ plot of residuals if model exists
-        if 'anova_table' in out:
-            sm.qqplot(model.resid, line='s')
-            plt.title('QQ plot of residuals')
+        import matplotlib.gridspec as gridspec
+        
+        # 1. Combined figure with histograms and distribution fits
+        for i, g_name in enumerate(labels):
+            g = groups[i]
+            if len(g) < 3:
+                continue
+                
+            # Create histogram with distribution fit
+            fig = plt.figure(figsize=(12, 8))
+            gs = gridspec.GridSpec(2, 2, height_ratios=[3, 1])
+            
+            # Histogram and density plot
+            ax1 = plt.subplot(gs[0, :])
+            sns.histplot(g, kde=True, stat='density', alpha=0.6, ax=ax1)
+            
+            # Add descriptive stats text box
+            stats_text = (
+                f"n = {desc_stats[g_name]['count']}\n"
+                f"Mean ± SD: {desc_stats[g_name]['mean']:.3f} ± {desc_stats[g_name]['std']:.3f}\n"
+                f"Median: {desc_stats[g_name]['median']:.3f}\n"
+                f"Range: [{desc_stats[g_name]['min']:.3f}, {desc_stats[g_name]['max']:.3f}]\n"
+                f"Skewness: {desc_stats[g_name]['skewness']:.3f}\n"
+                f"Kurtosis: {desc_stats[g_name]['kurtosis']:.3f}"
+            )
+            ax1.text(0.02, 0.98, stats_text, transform=ax1.transAxes, 
+                    verticalalignment='top', 
+                    bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+            
+            # Add distribution fits if available
+            if identify_distributions and 'distributions' in out and g_name in out['distributions']:
+                dist_info = out['distributions'][g_name]
+                if dist_info.get('best_fit') and dist_info.get('dist_obj') and dist_info.get('params'):
+                    dist_obj = dist_info['dist_obj']
+                    params = dist_info['params']
+                    scaled_data = dist_info['scaled_data']
+                    
+                    # Generate points for PDF
+                    x = np.linspace(np.min(scaled_data), np.max(scaled_data), 1000)
+                    y = dist_obj.pdf(x, *params)
+                    
+                    ax1.plot(x, y, 'r-', linewidth=2, label=f"Best fit: {dist_info['best_fit']}")
+                    
+                    # Add top 3 distributions
+                    if 'all_fits' in dist_info and len(dist_info['all_fits']) > 1:
+                        colors = ['g-', 'b-', 'm-']
+                        for j, fit_info in enumerate(dist_info['all_fits'][1:4]):  # Next 3 best fits
+                            dist_obj = fit_info['dist_obj']
+                            params = fit_info['params']
+                            
+                            y = dist_obj.pdf(x, *params)
+                            ax1.plot(x, y, colors[j % len(colors)], linewidth=1, alpha=0.7, 
+                                    label=f"{fit_info['distribution']} (AIC: {fit_info['aic']:.1f})")
+            
+            ax1.set_title(f'Distribution Analysis: {g_name}', fontsize=14)
+            ax1.legend()
+            ax1.grid(True, alpha=0.3)
+            
+            # QQ plot
+            ax2 = plt.subplot(gs[1, 0])
+            stats.probplot(g, dist="norm", plot=ax2)
+            ax2.set_title('Normal Q-Q Plot')
+            ax2.grid(True, alpha=0.3)
+            
+            # Boxplot
+            ax3 = plt.subplot(gs[1, 1])
+            sns.boxplot(y=g, ax=ax3)
+            ax3.set_title('Boxplot')
+            ax3.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
             plt.show()
-        # hist per group
-        for lab in labels:
-            arr = sub[sub[group]==lab][dependent].astype(float).dropna().values
-            plt.figure()
-            plt.hist(arr, bins=30)
-            plt.title(f'Histogram: {lab}')
+        
+        # 2. Group comparison boxplot
+        plt.figure(figsize=(10, 6))
+        sns.boxplot(x=group, y=dependent, data=sub)
+        plt.title('Group Comparison', fontsize=14)
+        plt.grid(True, alpha=0.3)
+        plt.show()
+        
+        # 3. QQ plot of residuals if model exists
+        if 'anova_table' in out:
+            plt.figure(figsize=(8, 6))
+            sm.qqplot(model.resid, line='s')
+            plt.title('Q-Q Plot of Residuals', fontsize=14)
+            plt.grid(True, alpha=0.3)
             plt.show()
 
     return out
@@ -376,7 +709,7 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
             continue
 
 
-        df = df.dropna() # Remove rows with NaN values
+        # df = df.dropna() # Remove rows with NaN values
         if filter != None:
             df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
         df = df.rename(columns={col: f'{col}_{name}' for col in df.columns if col != 'point.label'})
@@ -393,7 +726,6 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
             print(f"Loaded data from {name}")
 
         else:
-            print(df)
             #if np.allclose(merged_df['average_canopy_openness'], df[f'average_canopy_openness_{name}'], equal_nan=True) & check_geometries(merged_df['geometry'], df[f'geometry_{name}']):
             if check_geometries(merged_df['geometry'], df[f'geometry_{name}']):
                 # If they are the same, drop one and rename the other
@@ -408,7 +740,7 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
                 merged_df = merged_df.merge(df, on='point.label', how='inner')
                 print(f"No discrepancies found in {name}, merged successfully.")
             else:
-                print(f"discrepancies found in {name}, NOT MERGED.")
+                print(f"❌ discrepancies found in {name}, NOT MERGED !!! ")
     return merged_df
 
 
@@ -458,8 +790,8 @@ def multi_linear_regression_display(df, target, features, display = False):
 
     Returns:
         best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
-    """
-  '''
+    '''
+  
   best_model = []
   
   for variable_name in features:
@@ -1009,8 +1341,9 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
         
         # Get unique treatments and assign colors
         unique_treatments = treatments.unique()
+        unique_treatments = np.sort(unique_treatments)  # Sort treatments for consistent color mapping
         colors = plt.cm.Set1(np.linspace(0, 1, len(unique_treatments)))
-        
+
         for treatment, color in zip(unique_treatments, colors):
             mask = treatments == treatment
             plt.scatter(X_pca[mask, 0], X_pca[mask, 1], 
