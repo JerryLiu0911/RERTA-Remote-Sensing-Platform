@@ -30,14 +30,14 @@ def clip_above_num(data, upper_bound=20):
     """
     clipped_data = data[data <= upper_bound]
     above_count = (clipped_data > upper_bound).sum()
-    print(f"Filtering check: {above_count} buffers with values above {upper_bound} (should be 0)")
-    if above_count == 0:
-        print("✅ Filtering working correctly!")
-    else:
-        print("❌ Filtering failed!")
+    # print(f"Filtering check: {above_count} buffers with values above {upper_bound} (should be 0)")
+    # if above_count == 0:
+    #     print("✅ Filtering working correctly!")
+    # else:
+    #     print("❌ Filtering failed!")
     return data[data <= upper_bound]
 
-def remove_outliers(data, thresh=50):
+def remove_outliers(data, thresh=3):
     """
     Clips the input data array to remove negative values.
     """
@@ -48,15 +48,19 @@ def remove_outliers(data, thresh=50):
     IQR = Q3 - Q1
     lower_bound = Q1 - thresh * IQR
     upper_bound = Q3 + thresh * IQR
+    print(f"Filtering check: IQR lower bound = {lower_bound}, upper bound = {upper_bound}")
+    print("✅ Filtering working correctly!")
     return data[(data >= lower_bound) & (data <= upper_bound)]
 
 def combine_filters(filters):
     """
     Combines multiple filtering functions into a single function.
     """
-    for f in filters:
-        data = f(data)
-    return data
+    def combined_filter(data):
+        for f in filters:
+            data = f(data)
+        return data
+    return combined_filter
 
 def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
     """
@@ -107,9 +111,16 @@ def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distanc
 
     return buffered
 
-def canopy_openness_proxy(data):
+def canopy_openness_proxy(data, thresh=30):
+    data = np.asarray(data, dtype=float).flatten()
+    canopy_openness = float(len(data[data < thresh]) / len(data) * 100)
+    print(len(data[data < thresh]), "canopy openness pixels out of", len(data), "total pixels")
+    if canopy_openness <= 100 :
+        print("✅ Filtering working correctly!")
+    else:
+        print("❌ Canopy openness filtering failed!")
     return {
-        'canopy_openness': float(len(data[data < 0.8])) / len(data) * 100  # Percentage of positive values
+        'canopy_openness': canopy_openness # Percentage of positive values
     }
 
 def GLCM(data, levels = 16):
@@ -160,7 +171,6 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     '''
     #--- Load and reproject point data ---
     points = gpd.read_file(gpkg_path)
-    print(points)
     if points.crs.is_geographic:
         points = points.to_crs(points.estimate_utm_crs())
 
@@ -168,15 +178,13 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     print(f"\n \n Calculating Zonal Statistics for {output_zonal_gpkg}")
     #--- Create buffer around each point ---
     try:
-        if (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all():
+        if buffer_geom_path and (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all():
             points = points.drop(columns='geometry')
-            print(points)
             buffered = gpd.read_file(buffer_geom_path)
-            print(buffered)
             buffered = buffered.merge(points, left_on='name', right_on='point.label', how='inner') #Merges columns in vector geopackage if contains data (e.g. Canopy openness)
             buffered.drop(columns='name', inplace=True)
-            print(buffered)
         else:
+            print("WARNING No buffer geometry entered, creating buffer around each point...")
             buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
 
     except Exception as e:
@@ -197,8 +205,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 masked_data, masked_transform = rasterio.mask.mask(
                     src, [row.geometry], crop=True, nodata=src.nodata
                 )
-                # Masked data is now the only data we care about
-                valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data
+
                 # # Flatten the array and remove nodata, vectorising for better performance
                 valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
                 
@@ -223,19 +230,17 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         'median': float(np.median(clipped_data)),
                         'range': float(np.max(clipped_data) - np.min(clipped_data)),
                         'count': len(clipped_data),
+                        'cv': float(np.std(clipped_data) / np.mean(clipped_data)) if np.mean(clipped_data) != 0 else 0
                     }
                     if proxies:
                         try:
                             stats = stats | proxies(masked_data[0])
                         except Exception as e:
                             print(f"Error applying proxies: {e}")
-                            continue
-                            # print('try 1d')
-                            # try:
-                            #     stats = stats | proxies(clipped_data)
-                            # except Exception as e:
-                            #     print(f"Error applying proxies: {e}")
-                            #     continue
+                            try:
+                                stats = stats | proxies(clipped_data)
+                            except Exception as e:
+                                print(f"Error applying proxies: {e}")
                 else:
                     # No valid data in this buffer
                     stats = {
@@ -243,8 +248,8 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         'std': np.nan, 'median': np.nan, 'range': np.nan, 'count': 0
                     }
 
-                    print(f"No valid data in buffer {idx}, skipping...")
-                
+                    print(f"No valid data in buffer {idx} {row.get('point.label')}, skipping...")
+
                 # Combine with original row data
                 result_row = row.to_dict()
                 result_row.update(stats)
@@ -255,7 +260,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
             except Exception as e:
                 print(f"Error processing buffer {idx}, at {row.get('point.label')} : {e}")
                 continue
-            
+
     zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
     region_data = {k: region_data[k] for k in sorted(region_data.keys())}
 
@@ -280,7 +285,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         if show_plots:
             plt.show()
 
-    return zonal_gdf, figures
+    return zonal_gdf
 
 def get_region_data(gpkg_path, value_column):
     """
@@ -288,7 +293,7 @@ def get_region_data(gpkg_path, value_column):
 
     Args:
         zonal_gdf (GeoDataFrame): The zonal GeoDataFrame containing the results.
-
+        value_column (str): The name of the column containing the values to extract.
     Returns:
         dict: A dictionary with region names as keys and their data as values.
     """
@@ -354,7 +359,7 @@ def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), ou
 
         # Create histogram with only finite values
         try:
-            ax.hist(data_to_plot, bins=50, alpha=0.7, color=plt.cm.Set3(idx),
+            ax.hist(data_to_plot, bins=50 if len(data_to_plot) >= 2500 else 10, alpha=0.7, color=plt.cm.Set3(idx),
                     edgecolor='black', linewidth=0.5)
         except Exception as e:
             print(f"Histogram error for region {region_name}: {e}")
