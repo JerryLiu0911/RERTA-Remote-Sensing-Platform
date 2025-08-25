@@ -122,7 +122,7 @@ def main(paths):
 
     # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint='post3')
     # preprocess_dataset(paths, 'Palapa July2025 DEM', 'frogs', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
-    # preprocess_dataset(paths, 'Palapa July2025 GLI', 'frogs', timepoint='post3', filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    #   preprocess_dataset(paths, 'Palapa July2025 GLI', 'frogs', timepoint='post3', filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
 
     ### Combining and analyzing data into dataframes ###
     region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')

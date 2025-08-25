@@ -46,7 +46,7 @@ def analyze_chm_correlations(merged_df, features):
                 redundant_pairs.append((feat1, feat2, corr))
 
     if redundant_pairs:
-        print(f"\n🚨 HIGHLY REDUNDANT FEATURES:")
+        print(f"\n HIGHLY REDUNDANT FEATURES:")
         for feat1, feat2, corr in redundant_pairs:
             print(f"   {feat1} ↔ {feat2}: {corr:.3f}")
 
@@ -103,7 +103,7 @@ def feature_diagnostics(merged_df, target, features):
 
     # Check for the exact problem
     if len(merged_df) < 30:
-        print("🚨 DATASET TOO SMALL FOR RELIABLE CV!")
+        print(" DATASET TOO SMALL FOR RELIABLE CV!")
         print("Cross-validation becomes meaningless with tiny datasets")
         print("Each CV fold has ~2-5 samples - no statistical power")
 
@@ -119,7 +119,7 @@ def feature_diagnostics(merged_df, target, features):
                 high_corr_pairs.append((features[i], features[j], corr_val))
 
     if high_corr_pairs:
-        print("🚨 HIGHLY CORRELATED FEATURES DETECTED:")
+        print(" HIGHLY CORRELATED FEATURES DETECTED:")
         for feat1, feat2, corr in high_corr_pairs:
             print(f"   {feat1} ↔ {feat2}: {corr:.3f}")
         print("This causes multicollinearity and unstable CV results!")
@@ -140,7 +140,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     print(f"Dataset size: {n_samples} samples")
     
     # STAGE 1: Theory-based pre-filtering
-    print(f"\n📚 STAGE 1: THEORY-BASED PRE-FILTERING")
+    print(f"\n STAGE 1: THEORY-BASED PRE-FILTERING")
     
     # Based on literature, these should be most relevant:
     theory_based_candidates = {
@@ -168,12 +168,12 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
             stage1_features.extend(selected_from_category)
             
             for feat, corr in category_corrs[:3]:
-                print(f"    ✅ {feat}: {corr:.3f}")
+                print(f"     {feat}: {corr:.3f}")
     
     print(f"  Stage 1 result: {len(stage1_features)} features")
     
     # STAGE 2: Correlation-based refinement
-    print(f"\n📊 STAGE 2: CORRELATION-BASED REFINEMENT")
+    print(f"\n STAGE 2: CORRELATION-BASED REFINEMENT")
     
     # Remove highly correlated features within our selected set
     if len(stage1_features) > 1:
@@ -204,13 +204,13 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     print(f"  Stage 2 result: {len(stage2_features)} features")
     
     # STAGE 3: Sample size validation
-    print(f"\n⚖️ STAGE 3: SAMPLE SIZE VALIDATION")
+    print(f"\n STAGE 3: SAMPLE SIZE VALIDATION")
     
     ratio = n_samples / len(stage2_features) if stage2_features else 0
     print(f"  Sample-to-feature ratio: {ratio:.1f}:1")
     
     if ratio < 5:
-        print(f"  🚨 Still too many features for dataset size!")
+        print(f"   Still too many features for dataset size!")
         print(f"  Further reducing to top {min(3, n_samples//5)} features...")
         
         # Final ranking by target correlation
@@ -225,12 +225,12 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
         
         print(f"  Final selection:")
         for feat, corr in final_rankings[:max_features]:
-            print(f"    ✅ {feat}: {corr:.3f}")
+            print(f"     {feat}: {corr:.3f}")
     else:
         stage3_features = stage2_features
-        print(f"  ✅ Feature count appropriate for dataset size")
+        print(f"   Feature count appropriate for dataset size")
     
-    print(f"\n🎯 FINAL RESULT: {len(stage3_features)} high-quality features")
+    print(f"\n FINAL RESULT: {len(stage3_features)} high-quality features")
     print(f"   Features: {stage3_features}")
     print(f"   Final ratio: {n_samples/len(stage3_features):.1f}:1")
     
@@ -559,9 +559,9 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
                         print(f"  Data type: Count data")
                         print(f"  Dispersion: {dist_info.get('dispersion', 'N/A'):.3f}")
                         if dist_info.get('dispersion', 1) > 1.5:
-                            print(f"  ⚠️ Overdispersion detected - consider Negative Binomial")
+                            print(f"   Overdispersion detected - consider Negative Binomial")
                         if dist_info.get('zero_proportion', 0) > 0.3:
-                            print(f"  ⚠️ Zero-inflation detected ({dist_info.get('zero_proportion', 0)*100:.1f}%)")
+                            print(f"   Zero-inflation detected ({dist_info.get('zero_proportion', 0)*100:.1f}%)")
                     elif dist_info.get('is_binary'):
                         print(f"  Data type: Binary data")
                     elif dist_info.get('is_proportion'):
@@ -740,7 +740,7 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
                 merged_df = merged_df.merge(df, on='point.label', how='inner')
                 print(f"No discrepancies found in {name}, merged successfully.")
             else:
-                print(f"❌ discrepancies found in {name}, NOT MERGED !!! ")
+                print(f" discrepancies found in {name}, NOT MERGED !!! ")
     return merged_df
 
 
@@ -963,7 +963,7 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
                   ha='left',
                   va='center',
                   fontsize=10)
-      plt.xlabel('Importance Score')
+      plt.xlabel('Importance Score SHAP')
       plt.title(f'Feature Relevance to {target}')
       plt.tight_layout()
 
@@ -1149,12 +1149,12 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
     print(f"\nRECOMMENDATIONS:")
     if is_count:
         if has_many_zeros:
-            print("✅ Use Zero-Inflated Poisson or Negative Binomial GLM")
+            print(" Use Zero-Inflated Poisson or Negative Binomial GLM")
         else:
-            print("✅ Use Poisson or Negative Binomial GLM")
+            print(" Use Poisson or Negative Binomial GLM")
     
     if is_highly_skewed:
-        print("✅ Consider log transformation or GLM with appropriate family")
+        print(" Consider log transformation or GLM with appropriate family")
     
     # Analyze each feature
     best_models = {}
@@ -1638,24 +1638,24 @@ def PCA_interpretation(pca_results, alpha=0.05):
     print(f"\nRECOMMENDATIONS:")
     
     if explained_var[0] > 0.4:
-        print(f"  ✅ PC1 captures substantial variance - focus on its key variables")
+        print(f"   PC1 captures substantial variance - focus on its key variables")
     else:
-        print(f"  ⚠️  PC1 captures low variance - consider more variables or different approach")
+        print(f"    PC1 captures low variance - consider more variables or different approach")
     
     if cumvar[1] > 0.6:
-        print(f"  ✅ PC1+PC2 explain most variance - 2D visualization is informative")
+        print(f"   PC1+PC2 explain most variance - 2D visualization is informative")
     else:
-        print(f"  ⚠️  PC1+PC2 explain little variance - consider additional components")
+        print(f"    PC1+PC2 explain little variance - consider additional components")
     
     if max_separation > 2.0:
-        print(f"  ✅ Clear treatment separation - PCA successfully distinguishes treatments")
+        print(f"   Clear treatment separation - PCA successfully distinguishes treatments")
     elif max_separation > 1.0:
-        print(f"  📊 Moderate treatment separation - some treatment differences visible")
+        print(f"   Moderate treatment separation - some treatment differences visible")
     else:
-        print(f"  ❌ Poor treatment separation - treatments are similar in this variable space")
+        print(f"   Poor treatment separation - treatments are similar in this variable space")
     
-    print(f"  💡 Focus research on variables with high PC1/PC2 loadings")
-    print(f"  💡 Consider interaction effects between key variables")
+    print(f"   Focus research on variables with high PC1/PC2 loadings")
+    print(f"   Consider interaction effects between key variables")
     
     interpretation = {
         'recommended_components': max(kaiser_components, var_80_components),
@@ -1673,9 +1673,9 @@ def comprehensive_PCA_analysis(df, target_columns=None, treatment_column='treatm
     Performs complete PCA analysis with interpretation
     """
     
-    print("🔬 COMPREHENSIVE PCA ANALYSIS")
+    print(" COMPREHENSIVE PCA ANALYSIS")
     
-    # Perform PCA
+    # Perform PCAs
     pca_results = PCA_analysis(df, target_columns, treatment_column, display=True)
     
     # Interpret results

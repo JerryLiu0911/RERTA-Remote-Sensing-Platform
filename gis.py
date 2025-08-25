@@ -19,9 +19,9 @@ def clip_below_zero(data):
     negative_count = (clipped_data < 0).sum()
     print(f"Filtering check: {negative_count} buffers with negative mins (should be 0)")
     if negative_count == 0:
-        print("✅ Filtering working correctly!")
+        print(" Filtering working correctly!")
     else:
-        print("❌ Filtering failed!")
+        print(" Filtering failed!")
     return data[data >= 0]
 
 def clip_above_num(data, upper_bound=20):
@@ -32,9 +32,9 @@ def clip_above_num(data, upper_bound=20):
     above_count = (clipped_data > upper_bound).sum()
     # print(f"Filtering check: {above_count} buffers with values above {upper_bound} (should be 0)")
     # if above_count == 0:
-    #     print("✅ Filtering working correctly!")
+    #     print(" Filtering working correctly!")
     # else:
-    #     print("❌ Filtering failed!")
+    #     print(" Filtering failed!")
     return data[data <= upper_bound]
 
 def remove_outliers(data, thresh=3):
@@ -49,7 +49,7 @@ def remove_outliers(data, thresh=3):
     lower_bound = Q1 - thresh * IQR
     upper_bound = Q3 + thresh * IQR
     print(f"Filtering check: IQR lower bound = {lower_bound}, upper bound = {upper_bound}")
-    print("✅ Filtering working correctly!")
+    print(" Filtering working correctly!")
     return data[(data >= lower_bound) & (data <= upper_bound)]
 
 def combine_filters(filters):
@@ -116,9 +116,9 @@ def canopy_openness_proxy(data, thresh=30):
     canopy_openness = float(len(data[data < thresh]) / len(data) * 100)
     print(len(data[data < thresh]), "canopy openness pixels out of", len(data), "total pixels")
     if canopy_openness <= 100 :
-        print("✅ Filtering working correctly!")
+        print(" Filtering working correctly!")
     else:
-        print("❌ Canopy openness filtering failed!")
+        print(" Canopy openness filtering failed!")
     return {
         'canopy_openness': canopy_openness # Percentage of positive values
     }

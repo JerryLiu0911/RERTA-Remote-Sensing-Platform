@@ -62,13 +62,13 @@ def add_file_extension_fls(folder_path):
                 
                 try:
                     os.rename(file_path, new_file_path)
-                    print(f"✅ Renamed: {filename} → {new_filename}")
+                    print(f" Renamed: {filename} → {new_filename}")
                     files_renamed += 1
                 except Exception as e:
-                    print(f"❌ Error renaming {filename}: {e}")
+                    print(f" Error renaming {filename}: {e}")
                     errors += 1
             else:
-                print(f"⏭️  Skipped: {filename} (already has .fls extension)")
+                print(f"⏭  Skipped: {filename} (already has .fls extension)")
     
     print("-" * 60)
     print(f"Summary:")
