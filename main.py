@@ -62,7 +62,7 @@ def plot_relations(df, target, column, geo = False):
         # plt.legend()
         # plt.show()
 
-def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_logic, proxies):
+def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_logic = None, proxies = None):
     """
     To improve efficiency of process different datasets with different requirements, this function automatically calls the align_coord and zonal_statistics
     modules to streamline the preprocessing steps.
@@ -122,24 +122,27 @@ def main(paths):
 
     # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint='post3')
     # preprocess_dataset(paths, 'Palapa July2025 DEM', 'frogs', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
-    #   preprocess_dataset(paths, 'Palapa July2025 GLI', 'frogs', timepoint='post3', filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 GLI', 'frogs', timepoint='post3', filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 ReNDVI', 'frogs', timepoint='post3', proxies=gis.GLCM)
 
     ### Combining and analyzing data into dataframes ###
-    region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
-    gis.create_boxplot_from_data(region_data, 'canopy_openness')
-    gis.create_distribution_plots_from_data(region_data, 'canopy_openness')
-    plt.show()
+    # region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
+    # gis.create_boxplot_from_data(region_data, 'canopy_openness')
+    # gis.create_distribution_plots_from_data(region_data, 'canopy_openness')
+    # plt.show()
     
     print(gis.gpd.read_file(paths['Palapa July2025 DEM']).head())
     merged_df = statistical_modelling.load_data(
             [#('GLI', paths['GLI']),
             ('CHM', paths['Palapa July2025 DEM']),
-            ('GLI', paths['Palapa July2025 GLI'])
+            ('GLI', paths['Palapa July2025 GLI']),
+            ('Clre', paths['Palapa July2025 Clre']),
+            ('ReNDVI', paths['Palapa July2025 ReNDVI'])
             #('DEM', paths['DEM']),
             ],
             filter = None)
 
-    # print(f"Finished merging columns : {merged_df.columns}")
+    print(f"Finished merging columns : {merged_df.columns}")
     # pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df)
     
     # Option 2: Use specific features
@@ -156,8 +159,8 @@ def main(paths):
     features = [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment', 'Frog.abundance', 'Frog.richness']]
     print(features)
     print(merged_df['point.label'])
-    statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', features=features)
     features = statistical_modelling.smart_feature_selection_pipeline(merged_df, 'Frog.abundance', features)
+    print(merged_df[[col for col in merged_df.columns if col in features]])
     pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features)
     
     # You can also access specific results:
@@ -173,7 +176,7 @@ def main(paths):
     # analyze_chm_correlations(merged_df, features)
     # selected_features = smart_feature_selection_pipeline(merged_df, 'average_canopy_openness', features)
     # call the check function with a treatment column called 'treatment'
-    diagnostics = statistical_modelling.data_diagnostics(merged_df, dependent='Frog.abundance', group='treatment')
+    diagnostics = statistical_modelling.data_diagnostics(merged_df, group = 'treatment', dependent='Frog.abundance', identify_distributions=True)
     print(diagnostics)
     # plt.hist(merged_df['Frog.abundance'], bins=50, alpha=0.7, color='blue')
     # plt.title('Distribution of Frog Abundance')
@@ -184,10 +187,10 @@ def main(paths):
 
     ### Statistical Modelling ###
 
-    # statistical_modelling.random_forest_ensemble(merged_df, 'average_canopy_openness', [feature for feature in merged_df.columns if feature not in ['geometry', 'point.label', 'average_canopy_openness']])
+    statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', features=features)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
-    statistical_modelling.enhanced_multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
+    print(statistical_modelling.enhanced_multivariate_linear_regression(merged_df, ['Frog.abundance','Frog.richness'], features=features , display=True))
 
 
 paths = {
@@ -211,9 +214,9 @@ paths = {
     'Palapa July2025 NDVI_tif' : "D:/Jerry/Palapa July2025 NDVI.tif",
     'Palapa July2025 DEM_tif' : "D:/Jerry/Palapa July2025 DEM.tif",
     'Palapa July2025 Clre_tif' : "D:/Jerry/Palapa July2025 Clre.tif",
-    'Palapa June2019 ReNDVI_tif' : "D:/Jerry/Palapa July2025 ReNDVI.tif",
-    'Palapa June2019 GNDVI_tif' : "D:/Jerry/Palapa July2025 GNDVI.tif",
-    'Palapa June2019 ortho_tif' : "D:/Jerry/Palapa July2025 ortho.tif",
+    'Palapa July2025 ReNDVI_tif' : "D:/Jerry/Palapa July2025 ReNDVI.tif",
+    'Palapa July2025 GNDVI_tif' : "D:/Jerry/Palapa July2025 GNDVI.tif",
+    'Palapa July2025 ortho_tif' : "D:/Jerry/Palapa July2025 ortho.tif",
 
     ## Kandista 2025
     'Kandista July2025 GLI_tif' : "D:/Jerry/Kandista July2025 GLI.tif",
@@ -221,8 +224,8 @@ paths = {
     'Kandista July2025 DEM_tif' : "D:/Jerry/Kandista July2025 DEM.tif",
     'Kandista July2025 Clre_tif' : "D:/Jerry/Kandista July2025 Clre.tif",
     'Kandista July2025 ReNDVI_tif' : "D:/Jerry/Kandista July2025 ReNDVI.tif",
-    'Kandista June2019 GNDVI_tif' : "D:/Jerry/Kandista June2019 GNDVI.tif",
-    'Kandista June2019 ortho_tif' : "D:/Jerry/Kandista June2019 ortho.tif",
+    'Kandista July2025 GNDVI_tif' : "D:/Jerry/Kandista July2025 GNDVI.tif",
+    'Kandista July2025 ortho_tif' : "D:/Jerry/Kandista July2025 ortho.tif",
 
 # Buffer geometries
 'veg_plots_centre_coordinates': "Data/Palapa_veg_plots_centres.gpkg",
@@ -243,6 +246,9 @@ paths = {
     'Palapa July2025 ExG': "Data/Palapa July2025 ExG statistics.gpkg",
     'Palapa July2025 DEM': "Data/Palapa July2025 DEM statistics.gpkg",
     'Palapa July2025 ReNDVI': "Data/Palapa July2025 ReNDVI statistics.gpkg",
+    'Palapa July2025 GNDVI': "Data/Palapa July2025 GNDVI statistics.gpkg",
+    'Palapa July2025 ortho': "Data/Palapa July2025 ortho statistics.gpkg",
+    'Palapa July2025 Clre': "Data/Palapa July2025 Clre statistics.gpkg",
 
 # Processed files
 'result_data': "result_data.gpkg",

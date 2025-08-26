@@ -146,14 +146,14 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     theory_based_candidates = {
         'height_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['mean', 'median', 'max'])],
         'variability_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['std', 'range', 'cv'])],
-        'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['ExG', 'NDVI', 'GLI'])],
-        'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity', 'dissimilarity', 'ASM', 'energy', 'correlation'])],
+        'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['Clre', 'ReNDVI', 'GLI']) and any(stat in col for stat in ['std', 'range', 'cv'])],
+        'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity', 'dissimilarity', 'ASM', 'energy', 'correlation'])]
     }
     # Select BEST representative from each category
     stage1_features = []
     for category, candidates in theory_based_candidates.items():
         if candidates:
-            print(f"  {category}: {len(candidates)} candidates → selecting best 2-3")
+            print(f"  {category}: {len(candidates)} candidates → selecting best {max(3, int(len(candidates)/4))}")
             
             # Calculate target correlations for candidates in this category
             category_corrs = []
@@ -164,10 +164,10 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
             
             # Take top 1-2 from each category
             category_corrs.sort(key=lambda x: x[1], reverse=True)
-            selected_from_category = [feat for feat, _ in category_corrs[:3]]
+            selected_from_category = [feat for feat, _ in category_corrs[:max(3, int(len(candidates)/4))]]
             stage1_features.extend(selected_from_category)
-            
-            for feat, corr in category_corrs[:3]:
+
+            for feat, corr in category_corrs[:int(max(3, len(candidates)/4))]:
                 print(f"     {feat}: {corr:.3f}")
     
     print(f"  Stage 1 result: {len(stage1_features)} features")
@@ -177,6 +177,8 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
     
     # Remove highly correlated features within our selected set
     if len(stage1_features) > 1:
+
+        # Find and remove redundant features
         feature_corr_matrix = merged_df[stage1_features].corr()
         
         # Find and remove redundant features
@@ -337,24 +339,21 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
     out['outliers_per_group'] = outliers
 
     # Fit OLS and ANOVA table (type II)
-    try:
-        formula = f'{dependent} ~ C({group})'
-        model = sm.OLS.from_formula(formula, data=sub).fit()
-        anova_table = sm.stats.anova_lm(model, typ=2)
-        out['anova_table'] = anova_table.to_dict()
-        # residual tests
-        resid = model.resid
-        if len(resid) >= 3:
-            try:
-                r_stat, r_p = stats.shapiro(resid) if len(resid) <= 5000 else stats.normaltest(resid)
-                out['residual_normality'] = {'test': 'shapiro' if len(resid)<=5000 else 'normaltest',
-                                             'stat': float(r_stat), 'pvalue': float(r_p), 'normal': (r_p > alpha)}
-            except Exception as e:
-                out['residual_normality'] = {'error': str(e)}
-        else:
-            out['residual_normality'] = {'note': 'too few residuals for test'}
-    except Exception as e:
-        out['anova_error'] = str(e)
+    formula = f'Q("{(dependent)}") ~ C({group})'
+    model = sm.OLS.from_formula(formula, data=sub).fit()
+    anova_table = sm.stats.anova_lm(model, typ=2)
+    out['anova_table'] = anova_table.to_dict()
+    # residual tests
+    resid = model.resid
+    if len(resid) >= 3:
+        try:
+            r_stat, r_p = stats.shapiro(resid) if len(resid) <= 5000 else stats.normaltest(resid)
+            out['residual_normality'] = {'test': 'shapiro' if len(resid)<=5000 else 'normaltest',
+                                            'stat': float(r_stat), 'pvalue': float(r_p), 'normal': (r_p > alpha)}
+        except Exception as e:
+            out['residual_normality'] = {'error': str(e)}
+    else:
+        out['residual_normality'] = {'note': 'too few residuals for test'}
 
     # Distribution identification
     if identify_distributions:
@@ -588,6 +587,8 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
     else:
         rec = "Insufficient info; inspect plots and group sizes."
 
+    print(f"All normal: {all_normal}, Homogeneous: {hom}")
+
     out['recommendation'] = rec
 
     # Optional plots
@@ -608,7 +609,7 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
             
             # Histogram and density plot
             ax1 = plt.subplot(gs[0, :])
-            sns.histplot(g, kde=True, stat='density', alpha=0.6, ax=ax1)
+            sns.histplot(g, bins=30, kde=True, stat='density', alpha=0.6, ax=ax1)
             
             # Add descriptive stats text box
             stats_text = (
@@ -684,7 +685,6 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
 
     return out
 
-
 def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_openness", "Frog.richness", "Frog.abundance"]):
     '''
     Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
@@ -743,7 +743,6 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
                 print(f" discrepancies found in {name}, NOT MERGED !!! ")
     return merged_df
 
-
 def simple_linear_regression(x, y):
   """
   Performs simple linear regression using the matrix method.
@@ -776,7 +775,6 @@ def simple_linear_regression(x, y):
   results = sm.OLS(y, x).fit()  # Fit the model
 
   return results
-
 
 def multi_linear_regression_display(df, target, features, display = False):
   '''
@@ -869,7 +867,6 @@ def multi_linear_regression_display(df, target, features, display = False):
   m = best_model[1]
   b = best_model[2]
 
-
 def random_forest_regression(df, target, features, display=True, test_size=0.2, random_state=42):
     """
     Performs random forest regression using scikit-learn.
@@ -940,8 +937,8 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
       # Plot fit
       plt.figure()
       plt.scatter(y_test, y_pred_test, color='red')
-      plt.xlabel('Actual Canopy Openness')
-      plt.ylabel('Predicted Canopy Openness')
+      plt.xlabel('Actual Frog Abundance')
+      plt.ylabel('Predicted Frog Abundance')
       # Add text annotations for metrics
       plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
               verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
@@ -983,7 +980,6 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
       plt.show()
 
     return model, mse, rmse, r2, y_pred
-
 
 def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2, random_state=42):
     """
@@ -1068,7 +1064,6 @@ def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2
 
     return models, y_pred, preds
 
-
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
@@ -1111,7 +1106,6 @@ def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
 
     return rs.best_estimator_, rs.best_score_
 
-
 def generalised_linear_model(df, target, features, display=False):
     """
     General linear model function.
@@ -1121,7 +1115,6 @@ def generalised_linear_model(df, target, features, display=False):
     model = sm.GLM(y, sm.add_constant(X)).fit()
     print(model.summary())
     return model
-
 
 def enhanced_multi_linear_regression_display(df, target, features, display=True):
     """
@@ -1270,6 +1263,237 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
     
     return best_models
 
+def enhanced_multivariate_linear_regression(df, targets, features, log_transform=True, display=True):
+    """
+    Performs true multivariate linear regression with multiple response variables simultaneously.
+    
+    Args:
+        df: Pandas DataFrame containing the data
+        targets: List of target variable names (multiple dependent variables)
+        features: List of independent variable names (features)
+        log_transform: Whether to apply log transformation to target variables
+        display: Whether to display plots and detailed output
+    
+    Returns:
+        dict: Dictionary containing multivariate regression results
+    """
+    
+    print(f"=== TRUE MULTIVARIATE LINEAR REGRESSION ===")
+    print(f"Target variables: {targets}")
+    print(f"Features: {features}")
+    print(f"Sample size: {len(df)}")
+    
+    # Clean data
+    analysis_cols = targets + features
+    df_clean = df[analysis_cols].dropna()
+    
+    if len(df_clean) < len(df):
+        print(f"Removed {len(df) - len(df_clean)} rows with missing values")
+        print(f"Final sample size: {len(df_clean)}")
+    
+    # Log transform target variables if requested
+    if log_transform:
+        print(f"\n=== LOG TRANSFORMATION ===")
+        Y_original = df_clean[targets].copy()
+        Y_transformed = pd.DataFrame(index=df_clean.index)
+        
+        for target in targets:
+            min_val = df_clean[target].min()
+            if min_val <= 0:
+                print(f"Using log1p transformation for {target} (has non-positive values)")
+                Y_transformed[target] = np.log1p(df_clean[target])
+            else:
+                print(f"Using natural log transformation for {target}")
+                Y_transformed[target] = np.log(df_clean[target])
+        
+        Y = Y_transformed
+    else:
+        Y = df_clean[targets]
+        Y_original = Y.copy()
+    
+    # Standardize features
+    from sklearn.preprocessing import StandardScaler
+    
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(df_clean[features])
+    X_scaled_df = pd.DataFrame(X_scaled, columns=features, index=df_clean.index)
+    
+    # Add constant term
+    X_with_const = sm.add_constant(X_scaled_df)
+    
+    # Fit TRUE multivariate regression using seemingly unrelated regression (SUR)
+    # Or matrix form: Y = XB + E where Y is n×p, X is n×k, B is k×p
+    
+    print(f"\n=== MULTIVARIATE MODEL FITTING ===")
+    
+    # Method 1: Matrix-based multivariate regression
+    X_matrix = X_with_const.values
+    Y_matrix = Y.values
+    
+    # Calculate coefficient matrix: B = (X'X)^(-1)X'Y
+    XtX_inv = np.linalg.inv(X_matrix.T @ X_matrix)
+    B_matrix = XtX_inv @ X_matrix.T @ Y_matrix
+    
+    # Predictions
+    Y_pred_matrix = X_matrix @ B_matrix
+    
+    # Residuals
+    residuals_matrix = Y_matrix - Y_pred_matrix
+    
+    # Calculate multivariate statistics
+    n, p = Y_matrix.shape  # n samples, p response variables
+    k = X_matrix.shape[1]  # k predictors (including intercept)
+    
+    # Residual sum of squares matrix (E'E)
+    E_matrix = residuals_matrix.T @ residuals_matrix
+    
+    # Total sum of squares matrix
+    Y_centered = Y_matrix - Y_matrix.mean(axis=0)
+    T_matrix = Y_centered.T @ Y_centered
+    
+    # Multivariate R-squared (Wilks' Lambda based)
+    try:
+        wilks_lambda = np.linalg.det(E_matrix) / np.linalg.det(T_matrix)
+        multivariate_r2 = 1 - wilks_lambda
+    except:
+        multivariate_r2 = np.nan
+        wilks_lambda = np.nan
+    
+    print(f"Multivariate R²: {multivariate_r2:.4f}")
+    print(f"Wilks' Lambda: {wilks_lambda:.4f}")
+    
+    # Individual response variable statistics
+    individual_r2 = {}
+    coefficients_df = pd.DataFrame(
+        B_matrix, 
+        index=['Intercept'] + features, 
+        columns=targets
+    )
+    
+    print(f"\n=== COEFFICIENT MATRIX ===")
+    print(coefficients_df.round(4))
+    
+    print(f"\n=== INDIVIDUAL RESPONSE STATISTICS ===")
+    for i, target in enumerate(targets):
+        y_true = Y_matrix[:, i]
+        y_pred = Y_pred_matrix[:, i]
+        
+        ss_res = np.sum((y_true - y_pred) ** 2)
+        ss_tot = np.sum((y_true - y_true.mean()) ** 2)
+        r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0
+        
+        individual_r2[target] = r2
+        
+        print(f"{target}:")
+        print(f"  R²: {r2:.4f}")
+        print(f"  Coefficients: {coefficients_df[target].round(4).to_dict()}")
+    
+    # Multivariate hypothesis testing (MANOVA-style)
+    print(f"\n=== MULTIVARIATE HYPOTHESIS TESTING ===")
+    
+    # Calculate F-statistic for overall model significance
+    try:
+        # Degrees of freedom
+        df_model = k - 1  # excluding intercept
+        df_error = n - k
+        df_total = n - 1
+        
+        # Pillai's trace
+        try:
+            pillai_trace = np.trace(np.linalg.solve(T_matrix, T_matrix - E_matrix))
+            print(f"Pillai's Trace: {pillai_trace:.4f}")
+        except:
+            pillai_trace = np.nan
+            print(f"Pillai's Trace: Could not calculate")
+        
+        # Roy's largest root
+        try:
+            eigenvals = np.linalg.eigvals(np.linalg.solve(E_matrix, T_matrix - E_matrix))
+            roy_root = np.max(eigenvals.real)
+            print(f"Roy's Largest Root: {roy_root:.4f}")
+        except:
+            roy_root = np.nan
+            print(f"Roy's Largest Root: Could not calculate")
+            
+    except Exception as e:
+        print(f"Multivariate test statistics could not be calculated: {e}")
+    
+    if display:
+        # Visualization
+        n_targets = len(targets)
+        
+        # 1. Actual vs Predicted for each response
+        fig, axes = plt.subplots(2, n_targets, figsize=(5 * n_targets, 8))
+        if n_targets == 1:
+            axes = axes.reshape(-1, 1)
+        
+        for i, target in enumerate(targets):
+            y_true = Y_matrix[:, i]
+            y_pred = Y_pred_matrix[:, i]
+            residuals = residuals_matrix[:, i]
+            
+            # Actual vs Predicted
+            axes[0, i].scatter(y_true, y_pred, alpha=0.6)
+            min_val = min(y_true.min(), y_pred.min())
+            max_val = max(y_true.max(), y_pred.max())
+            axes[0, i].plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2)
+            
+            title_prefix = f"log({target})" if log_transform else target
+            axes[0, i].set_xlabel(f'Actual {title_prefix}')
+            axes[0, i].set_ylabel(f'Predicted {title_prefix}')
+            axes[0, i].set_title(f'{title_prefix}: R² = {individual_r2[target]:.3f}')
+            axes[0, i].grid(True, alpha=0.3)
+            
+            # Residuals vs Fitted
+            axes[1, i].scatter(y_pred, residuals, alpha=0.6)
+            axes[1, i].axhline(y=0, color='red', linestyle='--')
+            axes[1, i].set_xlabel('Fitted Values')
+            axes[1, i].set_ylabel('Residuals')
+            axes[1, i].set_title(f'{title_prefix}: Residuals')
+            axes[1, i].grid(True, alpha=0.3)
+        
+        plt.suptitle(f'Multivariate Regression Results (Multivariate R² = {multivariate_r2:.3f})')
+        plt.tight_layout()
+        plt.show()
+        
+        # 2. Coefficient heatmap
+        plt.figure(figsize=(10, 6))
+        import seaborn as sns
+        sns.heatmap(coefficients_df.T, annot=True, cmap='RdBu_r', center=0,
+                   fmt='.3f', cbar_kws={'label': 'Coefficient Value'})
+        plt.title('Multivariate Regression Coefficients')
+        plt.xlabel('Predictors')
+        plt.ylabel('Response Variables')
+        plt.tight_layout()
+        plt.show()
+        
+        # 3. Response correlation matrix
+        if len(targets) > 1:
+            plt.figure(figsize=(8, 6))
+            response_corr = pd.DataFrame(Y_matrix, columns=targets).corr()
+            sns.heatmap(response_corr, annot=True, cmap='coolwarm', center=0,
+                       square=True, fmt='.3f', cbar_kws={"shrink": .8})
+            title_suffix = " (log-transformed)" if log_transform else ""
+            plt.title(f'Response Variable Correlations{title_suffix}')
+            plt.tight_layout()
+            plt.show()
+    
+    return {
+        'coefficient_matrix': coefficients_df,
+        'multivariate_r2': multivariate_r2,
+        'individual_r2': individual_r2,
+        'wilks_lambda': wilks_lambda,
+        'predictions': pd.DataFrame(Y_pred_matrix, columns=targets, index=df_clean.index),
+        'residuals': pd.DataFrame(residuals_matrix, columns=targets, index=df_clean.index),
+        'scaler': scaler,
+        'sample_size': len(df_clean),
+        'log_transformed': log_transform,
+        'Y_matrix': Y_matrix,
+        'X_matrix': X_matrix,
+        'n_predictors': k,
+        'n_responses': p
+    }
+    
 def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_components=None, display=True):
     """
     Performs Principal Component Analysis to investigate relationships between treatments
@@ -1398,6 +1622,7 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
         # 4. Loadings heatmap - FIXED VERSION
         plt.subplot(2, 3, 4)
         n_components_to_show = min(5, n_components, len(target_columns))
+        print(loadings)
         
         # Create loadings dataframe with correct dimensions
         loadings_df = pd.DataFrame(
@@ -1550,7 +1775,6 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
     
     return results
 
-
 def PCA_interpretation(pca_results, alpha=0.05):
     """
     Provides detailed interpretation of PCA results
@@ -1667,7 +1891,6 @@ def PCA_interpretation(pca_results, alpha=0.05):
     
     return interpretation
 
-# Add this to your main function or create a separate analysis function:
 def comprehensive_PCA_analysis(df, target_columns=None, treatment_column='treatment'):
     """
     Performs complete PCA analysis with interpretation
