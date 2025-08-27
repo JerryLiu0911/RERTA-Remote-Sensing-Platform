@@ -285,19 +285,22 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         if show_plots:
             plt.show()
 
-    return zonal_gdf
+    return zonal_gdf, figures
 
-def get_region_data(gpkg_path, value_column):
+def get_region_data(source, value_column):
     """
     Extract region data from the zonal GeoDataFrame.
 
     Args:
-        zonal_gdf (GeoDataFrame): The zonal GeoDataFrame containing the results.
+        source (Path/GeoDataFrame): The zonal GeoDataFrame containing the results.
         value_column (str): The name of the column containing the values to extract.
     Returns:
         dict: A dictionary with region names as keys and their data as values.
     """
-    gdf = gpd.read_file(gpkg_path)
+    if type(source) == gpd.GeoDataFrame:
+        gdf = source
+    else:
+        gdf = gpd.read_file(source)
 
 
     region_data = defaultdict(list)
@@ -400,7 +403,7 @@ def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), ou
 
     return fig
 
-def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=None, save_plots=False):
+def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=None, save_plots=False, ax=None):
     """
     Create boxplot from pre-processed data.
 
@@ -422,7 +425,8 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     regions = list(region_data.keys())
     data_lists = [region_data[region] for region in regions]
     
-    fig, ax = plt.subplots(figsize=figsize)
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
 
     box_plot = ax.boxplot(data_lists, labels=[f"Treatment {region}" for region in regions], patch_artist=True)
 
@@ -439,8 +443,8 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     ax.tick_params(axis='x', labelsize=13)
     
     # Add sample size annotations
-    for i, (region, data) in enumerate(region_data.items()):
-        ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
+    # for i, (region, data) in enumerate(region_data.items()):
+    #     ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
     
     plt.tight_layout()
     if output_path:
@@ -449,8 +453,10 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
         if save_plots:
             plt.savefig(output_path.replace('.gpkg', '_boxplot.png'), dpi=300, bbox_inches='tight')
             print(f"Boxplot saved to: {output_path.replace('.gpkg', '_boxplot.png')}")
-
-    return fig
+    if ax is not None:
+        return ax
+    else:
+        return fig
 
 
 # Example usage - Comment out when not testing
