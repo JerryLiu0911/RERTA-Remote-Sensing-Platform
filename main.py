@@ -127,23 +127,6 @@ def main(paths):
     # align_coords.canopy_openness(paths['canopy_openness_csv'], paths['veg_plots_corner_coordinates'], paths['canopy_openness_result'], timepoint='post3')
     # preprocess_dataset(paths, 'Palapa July2025 DEM', 'canopy_openness', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
 
-
-    rasters = ['Palapa July2025 GLI', 'Palapa July2025 Clre', 'Palapa July2025 ReNDVI']
-    filtering_logic = gis.remove_outliers
-    proxies = gis.GLCM
-
-    for raster_name in rasters:
-        zonal_gdf = gis.zonal_statistics(gpkg_path=None,
-                         raster_path=paths[f'{raster_name}_tif'],
-                         output_buffer_path=paths['buffered_points'],
-                         filtering_logic=filtering_logic,
-                         output_zonal_gpkg=paths[f'{raster_name}'],
-                         proxies=proxies,
-                         buffer_geom_path=paths['treatment_buffers'],
-                         value=raster_name.split(' ')[-1],
-                         save_plots=True,
-                         show_plots=False)
-
     ### Combining and analyzing data into dataframes ###
     # region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
     # gis.create_boxplot_from_data(region_data, 'canopy_openness')
@@ -248,7 +231,7 @@ paths = {
     'Palapa July2025 Clre_tif' : "D:/Jerry/Palapa July2025 Clre.tif",
     'Palapa July2025 ReNDVI_tif' : "D:/Jerry/Palapa July2025 ReNDVI.tif",
     'Palapa July2025 GNDVI_tif' : "D:/Jerry/Palapa July2025 GNDVI.tif",
-    'Palapa July2025 ortho_tif' : "D:/Jerry/Palapa July2025 ortho.tif",
+    'Palapa July2025 ortho_tif' : "D:/Jerry/UROP Rerta Palapa July2025 orthomosaic.tif",
 
     ## Kandista 2025
     'Kandista July2025 GLI_tif' : "D:/Jerry/Kandista July2025 GLI.tif",
@@ -279,6 +262,7 @@ paths = {
     'Palapa July2025 DEM': "Data/Palapa July2025 DEM statistics.gpkg",
     'Palapa July2025 ReNDVI': "Data/Palapa July2025 ReNDVI statistics.gpkg",
     'Palapa July2025 GNDVI': "Data/Palapa July2025 GNDVI statistics.gpkg",
+    'Palapa July2025 NDVI': "Data/Palapa July2025 NDVI statistics.gpkg",
     'Palapa July2025 ortho': "Data/Palapa July2025 ortho statistics.gpkg",
     'Palapa July2025 Clre': "Data/Palapa July2025 Clre statistics.gpkg",
 
@@ -294,7 +278,35 @@ paths = {
 }
 
 #preprocess_dataset(paths, 'CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
-main(paths)
+# main(paths)
+rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI']
+filtering_logic = gis.remove_outliers
+proxies = gis.GLCM
+
+# for raster_name in rasters:
+#     # zonal_gdf = gis.zonal_statistics(gpkg_path=None,
+#     #                  raster_path=paths[f'{raster_name}_tif'],
+#     #                  output_buffer_path=paths['buffered_points'],
+#     #                  filtering_logic=filtering_logic,
+#     #                  output_zonal_gpkg=paths[f'{raster_name}'],
+#     #                  proxies=proxies,
+#     #                  buffer_geom_path=paths['treatment_buffers'],
+#     #                  value=raster_name.split(' ')[-1],
+#     #                  save_plots=True,
+#     #                  show_plots=False)
+#     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1])
+
+zonal_gdf = gis.zonal_statistics(gpkg_path=paths['frogs_result'],
+                 raster_path=paths['Palapa July2025 ReNDVI_tif'],
+                 output_buffer_path=paths['buffered_points'],
+                 filtering_logic=filtering_logic,
+                 output_zonal_gpkg=paths['Palapa July2025 ReNDVI'],
+                 proxies=proxies,
+                 buffer_geom_path=paths['100m_transects'],
+                 value='Intensity',
+                 save_plots=False,
+                 show_plots=True)
+
 # for key, value in paths.items():
 #     print(f"Processing {key}: {value}")
 #     if os.path.exists(value):

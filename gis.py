@@ -123,16 +123,15 @@ def canopy_openness_proxy(data, thresh=30):
         'canopy_openness': canopy_openness # Percentage of positive values
     }
 
-def GLCM(data, levels = 16):
-    if data.dtype != np.uint16:
-        vmin = float(np.nanmin(data))
-        vmax = float(np.nanmax(data))
-        if vmin == vmax:
-            return None  # constant image
-        bins = np.linspace(vmin, vmax + 1e-12, levels + 1)
-        q = np.clip(np.digitize(data, bins) - 1, 0, levels - 1)
-        dtype = np.uint8 if levels <= 256 else np.uint16
-        data = q.astype(dtype, copy=False)
+def GLCM(data, levels = 32):
+    vmin = float(np.nanmin(data))
+    vmax = float(np.nanmax(data))
+    if vmin == vmax:
+        return None  # constant image
+    bins = np.linspace(vmin, vmax + 1e-12, levels + 1)
+    q = np.clip(np.digitize(data, bins) - 1, 0, levels - 1)
+    dtype = np.uint8 if levels <= 256 else np.uint16
+    data = q.astype(dtype, copy=False)
     print("Using GLCM for texture analysis")
     glcm = graycomatrix(data, distances=[1], angles=[0], levels=levels, symmetric=True, normed=True)
     return {
@@ -194,21 +193,21 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     except Exception as e:
         print(f"Error creating buffer geometries: {e}")
         return None
-
-    results = [] # Store results for each buffer, each element being a dictionary
-    region_data = defaultdict(list) # Stores all pixels which belong to a region
     
     
     with rasterio.open(raster_path) as src:
         for band_num in range(1, src.count + 1):
+            results = [] # Store results for each buffer, each element being a dictionary
+            region_data = defaultdict(list) # Stores all pixels which belong to a region
             for idx, row in buffered.iterrows():
                 try:
                     region_name = row.get('treatment', f'Treatment {idx}')
 
                     # Clip raster to just an individual buffer
                     masked_data, masked_transform = rasterio.mask.mask(
-                        src, [row.geometry], crop=True, nodata=src.nodata
+                        src, [row.geometry], crop=True, nodata=src.nodata, indexes=band_num
                     )
+                    print(masked_data.shape)
 
                     # # Flatten the array and remove nodata, vectorising for better performance
                     valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
@@ -238,7 +237,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                         }
                         if proxies:
                             try:
-                                stats = stats | proxies(masked_data[0])
+                                stats = stats | proxies(masked_data)
                             except Exception as e:
                                 print(f"Error applying proxies: {e}")
                                 try:
@@ -269,7 +268,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
             region_data = {k: region_data[k] for k in sorted(region_data.keys())}
 
             # --- Save result ---
-            output_file = f"{output_zonal_gpkg}_band{band_num}.gpkg" if src.count > 1 else output_zonal_gpkg
+            output_file = f"{output_zonal_gpkg.split('.')[0]}_band{band_num}.gpkg" if src.count > 1 else output_zonal_gpkg
             zonal_gdf.to_file(output_file, driver="GPKG", overwrite=True)
             print(f"Saved zonal statistics to: {output_file}")
 
@@ -279,11 +278,11 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 print("\nCreating distribution plots...")
                 
                 # Create plots using pre-processed data
-                fig1 = create_distribution_plots_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
+                fig1 = create_distribution_plots_from_data(region_data, value, output_path=output_file, save_plots=save_plots)
                 if fig1:
                     figures.append(fig1)
 
-                fig2 = create_boxplot_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
+                fig2 = create_boxplot_from_data(region_data, value, output_path=output_file, save_plots=save_plots)
                 if fig2:
                     figures.append(fig2)
 
