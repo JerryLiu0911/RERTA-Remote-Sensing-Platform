@@ -7,6 +7,14 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV, LeaveOneOut
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.gridspec as gridspec
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import seaborn as sns
+import warnings
+import shap
 
 
 
@@ -204,7 +212,8 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
         stage2_features = stage1_features
     
     print(f"  Stage 2 result: {len(stage2_features)} features")
-    
+    sns.heatmap(merged_df[[column for column in merged_df.columns if column in stage2_features]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
+    plt.show()
     # STAGE 3: Sample size validation
     print(f"\n STAGE 3: SAMPLE SIZE VALIDATION")
     
@@ -357,7 +366,6 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
 
     # Distribution identification
     if identify_distributions:
-        import warnings
         warnings.filterwarnings('ignore')  # Suppress distribution fitting warnings
         
         distributions = {}
@@ -593,9 +601,7 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
 
     # Optional plots
     if make_plots:
-        import matplotlib.pyplot as plt
-        import seaborn as sns
-        import matplotlib.gridspec as gridspec
+
         
         # 1. Combined figure with histograms and distribution fits
         for i, g_name in enumerate(labels):
@@ -909,7 +915,6 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
     y_pred = model.predict(x_train)
 
     # Get feature importances
-    import shap
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(x_train)
     shap_importance = np.mean(np.abs(shap_values), axis=0)
@@ -1312,7 +1317,6 @@ def enhanced_multivariate_linear_regression(df, targets, features, log_transform
         Y_original = Y.copy()
     
     # Standardize features
-    from sklearn.preprocessing import StandardScaler
     
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(df_clean[features])
@@ -1458,7 +1462,6 @@ def enhanced_multivariate_linear_regression(df, targets, features, log_transform
         
         # 2. Coefficient heatmap
         plt.figure(figsize=(10, 6))
-        import seaborn as sns
         sns.heatmap(coefficients_df.T, annot=True, cmap='RdBu_r', center=0,
                    fmt='.3f', cbar_kws={'label': 'Coefficient Value'})
         plt.title('Multivariate Regression Coefficients')
@@ -1509,10 +1512,7 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
     Returns:
         dict: Dictionary containing PCA results, loadings, explained variance, etc.
     """
-    
-    from sklearn.decomposition import PCA
-    from sklearn.preprocessing import StandardScaler
-    import seaborn as sns
+
     
     print("="*80)
     print("PRINCIPAL COMPONENT ANALYSIS (PCA)")
