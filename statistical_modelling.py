@@ -790,21 +790,45 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
             - r2: R-squared score
             - y_pred: Predicted values
     """
-    y = np.array(df[target])
-    x = np.array(df[features])
+    # Split by treatment
+    treatment_data = {treatment: data for treatment, data in df.groupby('treatment')}
+    x_train = []
+    x_test = []
+    y_train = []
+    y_test = []
 
-    print(x)
-    print(y)
+    for treatment, data in treatment_data.items():
+        y = np.array(data[target])
+        x = np.array(data[features])
+        # Split the data
+        x_train_treatment, x_test_treatment, y_train_treatment, y_test_treatment = train_test_split(
+            x, y, test_size=test_size, random_state=random_state
+        )
+        print(f"number of training samples added from treatment {treatment}: {len(x_train_treatment)}")
+        print(f"number of training labels added from treatment {treatment}: {len(y_train_treatment)}")
+        print(f"number of test samples added from treatment {treatment}: {len(x_test_treatment)}")
+        print(f"number of test labels added from treatment {treatment}: {len(y_test_treatment)}")
+        x_train.extend(x_train_treatment)
+        x_test.extend(x_test_treatment)
+        y_train.extend(y_train_treatment)
+        y_test.extend(y_test_treatment)
 
-    # Split the data
-    x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=test_size, random_state=random_state
-    )
+    # Checking splitting is evenly distributed between treatments:
+    print(f"Total training samples: {len(x_train)}")
+    print(f"Total training labels: {len(y_train)}")
+    print(f"Total test samples: {len(x_test)}")
+    print(f"Total test labels: {len(y_test)}")
 
+    x_train = np.array(x_train)
+    x_test = np.array(x_test)
+    y_train = np.array(y_train)
+    y_test = np.array(y_test)
     # Create and train the model
     model, best_score =  tune_random_forest(x_train, y_train, random_state=random_state)
-    # model = RandomForestRegressor(n_estimators=100, max_depth = 7,random_state=random_state)
+    # model = RandomForestRegressor(n_estimators=1000,random_state=random_state, )
     # model.fit(x_train, y_train)
+
+    print(f"Best cross-validated R^2 score during tuning: {best_score:.3f}")
 
     # Make predictions
     y_pred_test = model.predict(x_test)
@@ -968,14 +992,15 @@ def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
-        'n_estimators': [100, 300, 500, 700, 1000],#np.random.randint(300, 600, size=10).tolist(),              # More trees for better performance
-        'max_depth': [2, 3, 5, 7, None], #np.random.randint(3, 10, size=3).tolist() + [None],                     # Wider depth range
-        # 'min_samples_split': [5, 10],#np.random.randint(2, 20, size=n_iter).tolist(),             # More granular control
-        'min_samples_leaf': [1, 2, 4],#np.random.randint(1, 10, size=n_iter).tolist(),              # Prevent overfitting
-        #'max_features': ['sqrt', 'log2', 0.3, 0.5, 0.7], # Mix of strings and floats
+        'n_estimators': [500, 1000, 2000],#np.random.randint(300, 600, size=10).tolist(),              # More trees for better performance
+        'max_depth': [2, 5, 7, None], #np.random.randint(3, 10, size=3).tolist() + [None],                     # Wider depth range
+        # 'min_samples_split': [2, 4, 8],#np.random.randint(2, 20, size=n_iter).tolist(),             # More granular control
+        # 'min_samples_leaf': [1, 2, 4, 10],#np.random.randint(1, 10, size=n_iter).tolist(),              # Prevent overfitting
+        'max_features': [1.0, 'log2', 'sqrt'], # Mix of strings and floats
         # 'criterion': ['squared_error', 'absolute_error'], # Different loss functions
         #'max_samples': [0.7, 0.8, 0.9, 1]#np.random.uniform(0.3, 0.7, size=n_iter)                 # Sample fraction for bootstrap
     }
+
 
     rf = RandomForestRegressor(random_state=random_state)
 
