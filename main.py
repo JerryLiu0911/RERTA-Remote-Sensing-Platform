@@ -62,7 +62,7 @@ def plot_relations(df, target, column, geo = False):
         # plt.legend()
         # plt.show()
 
-def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_logic = None, proxies = None):
+def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_logic = None, proxies = None, show_plots = False):
     """
     To improve efficiency of process different datasets with different requirements, this function automatically calls the align_coord and zonal_statistics
     modules to streamline the preprocessing steps.
@@ -91,7 +91,8 @@ def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_log
                          proxies=proxies,
                          buffer_geom_path=buffer_types[target_name],
                          value=raster_name.split(' ')[-1],
-                         save_plots=True)
+                         save_plots=True,
+                         show_plots=show_plots)
     return zonal_gdf
 
 def plot_features(df, features, group=None):
@@ -118,35 +119,30 @@ def plot_features(df, features, group=None):
     plt.show()
 
 def main(paths):
+    # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint=2019)
     # preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
     # preprocess_dataset(paths, 'Palapa June2019 GLI', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
     # preprocess_dataset(paths, 'Palapa June2019 ExG', 'frogs', timepoint=2019, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint=2019)
-    # gis.zonal_statistics(
-    #     gpkg_path=paths['frogs_result'],
-    #     raster_path=paths['Palapa June2019 CHM_tif'],
-    #     output_buffer_path=paths['buffered_points'],
-    #     filtering_logic=gis.clip_below_zero,
-    #     output_zonal_gpkg=paths['CHM'],
-    #     proxies=gis.canopy_openness_proxy,
-    #     buffer_geom_path=paths['100m_transects'],
-    #     save_plots=True
-    # )
-    # gis.zonal_statistics(
-    #     gpkg_path=paths['frogs_result'],
-    #     raster_path=paths['Palapa June2019 ExG_tif'],
-    #     output_buffer_path=paths['buffered_points'],
-    #     filtering_logic=gis.remove_outliers,
-    #     output_zonal_gpkg=paths['ExG'],
-    #     proxies=gis.GLCM,
-    #     buffer_geom_path=paths['100m_transects'],
-    #     save_plots=True
-    # )
 
-    # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint='post3')
-    # preprocess_dataset(paths, 'Palapa July2025 DEM', 'frogs', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
-    # preprocess_dataset(paths, 'Palapa July2025 GLI', 'frogs', timepoint='post3', filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # preprocess_dataset(paths, 'Palapa July2025 ReNDVI', 'frogs', timepoint='post3', proxies=gis.GLCM)
+    # align_coords.canopy_openness(paths['canopy_openness_csv'], paths['veg_plots_corner_coordinates'], paths['canopy_openness_result'], timepoint='post3')
+    # preprocess_dataset(paths, 'Palapa July2025 DEM', 'canopy_openness', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+
+
+    rasters = ['Palapa July2025 GLI', 'Palapa July2025 Clre', 'Palapa July2025 ReNDVI']
+    filtering_logic = gis.remove_outliers
+    proxies = gis.GLCM
+
+    for raster_name in rasters:
+        zonal_gdf = gis.zonal_statistics(gpkg_path=None,
+                         raster_path=paths[f'{raster_name}_tif'],
+                         output_buffer_path=paths['buffered_points'],
+                         filtering_logic=filtering_logic,
+                         output_zonal_gpkg=paths[f'{raster_name}'],
+                         proxies=proxies,
+                         buffer_geom_path=paths['treatment_buffers'],
+                         value=raster_name.split(' ')[-1],
+                         save_plots=True,
+                         show_plots=False)
 
     ### Combining and analyzing data into dataframes ###
     # region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
@@ -165,11 +161,23 @@ def main(paths):
             filter = None)
 
     print(f"Finished merging columns : {merged_df.columns}")
+    print("Final merged dataframe :")
+    print(merged_df.head())
+    print(f"Sample size before removing missing values: {len(merged_df)}")
+    merged_df = merged_df.dropna()
+    print(f"Sample size after removing missing values: {len(merged_df)}")
     # pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df)
     
     # Option 2: Use specific features
-    all_features = [col for col in merged_df.columns if col not in ['geometry','treatment','point.label','Frog.abundance','Frog.richness']]
-    pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features)
+    all_features = [col for col in merged_df.columns if col not in ['geometry','treatment','point.label','Frog.abundance','Frog.richness','average_canopy_openness']]
+    pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=False)
+
+    # Merge first 5 PCs
+    # for i in range(X_pca.shape[1]):
+    #     merged_df[f'PC{i+1}'] = X_pca[:, i]
+    #     print(f"merging PC{i+1} to merged_df")
+
+    print(f"Finished merging columns : {merged_df.columns}")
 
     # You can also access specific results:
     print(f"\nKey findings:")
@@ -177,20 +185,17 @@ def main(paths):
     print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
     print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
-
-    # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
-    # print(BC_df.head())
-    # plot_relations(BC_df,'average_canopy_openness', 'mean_CHM', geo = False)
-    # plot_relations(merged_df,'Frog.abundance', 'mean_CHM', geo = False)
-
-
-    features = [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment', 'Frog.abundance', 'Frog.richness']]
+    features = [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment', 'Frog.abundance', 'Frog.richness', 'average_canopy_openness']]
     print(features)
     print(merged_df['point.label'])
-    features = statistical_modelling.smart_feature_selection_pipeline(merged_df, 'Frog.abundance', features)
+    features = statistical_modelling.smart_feature_selection_pipeline(merged_df, 'average_canopy_openness', features)
     print(merged_df[[col for col in merged_df.columns if col in features]])
-    pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features)
+    pca_results, interpretation, X_pca, _ = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features, display = True)
     plot_features(merged_df, features, group='treatment')
+    # Merge first 3 PCs
+    for i in range(X_pca.shape[1]):
+        merged_df[f'PC{i+1}'] = X_pca[:, i]
+        print(f"merging PC{i+1} to merged_df")
 
     
     # You can also access specific results:
@@ -198,13 +203,13 @@ def main(paths):
     print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
     print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
     print(f"Treatment separation quality: {interpretation['separation_quality']}")
-    plt.figure(figsize=(12, 10))
-    sns.heatmap(merged_df[[column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment']]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
-    plt.show()
+    # plt.figure(figsize=(12, 10))
+    # sns.heatmap(merged_df[[column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment']]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
+    # plt.show()
     
     # call the check function with a treatment column called 'treatment'
-    diagnostics = statistical_modelling.data_diagnostics(merged_df, group = 'treatment', dependent='Frog.abundance', identify_distributions=True)
-    print(diagnostics)
+    # diagnostics = statistical_modelling.data_diagnostics(merged_df, group = 'treatment', dependent='Frog.abundance', identify_distributions=True)
+    # print(diagnostics)
     # plt.hist(merged_df['Frog.abundance'], bins=50, alpha=0.7, color='blue')
     # plt.title('Distribution of Frog Abundance')
     # plt.xlabel('Frog Abundance')
@@ -214,10 +219,10 @@ def main(paths):
 
     ### Statistical Modelling ###
 
-    statistical_modelling.random_forest_regression(merged_df, 'Frog.abundance', features=features)
+    statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', features=all_features, display=True)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
-    print(statistical_modelling.enhanced_multivariate_linear_regression(merged_df, ['Frog.abundance','Frog.richness'], features=features , display=True))
+    # print(statistical_modelling.enhanced_multivariate_linear_regression(merged_df, ['Frog.abundance','Frog.richness'], features=features , display=True))
 
 
 paths = {
