@@ -94,6 +94,29 @@ def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_log
                          save_plots=True)
     return zonal_gdf
 
+def plot_features(df, features, group=None):
+    n_features = len(features)
+    n_cols = min(3, n_features)
+    n_rows = (n_features + n_cols - 1) // n_cols
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(5 * n_cols, 4 * n_rows))
+    axes = axes.flatten() if n_features > 1 else [axes]
+
+    for i, feature in enumerate(features):
+        if feature in df.columns:
+            ax = axes[i]
+            if group and group in df.columns:
+                region_data = gis.get_region_data(df, feature)
+                gis.create_boxplot_from_data(region_data, feature, ax=ax)
+            else:
+                sns.histplot(df[feature], kde=True, ax=ax)
+                ax.set_title(f'Distribution of {feature}')
+            ax.set_xlabel(feature)
+            ax.set_ylabel('Value')
+        else:
+            axes[i].set_visible(False)
+    plt.tight_layout()
+    plt.show()
+
 def main(paths):
     # preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
     # preprocess_dataset(paths, 'Palapa June2019 GLI', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
@@ -131,7 +154,6 @@ def main(paths):
     # gis.create_distribution_plots_from_data(region_data, 'canopy_openness')
     # plt.show()
     
-    print(gis.gpd.read_file(paths['Palapa July2025 DEM']).head())
     merged_df = statistical_modelling.load_data(
             [#('GLI', paths['GLI']),
             ('CHM', paths['Palapa July2025 DEM']),
@@ -146,8 +168,14 @@ def main(paths):
     # pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df)
     
     # Option 2: Use specific features
-    all_features = ['canopy_openness_CHM', 'Frog.abundance', 'Frog.richness']
-    all_features.extend([col for col in merged_df.columns if 'GLI' in col])
+    all_features = [col for col in merged_df.columns if col not in ['geometry','treatment','point.label','Frog.abundance','Frog.richness']]
+    pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features)
+
+    # You can also access specific results:
+    print(f"\nKey findings:")
+    print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
+    print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
+    print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
 
     # BC_df = merged_df[merged_df['point.label'].str.contains("BC", case=False, na=False)]
@@ -162,19 +190,18 @@ def main(paths):
     features = statistical_modelling.smart_feature_selection_pipeline(merged_df, 'Frog.abundance', features)
     print(merged_df[[col for col in merged_df.columns if col in features]])
     pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features)
+    plot_features(merged_df, features, group='treatment')
+
     
     # You can also access specific results:
     print(f"\nKey findings:")
     print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
     print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
     print(f"Treatment separation quality: {interpretation['separation_quality']}")
+    plt.figure(figsize=(12, 10))
     sns.heatmap(merged_df[[column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment']]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
     plt.show()
     
-    # feature_diagnostics(merged_df, 'average_canopy_openness', features)
-    # print("\n \n \n \n \n \n \n")
-    # analyze_chm_correlations(merged_df, features)
-    # selected_features = smart_feature_selection_pipeline(merged_df, 'average_canopy_openness', features)
     # call the check function with a treatment column called 'treatment'
     diagnostics = statistical_modelling.data_diagnostics(merged_df, group = 'treatment', dependent='Frog.abundance', identify_distributions=True)
     print(diagnostics)
