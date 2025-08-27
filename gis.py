@@ -42,7 +42,7 @@ def remove_outliers(data, thresh=3):
     Clips the input data array to remove negative values.
     """
     
-    # Remove outliers using 2*IQR
+    # Remove outliers using thresh*IQR
     Q1 = np.percentile(data, 25)
     Q3 = np.percentile(data, 75)
     IQR = Q3 - Q1
@@ -170,19 +170,23 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
 
     '''
     #--- Load and reproject point data ---
-    points = gpd.read_file(gpkg_path)
-    if points.crs.is_geographic:
-        points = points.to_crs(points.estimate_utm_crs())
+    if gpkg_path:
+        points = gpd.read_file(gpkg_path)
+        if points.crs.is_geographic:
+            points = points.to_crs(points.estimate_utm_crs())
 
 
     print(f"\n \n Calculating Zonal Statistics for {output_zonal_gpkg}")
     #--- Create buffer around each point ---
     try:
         if buffer_geom_path and (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all():
-            points = points.drop(columns='geometry')
-            buffered = gpd.read_file(buffer_geom_path)
-            buffered = buffered.merge(points, left_on='name', right_on='point.label', how='inner') #Merges columns in vector geopackage if contains data (e.g. Canopy openness)
-            buffered.drop(columns='name', inplace=True)
+            if gpkg_path:
+                points = points.drop(columns='geometry')
+                buffered = gpd.read_file(buffer_geom_path)
+                buffered = buffered.merge(points, left_on='name', right_on='point.label', how='inner') #Merges columns in vector geopackage if contains data (e.g. Canopy openness)
+                buffered.drop(columns='name', inplace=True)
+            else:
+                buffered = gpd.read_file(buffer_geom_path)
         else:
             print("WARNING No buffer geometry entered, creating buffer around each point...")
             buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
@@ -196,94 +200,95 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     
     
     with rasterio.open(raster_path) as src:
+        for band_num in range(1, src.count + 1):
+            for idx, row in buffered.iterrows():
+                try:
+                    region_name = row.get('treatment', f'Treatment {idx}')
 
-        for idx, row in buffered.iterrows():
-            try:
-                region_name = row.get('treatment', f'Treatment {idx}')
+                    # Clip raster to just an individual buffer
+                    masked_data, masked_transform = rasterio.mask.mask(
+                        src, [row.geometry], crop=True, nodata=src.nodata
+                    )
 
-                # Clip raster to just an individual buffer
-                masked_data, masked_transform = rasterio.mask.mask(
-                    src, [row.geometry], crop=True, nodata=src.nodata
-                )
+                    # # Flatten the array and remove nodata, vectorising for better performance
+                    valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
+                    
 
-                # # Flatten the array and remove nodata, vectorising for better performance
-                valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
-                
+                    valid_data = np.asarray(valid_data, dtype=float)  # Ensure data is 1D
+                    finite_mask = np.isfinite(valid_data)
+                    valid_data = valid_data[finite_mask]
+            
 
-                valid_data = np.asarray(valid_data, dtype=float)  # Ensure data is 1D
-                finite_mask = np.isfinite(valid_data)
-                valid_data = valid_data[finite_mask]
-        
-
-                # Apply your custom clipping (remove values < 0)
-                clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
+                    # Apply your custom clipping
+                    clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
 
 
-                if len(clipped_data) > 0:
-                    region_data[region_name].extend(clipped_data)
+                    if len(clipped_data) > 0:
+                        region_data[region_name].extend(clipped_data)
 
-                    stats = {
-                        'mean': float(np.mean(clipped_data)),
-                        #'min': float(np.min(clipped_data)),
-                        #'max': float(np.max(clipped_data)),
-                        #'std': float(np.std(clipped_data)),
-                        #'median': float(np.median(clipped_data)),
-                        'range': float(np.max(clipped_data) - np.min(clipped_data)),
-                        #'count': len(clipped_data),
-                        'cv': float(np.std(clipped_data) / np.mean(clipped_data)) if np.mean(clipped_data) != 0 else 0
-                    }
-                    if proxies:
-                        try:
-                            stats = stats | proxies(masked_data[0])
-                        except Exception as e:
-                            print(f"Error applying proxies: {e}")
+                        stats = {
+                            'mean': float(np.mean(clipped_data)),
+                            #'min': float(np.min(clipped_data)),
+                            #'max': float(np.max(clipped_data)),
+                            #'std': float(np.std(clipped_data)),
+                            #'median': float(np.median(clipped_data)),
+                            'range': float(np.max(clipped_data) - np.min(clipped_data)),
+                            #'count': len(clipped_data),
+                            'cv': float(np.std(clipped_data) / np.mean(clipped_data)) if np.mean(clipped_data) != 0 else 0
+                        }
+                        if proxies:
                             try:
-                                stats = stats | proxies(clipped_data)
+                                stats = stats | proxies(masked_data[0])
                             except Exception as e:
                                 print(f"Error applying proxies: {e}")
-                else:
-                    # No valid data in this buffer
-                    stats = {
-                        'mean': np.nan, 'min': np.nan, 'max': np.nan,
-                        'std': np.nan, 'median': np.nan, 'range': np.nan, 'count': 0
-                    }
+                                try:
+                                    stats = stats | proxies(clipped_data)
+                                except Exception as e:
+                                    print(f"Error applying proxies: {e}")
+                    else:
+                        # No valid data in this buffer
+                        stats = {
+                            'mean': np.nan, 'min': np.nan, 'max': np.nan,
+                            'std': np.nan, 'median': np.nan, 'range': np.nan, 'count': 0
+                        }
 
-                    print(f"No valid data in buffer {idx} {row.get('point.label')}, skipping...")
+                        print(f"No valid data in buffer {idx} {row.get('point.label')}, skipping...")
 
-                # Combine with original row data
-                result_row = row.to_dict()
-                result_row.update(stats)
-                results.append(result_row)
+                    # Combine with original row data
+                    result_row = row.to_dict()
+                    result_row.update(stats)
+                    results.append(result_row)
+                    
+                    print(f"Processed buffer {int(idx/16)+1}    {idx+1}/{len(buffered)}")
+                    
+                except Exception as e:
+                    print(f"Error processing buffer {idx}, at {row.get('point.label')} : {e}")
+                    continue
+
+            zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
+            region_data = {k: region_data[k] for k in sorted(region_data.keys())}
+
+            # --- Save result ---
+            output_file = f"{output_zonal_gpkg}_band{band_num}.gpkg" if src.count > 1 else output_zonal_gpkg
+            zonal_gdf.to_file(output_file, driver="GPKG", overwrite=True)
+            print(f"Saved zonal statistics to: {output_file}")
+
+            # Create plots if requested
+            figures = []
+            if (show_plots or save_plots) and region_data:
+                print("\nCreating distribution plots...")
                 
-                print(f"Processed buffer {int(idx/16)+1}    {idx+1}/{len(buffered)}")
-                
-            except Exception as e:
-                print(f"Error processing buffer {idx}, at {row.get('point.label')} : {e}")
-                continue
+                # Create plots using pre-processed data
+                fig1 = create_distribution_plots_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
+                if fig1:
+                    figures.append(fig1)
 
-    zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
-    region_data = {k: region_data[k] for k in sorted(region_data.keys())}
+                fig2 = create_boxplot_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
+                if fig2:
+                    figures.append(fig2)
 
-    # --- Save result ---
-    zonal_gdf.to_file(output_zonal_gpkg, driver="GPKG", overwrite=True)
-    print(f"Saved zonal statistics to: {output_zonal_gpkg}")
-
-    # Create plots if requested
-    figures = []
-    if (show_plots or save_plots) and region_data:
-        print("\nCreating distribution plots...")
-        
-        # Create plots using pre-processed data
-        fig1 = create_distribution_plots_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
-        if fig1:
-            figures.append(fig1)
-
-        fig2 = create_boxplot_from_data(region_data, value, output_path=output_zonal_gpkg, save_plots=save_plots)
-        if fig2:
-            figures.append(fig2)
-
-        if show_plots:
-            plt.show()
+                if show_plots:
+                    plt.show()
 
     return zonal_gdf, figures
 
@@ -443,8 +448,8 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     ax.tick_params(axis='x', labelsize=13)
     
     # Add sample size annotations
-    # for i, (region, data) in enumerate(region_data.items()):
-    #     ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
+    for i, (region, data) in enumerate(region_data.items()):
+        ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
     
     plt.tight_layout()
     if output_path:
@@ -458,6 +463,31 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     else:
         return fig
 
+def plot_index_kde_sampled(raster_path, value, sample_size=10000):
+    with rasterio.open(raster_path) as src:
+        data = src.read(1)
+        nodata = src.nodata
+
+    data_flat = data.flatten()
+    print("Data shape flattened")
+    if nodata is not None:
+        data_flat = data_flat[data_flat != nodata]
+    data_flat = data_flat[np.isfinite(data_flat)]
+
+    print("Data filtered")
+    # Randomly sample pixels if too many
+    if len(data_flat) > sample_size:
+        data_flat = np.random.choice(data_flat, sample_size, replace=False)
+
+    print(f"Plotting KDE for {value} from {raster_path} with {len(data_flat)} samples")
+    plt.figure(figsize=(10, 8))
+    sns.kdeplot(data_flat, fill=True, color='skyblue')
+    plt.title(f"KDE of {value} (sampled) from {raster_path}")
+    plt.xlabel(value)
+    plt.ylabel("Density")
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.show()
 
 # Example usage - Comment out when not testing
 # Test the plotting functions
