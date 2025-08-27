@@ -612,6 +612,10 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
 
 
         # df = df.dropna() # Remove rows with NaN values
+
+        print(f"Loaded data from {name}")
+        print(df.head())
+
         if filter != None:
             df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
         df = df.rename(columns={col: f'{col}_{name}' for col in df.columns if col != 'point.label'})
@@ -839,7 +843,7 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
     shap_values = explainer.shap_values(x_train)
     shap_importance = np.mean(np.abs(shap_values), axis=0)
     importances = model.feature_importances_
-    features = df[features].columns
+    # features = df[features].columns
 
     # Calculate metrics
     mse = mean_squared_error(y_train, y_pred)
@@ -1449,13 +1453,9 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
     print(f"Variables included in PCA: {target_columns}")
     print(f"Treatment column: {treatment_column}")
     
-    # Remove rows with missing values
-    df_clean = df[target_columns + [treatment_column]].dropna()
-    print(f"Sample size after removing missing values: {len(df_clean)}")
-    
     # Separate features and treatments
-    X = df_clean[target_columns]
-    treatments = df_clean[treatment_column]
+    X = df[target_columns]
+    treatments = df[treatment_column]
     
     # Standardize the features (important for PCA)
     print(f"\nStandardizing features...")
@@ -1464,8 +1464,8 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
     
     # Perform PCA
     if n_components is None:
-        n_components = min(len(target_columns), len(df_clean))
-    
+        n_components = min(len(target_columns), len(df))
+
     pca = PCA(n_components=n_components)
     X_pca = pca.fit_transform(X_scaled)
     
@@ -1484,6 +1484,8 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
         print(f"  PC{i+1}: {explained_variance_ratio[i]:.3f} ({explained_variance_ratio[i]*100:.1f}%)")
         print(f"  Cumulative: {cumulative_variance[i]:.3f} ({cumulative_variance[i]*100:.1f}%)")
     
+    unique_treatments = treatments.unique()
+
     if display:
         # 1. Scree plot
         plt.figure(figsize=(15, 12))
@@ -1694,7 +1696,7 @@ def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_compon
         'pc2_top_variables': pc2_top_vars
     }
     
-    return results
+    return results, X_pca, treatments
 
 def PCA_interpretation(pca_results, alpha=0.05):
     """
@@ -1812,7 +1814,7 @@ def PCA_interpretation(pca_results, alpha=0.05):
     
     return interpretation
 
-def comprehensive_PCA_analysis(df, target_columns=None, treatment_column='treatment'):
+def comprehensive_PCA_analysis(df, display=True, target_columns=None, treatment_column='treatment'):
     """
     Performs complete PCA analysis with interpretation
     """
@@ -1820,10 +1822,10 @@ def comprehensive_PCA_analysis(df, target_columns=None, treatment_column='treatm
     print(" COMPREHENSIVE PCA ANALYSIS")
     
     # Perform PCAs
-    pca_results = PCA_analysis(df, target_columns, treatment_column, display=True)
+    pca_results, X_pca, treatments = PCA_analysis(df, target_columns, treatment_column, display=display)
     
     # Interpret results
     interpretation = PCA_interpretation(pca_results)
-    
-    return pca_results, interpretation
+
+    return pca_results, interpretation, X_pca, treatments
 
