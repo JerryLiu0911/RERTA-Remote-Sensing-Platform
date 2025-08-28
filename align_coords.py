@@ -8,7 +8,7 @@ Attaches geometry coordinates extracted from coordinate_extraction to the given 
 As each csv file is different, this function will need to be edited for each csv file, especially for those without geometry data.
 '''
 
-def load_canopy_openness(canopy_path, coordinates_path, destination_path, timepoint="post3"):
+def load_canopy_openness(canopy_path, timepoint="post3"):
   ''' 
   Extracts canopy openness data from a CSV file, calculates the average openness, and filters by timepoint.
   Default timepoint is "post1", but for more recent data "post 3" should be considered.
@@ -87,7 +87,7 @@ def load_canopy_openness(canopy_path, coordinates_path, destination_path, timepo
     # merged_gdf.to_file("canopy_openness_result.gpkg", driver="GPKG")
 
     # return merged_gdf
-    print(canopy_df_filtered.head())
+    print("Filtered canopy_openness dataframe :\n", canopy_df_filtered.head())
     return canopy_df_filtered
 
   except FileNotFoundError:
@@ -95,13 +95,12 @@ def load_canopy_openness(canopy_path, coordinates_path, destination_path, timepo
   except Exception as e:
     print(f"An error occurred: {e}")
 
-def load_frogs(frogs_path, coordinates_path, destination_path, timepoint=None):
+def load_frogs(frogs_path, timepoint=None):
     '''
     Extracts frog data from a CSV file, calculates the average frog count, and filters by timepoint.
     '''
 
     frogs_df = pd.read_csv(frogs_path)
-    coordinates_gdf = gpd.read_file(coordinates_path)
 
     print(f"File loaded from: {frogs_path}")
 
@@ -146,25 +145,14 @@ def load_frogs(frogs_path, coordinates_path, destination_path, timepoint=None):
         else:
             print(f"Warning: {col} not found in DataFrame columns.")
     frogs_df = frogs_df.groupby('Line_transect').agg({'Frog.abundance': 'mean','Frog.richness': 'mean','treatment': 'first'}).reset_index()
-
-    print(frogs_df)  # Display the first few rows of the DataFrame
-
-    # Merge with coordinates_gdf to attach geometry
-    frogs_df = frogs_df.merge(coordinates_gdf, left_on='Line_transect', right_on='name', how='inner')
     frogs_df = frogs_df.rename(columns={'Line_transect': 'point.label'})
-    frogs_df = frogs_df.drop([column for column in frogs_df.columns if column not in ['point.label', 'Frog.abundance', 'Frog.richness', 'treatment', 'geometry']], axis=1)  # Drop 'name' columns to prevent redundancy with 'point.label'
+    frogs_df = frogs_df.drop([column for column in frogs_df.columns if column not in ['point.label', 'Frog.abundance', 'Frog.richness', 'treatment']], axis=1)  # Drop 'name' columns to prevent redundancy with 'point.label'
 
-    print('Coordinates merged')
-    print('Final dataframe : \n', frogs_df)  # Display the first few rows of the final DataFrame
+    print('Filtered frogs dataframe : \n', frogs_df.head())  # Display the first few rows of the final DataFrame
 
-    # Create a GeoDataFrame and save as a gpkg file
-    merged_gdf = gpd.GeoDataFrame(frogs_df, geometry='geometry')
-    merged_gdf.to_file(destination_path, driver="GPKG")
-    print(f"Saved to {destination_path}")
+    return frogs_df
 
-    return merged_gdf
-
-def load_erosion_sticks(erosion_sticks_path, destination_path, timepoint=None):
+def load_erosion_sticks(erosion_sticks_path, timepoint=None):
     '''
     Extracts soil data from a CSV file, calculates the average of relevant soil metrics, and merges with coordinates.
     '''
@@ -215,7 +203,7 @@ def load_erosion_sticks(erosion_sticks_path, destination_path, timepoint=None):
         erosion_sticks_df_filtered = erosion_sticks_df_filtered.pivot(index='point.label', columns='position', values='change.mm').reset_index() # Rotating to turn them into a column
         erosion_sticks_df_filtered = erosion_sticks_df_filtered.rename(columns={'Circle': 'Circle change.mm', 'Harvesting path': 'Harvesting path change.mm', 'Windrow': 'Windrow change.mm'})
 
-        print(erosion_sticks_df_filtered.head())  # Display the first few rows of the DataFrame
+        print("Filtered erosion_sticks dataframe :\n", erosion_sticks_df_filtered.head())  # Display the first few rows of the DataFrame
         return erosion_sticks_df_filtered
 
     except FileNotFoundError:
@@ -242,7 +230,7 @@ def load_erosion_sticks(erosion_sticks_path, destination_path, timepoint=None):
 
     # return merged_gdf
 
-def align_coords(dataframes, coordinates_gdf_path):
+def align_coords(dataframes, coordinates_gdf_path, destination_path):
     """
     Aligns the data in df with the provided coordinates GeoDataFrame.
 
@@ -276,8 +264,10 @@ def align_coords(dataframes, coordinates_gdf_path):
         print('Final dataframe : \n', merged_df[:10])  # Display the first few rows of the final DataFrame
 
         # Create a GeoDataFrame and save as a gpkg file
-        # merged_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
-        # merged_gdf.to_file("canopy_openness_result.gpkg", driver="GPKG")
+        merged_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
+        merged_gdf.to_file(destination_path, driver="GPKG")
+        print(f"Saved to {destination_path}")
+
         return merged_df
     
     except FileNotFoundError:
@@ -287,4 +277,5 @@ def align_coords(dataframes, coordinates_gdf_path):
         return None
 
 # load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")
-align_coords([load_canopy_openness("Data/3.4-canopy.openness.csv", "Data/result_data.gpkg", "Data/canopy_openness_result.gpkg", timepoint="post3"), load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")], "Data/Palapa_veg_plots_corners.gpkg")
+# align_coords([load_canopy_openness("Data/3.4-canopy.openness.csv", "Data/result_data.gpkg", "Data/canopy_openness_result.gpkg", timepoint="post3"), load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")], "Data/Palapa_veg_plots_corners.gpkg")
+# align_coords([load_frogs("Data/4.3_Frogs.csv", timepoint="post3")], "Data/Palapa_transects_buffer.gpkg", "Data/Palapa_transects_buffer_results.gpkg")

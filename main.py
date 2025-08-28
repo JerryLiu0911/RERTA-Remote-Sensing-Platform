@@ -62,7 +62,7 @@ def plot_relations(df, target, column, geo = False):
         # plt.legend()
         # plt.show()
 
-def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_logic = None, proxies = None, show_plots = False):
+def preprocess_dataset(paths, raster_name, target_name, buffer, timepoint, filtering_logic = None, proxies = None, show_plots = False):
     """
     To improve efficiency of process different datasets with different requirements, this function automatically calls the align_coord and zonal_statistics
     modules to streamline the preprocessing steps.
@@ -78,19 +78,13 @@ def preprocess_dataset(paths, raster_name, target_name, timepoint, filtering_log
     Returns:
         The updated statistic dataframe.
     """
-    buffer_types = {
-        'canopy_openness' : paths['veg_plots_corner_coordinates'],
-        'frogs': paths['100m_transects'],
-    }
-    # getattr(align_coords, target_name)(paths[f'{target_name}_csv'], buffer_types[target_name], paths[f'{target_name}_result'], timepoint=timepoint)
     zonal_gdf = gis.zonal_statistics(gpkg_path=paths[f'{target_name}_result'],
                          raster_path=paths[f'{raster_name}_tif'],
-                         output_buffer_path=paths['buffered_points'],
                          filtering_logic=filtering_logic,
                          output_zonal_gpkg=paths[f'{raster_name}'],
                          proxies=proxies,
-                         buffer_geom_path=buffer_types[target_name],
-                         value=raster_name.split(' ')[-1],
+                         buffer_geom_path=paths[buffer],
+                         value=raster_name.split(' ')[-1] if raster_name.split(' ')[-1] != 'ortho' else 'intensity',
                          save_plots=True,
                          show_plots=show_plots)
     return zonal_gdf
@@ -119,10 +113,27 @@ def plot_features(df, features, group=None):
     plt.show()
 
 def main(paths):
-    # align_coords.frogs(paths['frogs_csv'], paths['100m_transects'], paths['frogs_result'], timepoint=2019)
-    # preprocess_dataset(paths, 'Palapa June2019 CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
-    # preprocess_dataset(paths, 'Palapa June2019 GLI', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
-    # preprocess_dataset(paths, 'Palapa June2019 ExG', 'frogs', timepoint=2019, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+
+    ### VARIABLES ###
+    buffer = "veg_plots_corner_coordinates"
+    timepoint = 'post3'  # or 2019 for Palapa June2019 data
+
+
+
+    buffer_types = {
+    'veg_plots_corner_coordinates' : ['canopy_openness'],
+    '100m_transects' : ['frogs']
+    }
+    dataframes = []
+
+    for target_name in buffer_types[buffer]:
+        df = getattr(align_coords, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
+        dataframes.append(df)
+
+    align_coords.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'])
+    preprocess_dataset(paths, 'Palapa June2019 CHM', buffer, timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+    preprocess_dataset(paths, 'Palapa June2019 GLI', buffer, timepoint=2019, filtering_logic=gis.clip_below_zero)
+    preprocess_dataset(paths, 'Palapa June2019 ExG', buffer, timepoint=2019, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
 
     # align_coords.canopy_openness(paths['canopy_openness_csv'], paths['veg_plots_corner_coordinates'], paths['canopy_openness_result'], timepoint='post3')
     # preprocess_dataset(paths, 'Palapa July2025 DEM', 'canopy_openness', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
@@ -268,9 +279,10 @@ paths = {
 
 # Processed files
 'result_data': "result_data.gpkg",
-'canopy_openness_result': "canopy_openness_result.gpkg",
-'frogs_result': "Frogs_result.gpkg",
-'buffered_points': "buffered_points.gpkg",
+'veg_plots_corner_coordinates_result': "Data/Palapa_veg_plots_result.gpkg",
+'100m_transects_result': "Data/Palapa_100m_transects_result.gpkg",
+# 'canopy_openness_result': "canopy_openness_result.gpkg",
+# 'frogs_result': "Frogs_result.gpkg",
 'GLI': "Data/Palapa June2019 GLI statistics.gpkg", # FORMATTING TO BE DISCUSSED
 'ExG': "Data/Palapa June2019 ExG statistics.gpkg",
 'DEM': "Data/Palapa June2019 DEM statistics.gpkg",
@@ -280,7 +292,7 @@ paths = {
 #preprocess_dataset(paths, 'CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
 # main(paths)
 rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI']
-filtering_logic = gis.remove_outliers
+filtering_logic = gis.clip_below_zero
 proxies = gis.GLCM
 
 # for raster_name in rasters:
@@ -296,17 +308,6 @@ proxies = gis.GLCM
 #     #                  show_plots=False)
 #     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1])
 
-zonal_gdf = gis.zonal_statistics(gpkg_path=paths['frogs_result'],
-                 raster_path=paths['Palapa July2025 ReNDVI_tif'],
-                 output_buffer_path=paths['buffered_points'],
-                 filtering_logic=filtering_logic,
-                 output_zonal_gpkg=paths['Palapa July2025 ReNDVI'],
-                 proxies=proxies,
-                 buffer_geom_path=paths['100m_transects'],
-                 value='Intensity',
-                 save_plots=False,
-                 show_plots=True)
-
 # for key, value in paths.items():
 #     print(f"Processing {key}: {value}")
 #     if os.path.exists(value):
@@ -315,3 +316,8 @@ zonal_gdf = gis.zonal_statistics(gpkg_path=paths['frogs_result'],
 #         print(f"{key} writable: {is_writable}")
 #     else:
 #         print(f" {value}Path does not exist.")
+
+
+
+
+### REMEMBER TO REPROCESS ALL THE STATISTICS
