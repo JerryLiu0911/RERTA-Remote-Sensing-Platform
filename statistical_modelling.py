@@ -617,7 +617,7 @@ def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_
         print(df.head())
 
         if filter != None:
-            df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Remove OPC as the orthomosaic is not well defined at the edges
+            df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Choice to remove erroneous labels
         df = df.rename(columns={col: f'{col}_{name}' for col in df.columns if col != 'point.label'})
 
         if i == 0:
