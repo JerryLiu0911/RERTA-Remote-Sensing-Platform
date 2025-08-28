@@ -682,7 +682,7 @@ def simple_linear_regression(x, y):
 
   return results
 
-def multi_linear_regression_display(df, target, features, display = False):
+def multi_linear_regression_display(df, targets, features, display = False):
   '''
   Performs multiple linear regression and displays the results.
   Outputs the best model based on R-squared value.
@@ -698,10 +698,10 @@ def multi_linear_regression_display(df, target, features, display = False):
   
   best_model = []
   
-  for variable_name in features:
-    print(f"Correlation of {variable_name} with {target}:")
-    print(df[target].corr(df[variable_name], method='spearman'))
-    x = np.array(df[variable_name])
+  for target in targets:
+    print(f"Correlation of with {target}:")
+    print(df[target].corr(df[features], method='spearman'))
+    x = np.array(df[features])
     y = np.array(df[target])
     results = simple_linear_regression(x, y)
     b, m = results.params[0], results.params[1]
@@ -709,23 +709,22 @@ def multi_linear_regression_display(df, target, features, display = False):
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
     r2 = r2_score(y, y_pred)
-    print(f"Results for {variable_name}:")
+    print(f"Results for {target}:")
     print(results.summary())
     
     if len(best_model)==0:
-      best_model = [variable_name, m, b, mse, rmse, r2]
+      best_model = [target, m, b, mse, rmse, r2]
     elif r2 > best_model[5]:
-      best_model = [variable_name, m, b, mse, rmse, r2]
+      best_model = [target, m, b, mse, rmse, r2]
 
     if display:
       plt.figure(figsize=(10, 6))
-      plt.scatter(x, y, label='Data')
-      plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
-
+      plt.subplot(1, 1, 1)
+      plt.scatter(y_pred, y, label='Data')
       # Add labels and title for the plot
-      plt.xlabel(variable_name)
+      plt.xlabel(f"predicted_{target}")
       plt.ylabel(target)
-      plt.title(f'Linear Regression of {variable_name} vs. {target}')
+      plt.title(f'Linear Regression of predicted {target} vs. {target}')
 
       # Add text annotations for metrics
       plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
