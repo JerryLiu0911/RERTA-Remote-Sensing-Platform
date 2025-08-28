@@ -8,7 +8,7 @@ Attaches geometry coordinates extracted from coordinate_extraction to the given 
 As each csv file is different, this function will need to be edited for each csv file, especially for those without geometry data.
 '''
 
-def load_canopy_openness(canopy_path, timepoint="post3"):
+def load_canopy_openness(canopy_path, timepoint= None):
   ''' 
   Extracts canopy openness data from a CSV file, calculates the average openness, and filters by timepoint.
   Default timepoint is "post1", but for more recent data "post 3" should be considered.
@@ -100,57 +100,63 @@ def load_frogs(frogs_path, timepoint=None):
     Extracts frog data from a CSV file, calculates the average frog count, and filters by timepoint.
     '''
 
-    frogs_df = pd.read_csv(frogs_path)
+    try:
+        frogs_df = pd.read_csv(frogs_path)
 
-    print(f"File loaded from: {frogs_path}")
+        print(f"File loaded from: {frogs_path}")
 
-    def standardize_names_for_frogs(name):
-        """
-        Standardizes the 'point.label  ' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
-        from the GeoDataFrame by replacing specific patterns. 
-        ***SPECIFICALLY FOR 4.3_Frogs.csv***
-        """
-        identifier = name.split('-')
-        if identifier[1] == 'E':
-            identifier[1] = 'EAST'
-            # Accounting for the mislabelled data on the east side. 
-            if identifier[2] == '150':
-                identifier[2] = '50'
-            elif identifier[2] == '350':
-                identifier[2] = '250'
-        elif identifier[1] == 'W':
-            identifier[1] = 'WEST'
-        if len(identifier) >= 2:
-            identifier[1] = identifier[1].upper()
-        if len(identifier) <= 3:
-            identifier.extend(i for i in identifier.pop().split(' '))
-            print(identifier)
-        identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
+        def standardize_names_for_frogs(name):
+            """
+            Standardizes the 'point.label  ' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
+            from the GeoDataFrame by replacing specific patterns. 
+            ***SPECIFICALLY FOR 4.3_Frogs.csv***
+            """
+            identifier = name.split('-')
+            if identifier[1] == 'E':
+                identifier[1] = 'EAST'
+                # Accounting for the mislabelled data on the east side. 
+                if identifier[2] == '150':
+                    identifier[2] = '50'
+                elif identifier[2] == '350':
+                    identifier[2] = '250'
+            elif identifier[1] == 'W':
+                identifier[1] = 'WEST'
+            if len(identifier) >= 2:
+                identifier[1] = identifier[1].upper()
+            if len(identifier) <= 3:
+                identifier.extend(i for i in identifier.pop().split(' '))
+                print(identifier)
+            identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
 
-        name = '-'.join(identifier)
-        return name
+            name = '-'.join(identifier)
+            return name
+        
+        frogs_df['Line_transect'] = frogs_df['Line_transect'].apply(standardize_names_for_frogs)
+
+        if timepoint is not None:
+            # Filter by 'timepoint' after calculating the average
+            if type(timepoint) is str:
+                frogs_df = frogs_df[frogs_df['timepoint'].str.contains(timepoint, case=False, na=False)]
+            elif type(timepoint) is int:
+                frogs_df = frogs_df[frogs_df['date'].str.contains(str(timepoint), case=False, na=False)]
+
+        for col in ['Frog.abundance', 'Frog.richness']:
+            if col in frogs_df.columns:
+                frogs_df[col] = pd.to_numeric(frogs_df[col], errors='coerce')
+            else:
+                print(f"Warning: {col} not found in DataFrame columns.")
+
+        frogs_df = frogs_df.groupby('Line_transect').agg({'Frog.abundance': 'mean','Frog.richness': 'mean','treatment': 'first'}).reset_index()
+        frogs_df = frogs_df.rename(columns={'Line_transect': 'point.label'})
+        frogs_df = frogs_df.drop([column for column in frogs_df.columns if column not in ['point.label', 'Frog.abundance', 'Frog.richness', 'treatment']], axis=1)  # Drop 'name' columns to prevent redundancy with 'point.label'
+
+        print('Filtered frogs dataframe : \n', frogs_df.head())  # Display the first few rows of the final DataFrame
+        return frogs_df
     
-    frogs_df['Line_transect'] = frogs_df['Line_transect'].apply(standardize_names_for_frogs)
-
-    if timepoint is not None:
-        # Filter by 'timepoint' after calculating the average
-        if type(timepoint) is str:
-            frogs_df = frogs_df[frogs_df['timepoint'].str.contains(timepoint, case=False, na=False)]
-        elif type(timepoint) is int:
-            frogs_df = frogs_df[frogs_df['date'].str.contains(str(timepoint), case=False, na=False)]
-
-    for col in ['Frog.abundance', 'Frog.richness']:
-        if col in frogs_df.columns:
-            frogs_df[col] = pd.to_numeric(frogs_df[col], errors='coerce')
-        else:
-            print(f"Warning: {col} not found in DataFrame columns.")
-    frogs_df = frogs_df.groupby('Line_transect').agg({'Frog.abundance': 'mean','Frog.richness': 'mean','treatment': 'first'}).reset_index()
-    frogs_df = frogs_df.rename(columns={'Line_transect': 'point.label'})
-    frogs_df = frogs_df.drop([column for column in frogs_df.columns if column not in ['point.label', 'Frog.abundance', 'Frog.richness', 'treatment']], axis=1)  # Drop 'name' columns to prevent redundancy with 'point.label'
-
-    print('Filtered frogs dataframe : \n', frogs_df.head())  # Display the first few rows of the final DataFrame
-
-    return frogs_df
+    except FileNotFoundError:
+        print(f"Error: The file was not found at {frogs_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def load_erosion_sticks(erosion_sticks_path, timepoint=None):
     '''
@@ -171,6 +177,7 @@ def load_erosion_sticks(erosion_sticks_path, timepoint=None):
             """
             identifier = [row['treatment'], row['side'].upper(), str(row['transect']), row['point'].split('.')[0]]
 
+            # Only 2 sample sites: buffer and OP
             if identifier[3] == 'buffer':
                 identifier[3] = 'BC'
             elif identifier[3] == 'OP':
@@ -210,25 +217,75 @@ def load_erosion_sticks(erosion_sticks_path, timepoint=None):
         print(f"Error: The file was not found at {erosion_sticks_path}")
     except Exception as e:
         print(f"An error occurred: {e}")
-    # # Aggregate soil metrics by point.label
-    # agg_dict = {col: 'mean' for col in soil_cols}
-    # if 'treatment' in erosion_sticks_df.columns:
-    #     agg_dict['treatment'] = 'first'
-    # erosion_sticks_df = erosion_sticks_df.groupby('point.label').agg(agg_dict).reset_index()
 
-    # # Merge with coordinates
-    # merged_df = erosion_sticks_df.merge(coordinates_gdf, left_on='point.label', right_on='name', how='inner')
-    # merged_df = merged_df.drop(columns='name')
+def load_seed_removal(seed_removal_path, timepoint = None):
+    """
+    Loads the seed removal data from the specified paths.
 
-    # print('Coordinates merged')
-    # print('Final dataframe : \n', merged_df.head())
+    Args:
+        seed_removal_paths (dict): The paths to the seed removal data files.
+        timepoint (str, optional): The timepoint for filtering the data.
 
-    # # Save as GeoPackage
-    # merged_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
-    # merged_gdf.to_file(destination_path, driver="GPKG")
-    # print(f"Saved to {destination_path}")
+    Returns:
+        pd.DataFrame: The loaded seed removal data.
+    """
+    try:
 
-    # return merged_gdf
+        seed_removal_df = pd.read_csv(seed_removal_path)
+
+        print(f"File loaded from: {seed_removal_path}")
+
+        def standardize_names_for_seed(row):
+            """
+            Standardizes the 'point.label' column into the format 'treatment-EAST/WEST-transect-BC/OPE/OPC'
+            from the GeoDataFrame by replacing specific patterns.
+            ***SPECIFICALLY FOR 1.2 Erosion-sticks.csv***
+            """
+            identifier = [row['treatment'], row['side'].upper(), re.findall(r'\d+', row['transect'])[0], row['point']]
+
+            if identifier[3] == 'buffer.core':
+                identifier[3] = 'BC'
+            elif identifier[3] == 'OP.core':
+                identifier[3] = 'OPC'
+            elif identifier[3] == 'OP.edge':
+                identifier[3] = 'OPE'
+            else:
+                print(f"ERROR: Unknown point label format at f{identifier}")
+
+            name = '-'.join(identifier)
+            return name
+
+        seed_removal_df['point.label'] = seed_removal_df.apply(standardize_names_for_seed, axis=1)
+
+        # Filter by timepoint if provided
+        if timepoint is not None:
+            if 'timepoint' in seed_removal_df.columns and isinstance(timepoint, str):
+                seed_df_filtered = seed_removal_df[seed_removal_df['timepoint'].str.contains(timepoint, case=False, na=False)]
+            elif 'date' in seed_removal_df.columns and isinstance(timepoint, int):
+                seed_df_filtered = seed_removal_df[seed_removal_df['date'].str.contains(str(timepoint), case=False, na=False)]
+
+        # Convert relevant columns to numeric and quantify data
+        seed_cols = [col for col in seed_df_filtered.columns if col in ['seeds.remaining.plate.1', 'seeds.remaining.plate.2','seeds.remaining.plate.3']]
+        for col in seed_cols:
+            seed_df_filtered[col] = pd.to_numeric(seed_df_filtered[col], errors='coerce')
+            seed_df_filtered[col] = seed_df_filtered[col] / 10 # According to protocol, initially all plates had 10 seeds. Transform data to proportions (might need to arcsin sqrt transform later)
+        
+        if all(col in seed_df_filtered.columns for col in seed_cols):
+            seed_df_filtered['average_canopy_openness'] = seed_df_filtered[seed_cols].mean(axis=1)
+
+        print("Filtered seed dataframe :\n", seed_df_filtered.head())
+
+        agg_dict = {f'{col}.proportions': 'mean' for col in seed_cols}
+        agg_dict.update({'treatment': 'first'})
+        seed_df_filtered = seed_df_filtered.groupby('point.label').agg(agg_dict).reset_index() # Averaging the erosion height according to their position
+
+        print("Filtered seed dataframe :\n", seed_df_filtered.head())  # Display the first few rows of the DataFrame
+        return seed_df_filtered
+
+    except FileNotFoundError:
+        print(f"Error: The file was not found at {seed_removal_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def align_coords(dataframes, coordinates_gdf_path, destination_path):
     """
@@ -276,6 +333,7 @@ def align_coords(dataframes, coordinates_gdf_path, destination_path):
         print(f"An error occurred during alignment: {e}")
         return None
 
+load_seed_removal("Data/6.5_Seed-removal.csv", timepoint="post2")
 # load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")
 # align_coords([load_canopy_openness("Data/3.4-canopy.openness.csv", "Data/result_data.gpkg", "Data/canopy_openness_result.gpkg", timepoint="post3"), load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")], "Data/Palapa_veg_plots_corners.gpkg")
 # align_coords([load_frogs("Data/4.3_Frogs.csv", timepoint="post3")], "Data/Palapa_transects_buffer.gpkg", "Data/Palapa_transects_buffer_results.gpkg")

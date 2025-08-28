@@ -119,9 +119,8 @@ def main(paths):
     timepoint = 'post3'  # or 2019 for Palapa June2019 data
 
 
-
     buffer_types = {
-    'veg_plots_corner_coordinates' : ['canopy_openness'],
+    'veg_plots_corner_coordinates' : ['canopy_openness','erosion_sticks','seed_removal'],
     '100m_transects' : ['frogs']
     }
     dataframes = []
@@ -224,6 +223,8 @@ paths = {
     ## Field data (csv)
     'canopy_openness_csv': "Data/3.4-canopy.openness.csv", # USE WITH buffered_points !! According to protocol
     'frogs_csv': "Data/4.3_Frogs.csv", # USE WITH 100m_transects !! According to protocol
+    'erosion_sticks_csv': "Data/1.2_Erosion-sticks.csv", # USE WITH buffered_points !! According to protocol
+    'seed_removal_csv': "Data/6.5_Seed-removal.csv", # USE WITH buffered_points !! According to protocol
 
     ## point coordinates
     'veg_plots_coordinates': "Data/Palapa_veg_plots.gpkg", #"Data/Rerta koordinate 2018_09_24.gpkg",

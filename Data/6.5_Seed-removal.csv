@@ -1,4 +1,4 @@
-timepoint,collected.date,river,treatment,side,transect,point,og.label,palm,distance.moved,direction.moved,collected.time,seeds.remaining.plate1,seeds.remaining.plate.2,seeds.remaining.plate.3,measurer,collection.notes,notes.setup,setup.date,setup.time,setup.by
+timepoint,collected.date,river,treatment,side,transect,point,og.label,palm,distance.moved,direction.moved,collected.time,seeds.remaining.plate.1,seeds.remaining.plate.2,seeds.remaining.plate.3,measurer,collection.notes,notes.setup,setup.date,setup.time,setup.by
 baseline,19/12/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,x,0,NA,10:10,0,0,0,"Herley S, Dani",,,18/12/2017,09:47,"Herly, Dani"
 baseline,19/12/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,y,0,NA,10:15,8,0,3,"Herley S, Dani",,,18/12/2017,09:50,"Herly, Dani"
 baseline,19/12/2017,PLPE,A,East,150m,buffer.core,A-East-150m-BufferCore,z,0,NA,10:19,0,0,9,"Herley S, Dani",,,18/12/2017,09:56,"Herly, Dani"
