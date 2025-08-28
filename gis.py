@@ -62,7 +62,7 @@ def combine_filters(filters):
         return data
     return combined_filter
 
-def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distance=12.5):
+def create_buffer(points, buffer_geom = None, buffer_distance=12.5):
     """
     Creates a buffer around each point in the GeoPackage file, or uses pre-defined buffer geometries if provided with outer convex hulls.
 
@@ -105,9 +105,7 @@ def create_buffer(points, output_buffer_gpkg, buffer_geom = None, buffer_distanc
         buffered['geometry'] = buffered.geometry.buffer(12.5)
     
     #buffered = buffered[buffered['name'].str.contains("A|B|C|D", case=True, na=False)]
-    # Saving buffer
-    buffered.to_file(output_buffer_gpkg, driver="GPKG")
-    print(f"Buffer geometries created and saved to {output_buffer_gpkg}")
+
 
     return buffered
 
@@ -151,7 +149,7 @@ def GLCM(data, levels = 32):
         'ASM': graycoprops(glcm, 'ASM')[0, 0]
     }
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='index', save_plots=False): 
+def zonal_statistics(gpkg_path, raster_path, output_zonal_gpkg, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='index', save_plots=False): 
     '''
     
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
@@ -197,7 +195,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
                 buffered = gpd.read_file(buffer_geom_path)
         else:
             print("WARNING No buffer geometry entered, creating buffer around each point...")
-            buffered = create_buffer(points, output_buffer_path, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+            buffered = create_buffer(points, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
 
     except Exception as e:
         print(f"Error creating buffer geometries: {e}")
