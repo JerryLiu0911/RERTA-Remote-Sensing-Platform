@@ -290,34 +290,21 @@ paths = {
 'CHM': "Data/Palapa June2019 CHM statistics.gpkg"
 }
 
-#preprocess_dataset(paths, 'CHM', 'frogs', timepoint=2019, filtering_logic=gis.clip_below_zero)
-# main(paths)
-rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI']
-filtering_logic = gis.clip_below_zero
-proxies = gis.GLCM
+buffer = "veg_plots_corner_coordinates"
+timepoint = ("2022-1-1", "2024-12-31")  # 2023  # or 2019 for Palapa June2019 data
 
-# for raster_name in rasters:
-#     # zonal_gdf = gis.zonal_statistics(gpkg_path=None,
-#     #                  raster_path=paths[f'{raster_name}_tif'],
-#     #                  output_buffer_path=paths['buffered_points'],
-#     #                  filtering_logic=filtering_logic,
-#     #                  output_zonal_gpkg=paths[f'{raster_name}'],
-#     #                  proxies=proxies,
-#     #                  buffer_geom_path=paths['treatment_buffers'],
-#     #                  value=raster_name.split(' ')[-1],
-#     #                  save_plots=True,
-#     #                  show_plots=False)
-#     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1])
 
-# for key, value in paths.items():
-#     print(f"Processing {key}: {value}")
-#     if os.path.exists(value):
-#         print(f"  Path exists.")
-#         is_writable = os.access(value, os.W_OK)
-#         print(f"{key} writable: {is_writable}")
-#     else:
-#         print(f" {value}Path does not exist.")
+buffer_types = {
+'veg_plots_corner_coordinates' : ['canopy_openness','erosion_sticks','seed_removal'],
+'100m_transects' : ['frogs']
+}
+dataframes = []
 
+for target_name in buffer_types[buffer]:
+    df = getattr(align_coords, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
+    dataframes.append(df)
+
+align_coords.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter = r"OPC|BC")
 
 
 
