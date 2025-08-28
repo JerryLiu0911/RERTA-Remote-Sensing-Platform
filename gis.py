@@ -123,6 +123,14 @@ def canopy_openness_proxy(data, thresh=30):
         'canopy_openness': canopy_openness # Percentage of positive values
     }
 
+def check_below_zero(data):
+    data = np.asarray(data, dtype=float).flatten()
+    below_zero = float(len(data[data < 0]))
+    if below_zero == 0 :
+        print(" Filtering working")
+    else:
+        print(" Filtering failed !!!!!")
+
 def GLCM(data, levels = 32):
     vmin = float(np.nanmin(data))
     vmax = float(np.nanmax(data))
@@ -143,7 +151,7 @@ def GLCM(data, levels = 32):
         'ASM': graycoprops(glcm, 'ASM')[0, 0]
     }
 
-def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='y', save_plots=False): 
+def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gpkg, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='index', save_plots=False): 
     '''
     
     Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
@@ -168,6 +176,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
         gpd.GeoDataFrame: A GeoDataFrame containing the zonal statistics results.
 
     '''
+
     #--- Load and reproject point data ---
     if gpkg_path:
         points = gpd.read_file(gpkg_path)
@@ -196,7 +205,9 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
     
     
     with rasterio.open(raster_path) as src:
-        for band_num in range(1, src.count + 1):
+        # Loops through each band, saving as a seperate gpkg file, ignoring the last band (alpha channel for orthomosaics)
+        for band_num in range(1, src.count):
+            print(src.count, "bands found in raster, processing band", band_num)
             results = [] # Store results for each buffer, each element being a dictionary
             region_data = defaultdict(list) # Stores all pixels which belong to a region
             for idx, row in buffered.iterrows():
@@ -205,13 +216,22 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
 
                     # Clip raster to just an individual buffer
                     masked_data, masked_transform = rasterio.mask.mask(
-                        src, [row.geometry], crop=True, nodata=src.nodata, indexes=band_num
+                        src, [row.geometry], crop=True, nodata=src.nodata, indexes=band_num, filled=False
                     )
-                    print(masked_data.shape)
+
+                    # masked_data = masked_data.compressed()
 
                     # # Flatten the array and remove nodata, vectorising for better performance
                     valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
-                    
+
+
+                    # if idx < 3:  # Only show for first 3 buffers
+                    #     plt.figure(figsize=(6, 6))
+                    #     plt.imshow(masked_data, cmap='gray')
+                    #     plt.title(f"Masked Data for Buffer {idx} ({region_name})")
+                    #     plt.colorbar()
+                    #     plt.axis('off')
+                    #     plt.show()
 
                     valid_data = np.asarray(valid_data, dtype=float)  # Ensure data is 1D
                     finite_mask = np.isfinite(valid_data)
@@ -220,6 +240,7 @@ def zonal_statistics(gpkg_path, raster_path, output_buffer_path, output_zonal_gp
 
                     # Apply your custom clipping
                     clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
+                    check_below_zero(clipped_data)
 
 
                     if len(clipped_data) > 0:
