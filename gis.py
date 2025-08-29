@@ -111,9 +111,9 @@ def create_buffer(points, buffer_geom = None, buffer_distance=12.5):
 
 def canopy_openness_proxy(data, thresh=30):
     data = np.asarray(data, dtype=float).flatten()
-    canopy_openness = float(len(data[data < thresh]) / len(data) * 100)
+    canopy_openness = float(len(data[data < thresh]) / len(data))
     print(len(data[data < thresh]), "canopy openness pixels out of", len(data), "total pixels")
-    if canopy_openness <= 100 :
+    if canopy_openness <= 1 :
         print(" Filtering working correctly!")
     else:
         print(" Canopy openness filtering failed!")
@@ -481,7 +481,7 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     else:
         return fig
 
-def plot_index_kde_sampled(raster_path, value, sample_size=10000):
+def plot_index_kde_sampled(raster_path, value, sample_size=10000, output_path=None):
     with rasterio.open(raster_path) as src:
         data = src.read(1)
         nodata = src.nodata
@@ -517,7 +517,10 @@ def plot_index_kde_sampled(raster_path, value, sample_size=10000):
     plt.ylabel("Density")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.show()
+    if output_path:
+        plt.savefig(output_path, dpi=300)
+    else:
+        plt.show()
 
 # Example usage - Comment out when not testing
 # Test the plotting functions

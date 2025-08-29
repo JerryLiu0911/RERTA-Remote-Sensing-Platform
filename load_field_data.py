@@ -87,7 +87,7 @@ def load_canopy_openness(canopy_path, timepoint= None):
         # Calculate the average of the specified canopy openness columns
         # Only attempt to average if all columns are present
         if all(col in canopy_df_filtered.columns for col in openness_cols):
-            canopy_df_filtered['average_canopy_openness'] = canopy_df_filtered[openness_cols].mean(axis=1)
+            canopy_df_filtered['average_canopy_openness'] = canopy_df_filtered[openness_cols].mean(axis=1)/100  # Convert percentage to proportion
         else:
             print("Error: Not all required columns for averaging were found.")
             return None
@@ -214,6 +214,7 @@ def load_erosion_sticks(erosion_sticks_path, timepoint=None):
         erosion_sticks_df_filtered = erosion_sticks_df_filtered.pivot(index='point.label', columns='position', values='change.mm').reset_index() # Rotating to turn them into a column
         erosion_sticks_df_filtered['treatment'] = erosion_sticks_df_filtered['point.label'].apply(lambda x: x.split('-')[0] if isinstance(x, str) else None)
         erosion_sticks_df_filtered = erosion_sticks_df_filtered.rename(columns={'Circle': 'Circle change.mm', 'Harvesting path': 'Harvesting path change.mm', 'Windrow': 'Windrow change.mm'})
+        erosion_sticks_df_filtered['average change.mm'] = erosion_sticks_df_filtered[['Circle change.mm', 'Harvesting path change.mm', 'Windrow change.mm']].mean(axis=1)
 
         print("Filtered erosion_sticks dataframe :\n", erosion_sticks_df_filtered.head())  # Display the first few rows of the DataFrame
         return erosion_sticks_df_filtered

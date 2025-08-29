@@ -34,7 +34,7 @@ def check_geometries(geom1, geom2, tolerance=1e-8):
 
     return all(g1.equals_exact(g2, tolerance) for g1, g2 in zip(geom1, geom2))
 
-def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
+def smart_feature_selection_pipeline(merged_df, target, all_possible_features, display = False):
     """
     Multi-stage feature selection appropriate for small datasets
     """
@@ -108,8 +108,10 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features):
         stage2_features = stage1_features
     
     print(f"  Stage 2 result: {len(stage2_features)} features")
-    sns.heatmap(merged_df[[column for column in merged_df.columns if column in stage2_features]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
-    plt.show()
+
+    if display:
+        sns.heatmap(merged_df[[column for column in merged_df.columns if column in stage2_features]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
+        plt.show()
     # STAGE 3: Sample size validation
     print(f"\n STAGE 3: SAMPLE SIZE VALIDATION")
     
@@ -587,7 +589,8 @@ def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=
 
     return out
 
-def load_data(dataframes, filter = None, dependent_variables = ["average_canopy_openness", "Frog.richness", "Frog.abundance"]):
+def load_data(dataframes, dependent_variables, 
+filter = None,):
     '''
     Merges all df's into one merged_df with suffixes (e.g. _mean_ExG).
         
@@ -666,7 +669,6 @@ def simple_linear_regression(x, y):
 
   # Add a column of ones for the intercept term
   # X = np.vstack([np.ones(n), x]).T
-  x = sm.add_constant(x)  # Add constant term for intercept
 
 
   # Calculate coefficients using the matrix method: (X^T * X)^(-1) * X^T * y
@@ -682,95 +684,143 @@ def simple_linear_regression(x, y):
 
   return results
 
+def log_transform(data):
+    """
+    Applies a log transformation to the input data.
+    """
+    min_val = data.min()
+    if min_val <= 0:
+        print(f"Using log1p transformation (has non-positive values)")
+        data = np.log1p(data)
+    else:
+        print(f"Using natural log transformation")
+        data = np.log(data)
+    return data
+
+def arcsinc_sqrt_transform(data):
+    """
+    Applies an arcsine square root transformation to the input data.
+    """
+    data = np.clip(data, 0, None)  # Clip negative values
+    return np.arcsin(np.sqrt(data))
+
 def multi_linear_regression_display(df, targets, features, display = False):
-  '''
-  Performs multiple linear regression and displays the results.
-  Outputs the best model based on R-squared value.
-    Args:
-        df: Pandas DataFrame containing the data.
-        target: Name of the target variable (dependent variable).
-        features: List of independent variable names (features).
-        display: Whether to display the feature importance plot (default: False).
-
-    Returns:
-        best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
     '''
-  
-  best_model = []
-  
-  for target in targets:
-    print(f"Correlation of with {target}:")
-    print(df[target].corr(df[features], method='spearman'))
-    x = np.array(df[features])
-    y = np.array(df[target])
-    results = simple_linear_regression(x, y)
-    b, m = results.params[0], results.params[1]
-    y_pred = m * x + b
-    mse = mean_squared_error(y, y_pred)
-    rmse = np.sqrt(mse)
-    r2 = r2_score(y, y_pred)
-    print(f"Results for {target}:")
-    print(results.summary())
-    
-    if len(best_model)==0:
-      best_model = [target, m, b, mse, rmse, r2]
-    elif r2 > best_model[5]:
-      best_model = [target, m, b, mse, rmse, r2]
+    Performs multiple linear regression and displays the results.
+    Outputs the best model based on R-squared value.
+        Args:
+            df: Pandas DataFrame containing the data.
+            targets (list of str or str): Name(s) of the target variable(s) (dependent variable(s)).
+            features: List of independent variable names (features).
+            display: Whether to display the feature importance plot (default: False).
 
-    if display:
-      plt.figure(figsize=(10, 6))
-      plt.subplot(1, 1, 1)
-      plt.scatter(y_pred, y, label='Data')
-      # Add labels and title for the plot
-      plt.xlabel(f"predicted_{target}")
-      plt.ylabel(target)
-      plt.title(f'Linear Regression of predicted {target} vs. {target}')
+        Returns:
+            best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
+        '''
 
-      # Add text annotations for metrics
-      plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
-              verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      
-      plt.legend()
-      plt.grid(True)
-      plt.show()
+    best_model = None
 
-  if not display: 
-    x = np.array(df[best_model[0]])
-    y_pred = best_model[1] * x + best_model[2]
-    mse = best_model[3]
-    rmse = best_model[4]
-    r2 = best_model[5]
-    plt.figure(figsize=(10, 6))
-    plt.scatter(x, y, label='Data')
-    plt.plot(x, y_pred, color='red', label=f'Linear Regression: y = {m:.2f}x + {b:.2f}')
+    if isinstance(targets, str):
+        targets = [targets]
 
-    # Add labels and title for the plot
-    plt.xlabel(best_model[0])
-    plt.ylabel(target)
-    plt.title(f'Linear Regression of {best_model[0]} vs. {target}')
+    for target in targets:
 
-    # Add text annotations for metrics
-    plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.grid(True)
-    plt.show()
-       
-  print(f'Best model: {best_model}')
+        target_df = df[[target]+features].dropna()
+        print(target)
+        y = np.array(target_df[target])
+        print(y.dtype)
+        x = np.array(target_df[features])
+        print(x.dtype)
 
-  # Assuming you have your x and y data and the calculated slope (m) and intercept (b)
+        # y = np.array(target_df[target], dtype=float)
+        # x = np.array(target_df[features], dtype=float)
 
-  x = np.array(df[best_model[0]])
-  y = np.array(df[target])
-  m = best_model[1]
-  b = best_model[2]
+        print(f"\nStandardizing features...")
+        scaler = StandardScaler()
+        x = scaler.fit_transform(x)
+        x = sm.add_constant(x)  # Add constant term for intercept
+        results = simple_linear_regression(x, y)
+        b, coeffs = results.params[0], results.params[1:]
+        print(results.params)
+        y_pred = results.predict(x)
+        mse = mean_squared_error(y, y_pred)
+        rmse = np.sqrt(mse)
+        r2 = r2_score(y, y_pred)
+        print(f"Results for {target}:")
+        print(results.summary())
+        
+        if best_model is None:
+            best_model = [target, y, x, results]
+        elif results.rsquared > best_model[3].rsquared:
+            best_model = [target, y, x, results]
+
+        if display:
+
+            fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+            # Bar plot of coefficients (predictor importance)
+            best_coeffs = best_model[3].params[1:]
+            axes[0].barh(features, best_coeffs, color='skyblue')
+            axes[0].set_xlabel('Standardized Coefficient')
+            axes[0].set_title('Predictor Importance')
+            for i, v in enumerate(best_coeffs):
+                axes[0].text(v, i, f'{v:.3f}', va='center', ha='left', fontsize=10)
+            axes[0].grid(True, alpha=0.3)
+
+            # Actual vs Predicted plot
+            axes[1].scatter(y_pred, y, alpha=0.7)
+            axes[1].plot([y.min(), y.max()], [y.min(), y.max()], 'r--', label='Ideal fit')
+            axes[1].set_xlabel(f'Predicted {target}')
+            axes[1].set_ylabel(f'Actual {target}')
+            axes[1].set_title(f'Actual vs Predicted {target}')
+            axes[1].legend()
+            axes[1].grid(True, alpha=0.3)
+            # Annotate metrics
+            axes[1].text(0.05, 0.95, f'MSE: {mse:.2f}\nRMSE: {rmse:.2f}\nR²: {r2:.2f}',
+                        transform=axes[1].transAxes, fontsize=10,
+                        verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+
+            plt.tight_layout()
+            plt.show()
+
+    if not display: 
+        y = best_model[1]
+        y_pred = best_model[3].predict(best_model[2])
+        target = best_model[0]
+        mse = mean_squared_error(y, y_pred)
+        rmse = np.sqrt(mse)
+        r2 = r2_score(y, y_pred)
+        coeffs = best_model[3].params[1:]
+
+        print(f"Results for {target}:")
+        print(best_model[3].summary())
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        
+        # Bar plot of coefficients (predictor importance)
+        axes[0].barh(features, coeffs, color='skyblue')
+        axes[0].set_xlabel('Standardized Coefficient')
+        axes[0].set_title('Predictor Importance')
+        for i, v in enumerate(coeffs):
+            axes[0].text(v, i, f'{v:.3f}', va='center', ha='left', fontsize=10)
+        axes[0].grid(True, alpha=0.3)
+
+        # Actual vs Predicted plot
+        axes[1].scatter(y_pred, y, alpha=0.7)
+        axes[1].plot([y.min(), y.max()], [y.min(), y.max()], 'r--', label='Ideal fit')
+        axes[1].set_xlabel(f'Predicted {target}')
+        axes[1].set_ylabel(f'Actual {target}')
+        axes[1].set_title(f'Actual vs Predicted {target}')
+        axes[1].legend()
+        axes[1].grid(True, alpha=0.3)
+        # Annotate metrics
+        axes[1].text(0.05, 0.95, f'MSE: {mse:.2f}\nRMSE: {rmse:.2f}\nR²: {r2:.2f}',
+                    transform=axes[1].transAxes, fontsize=10,
+                    verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+
+        plt.tight_layout()
+        plt.show()
+
+    print(f"Best model is for target {best_model[0]} with R² = {best_model[3].rsquared:.3f}")
 
 def random_forest_regression(df, target, features, display=True, test_size=0.2, random_state=42):
     """
@@ -1828,3 +1878,25 @@ def comprehensive_PCA_analysis(df, display=True, target_columns=None, treatment_
 
     return pca_results, interpretation, X_pca, treatments
 
+# # Generate synthetic data
+# np.random.seed(42)
+# n = 100
+# x = np.random.uniform(-10, 10, n)
+# y = np.random.uniform(-10, 10, n)
+# z = x**2 + 100*np.sin(y)
+
+# # Create DataFrame
+# df = pd.DataFrame({'x': x, 'y': y, 'z': z})
+
+# # Optionally add some noise
+# # z = x**2 + y**2 + np.random.normal(0, 10, n)
+# # df['z'] = z
+
+# # Add squared terms for linear regression
+# df['x2'] = df['x']**2
+# df['y2'] = np.sin(df['y'])
+
+# # Test the function
+# features = ['x2', 'y2']
+# targets = ['z']
+# multi_linear_regression_display(df, targets, features, display=True)

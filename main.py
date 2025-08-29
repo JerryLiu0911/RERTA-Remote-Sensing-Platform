@@ -122,34 +122,47 @@ def main(paths):
     'veg_plots_corner_coordinates' : ['canopy_openness','erosion_sticks','seed_removal'],
     '100m_transects' : ['frogs']
     }
-    dataframes = []
 
-    for target_name in buffer_types[buffer]:
-        df = getattr(load_field_data, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
-        dataframes.append(df)
+    
+    #### Only need to run this once when processing a new dataset :   ####
 
+    # dataframes = []
 
-    ### Only need to run this once when processing a new dataset : 
+    # for target_name in buffer_types[buffer]:
+    #     df = getattr(load_field_data, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
+    #     dataframes.append(df)
 
-    # Extracts coordinates for mapping ecological features
+    # # Extracts coordinates for mapping ecological features
     # getattr(coordinate_extraction, f'extract_{buffer}')(paths['veg_plots_coordinates'], paths[buffer]) # Source path for geopackage needs to be explicitly defined
 
-    # Align coordinates of field data with extracted coordinates
+    # # Align coordinates of field data with extracted coordinates
     # load_field_data.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter=None)  # filter is a regex pattern to match specific point labels e.g. r"OPC|BC" excludes OPE
 
-    # Preprocess each dataset according the geometries and merges with field data 
+    # # Preprocess each dataset according the geometries and merges with field data 
     # preprocess_dataset(paths, 'Palapa July2025 DEM', buffer, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
     # preprocess_dataset(paths, 'Palapa July2025 GLI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
     # preprocess_dataset(paths, 'Palapa July2025 ReNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
     # preprocess_dataset(paths, 'Palapa July2025 Clre', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
     # preprocess_dataset(paths, 'Palapa July2025 ortho', buffer, proxies=gis.GLCM)
 
+    #### Preprocessing finished ####
+
     ### Combining and analyzing data into dataframes ###
     # region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
     # gis.create_boxplot_from_data(region_data, 'canopy_openness')
     # gis.create_distribution_plots_from_data(region_data, 'canopy_openness')
     # plt.show()
-    
+
+    targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']]
+
+    transformations = {
+        'proportion': statistical_modelling.arcsinc_sqrt_transform,
+        'canopy_openness': statistical_modelling.arcsinc_sqrt_transform,
+        'abundance': statistical_modelling.log_transform,
+        'richness' : statistical_modelling.log_transform
+    }
+    print(f"Identified target variables: {targets}")
+
     merged_df = statistical_modelling.load_data(
             [#('GLI', paths['GLI']),
             ('DEM', paths['Palapa July2025 DEM']),
@@ -157,27 +170,38 @@ def main(paths):
             ('Clre', paths['Palapa July2025 Clre']),
             ('ReNDVI', paths['Palapa July2025 ReNDVI'])
             #('DEM', paths['DEM']),
-            ],
+            ], targets,
             filter = None)
+
+    all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI'])]
 
     print(f"Finished merging columns : {merged_df.columns}")
     print("Final merged dataframe :")
     print(merged_df.head())
+    print(len(merged_df))
     print(f"Sample size before removing missing values: {len(merged_df)}")
-    merged_df = merged_df.dropna()
+    for col in merged_df.columns:
+        if col in targets + all_features:
+            print(f"column {col} has dtype {merged_df[col].dtype}")
+            merged_df[col] = load_field_data.pd.to_numeric(merged_df[col], errors='coerce')
+        if any([x in col for x in transformations.keys()]):
+            for key in transformations.keys():
+                if key in col:
+                    if 'canopy_openness' in col:
+                        merged_df[col] = merged_df[col]/100  # Convert percentage to proportion
+                    print(f"Applying {transformations[key].__name__} to {col}")
+                    merged_df[col] = transformations[key](merged_df[col])
     print(f"Sample size after removing missing values: {len(merged_df)}")
     # pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df)
     
     # Option 2: Use specific features
-    all_features = [col for col in merged_df.columns if col not in ['geometry','treatment','point.label','Frog.abundance','Frog.richness','average_canopy_openness']]
     pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=False)
 
+    statistical_modelling.multi_linear_regression_display(merged_df, targets, all_features, display=False)
     # Merge first 5 PCs
     # for i in range(X_pca.shape[1]):
     #     merged_df[f'PC{i+1}'] = X_pca[:, i]
     #     print(f"merging PC{i+1} to merged_df")
-
-    print(f"Finished merging columns : {merged_df.columns}")
 
     # You can also access specific results:
     print(f"\nKey findings:")
@@ -185,10 +209,9 @@ def main(paths):
     print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
     print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
-    features = [column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment', 'Frog.abundance', 'Frog.richness', 'average_canopy_openness']]
-    print(features)
-    print(merged_df['point.label'])
-    features = statistical_modelling.smart_feature_selection_pipeline(merged_df, 'average_canopy_openness', features)
+    for target in targets:
+        features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
+        statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True)
     print(merged_df[[col for col in merged_df.columns if col in features]])
     pca_results, interpretation, X_pca, _ = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features, display = True)
     plot_features(merged_df, features, group='treatment')
@@ -219,7 +242,7 @@ def main(paths):
 
     ### Statistical Modelling ###
 
-    statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', features=all_features, display=True)
+    # statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', features=all_features, display=True)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
     # statistical_modelling.multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
     # print(statistical_modelling.enhanced_multivariate_linear_regression(merged_df, ['Frog.abundance','Frog.richness'], features=features , display=True))
@@ -301,6 +324,7 @@ paths = {
 # rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI', 'Palapa July2025 GLI', 'Palapa July2025 Clre', 'Palapa July2025 ReNDVI']
 
 # for raster_name in rasters:
-#     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1])
+#     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1], output_path=f"D:/Jerry/{raster_name} Raster Histogram.png")
+
 
 main(paths)
