@@ -1,5 +1,5 @@
 import os
-import align_coords
+import load_field_data
 import coordinate_extraction
 import statistical_modelling
 import gis as gis
@@ -62,23 +62,22 @@ def plot_relations(df, target, column, geo = False):
         # plt.legend()
         # plt.show()
 
-def preprocess_dataset(paths, raster_name, target_name, buffer, timepoint, filtering_logic = None, proxies = None, show_plots = False):
+def preprocess_dataset(paths, raster_name, buffer, filtering_logic = None, proxies = None, show_plots = False):
     """
-    To improve efficiency of process different datasets with different requirements, this function automatically calls the align_coord and zonal_statistics
+    To improve efficiency of process different datasets with different requirements, this function automatically calls the zonal_statistics
     modules to streamline the preprocessing steps.
 
     Args:
         paths (dict): The library paths for the data files.
         raster_name (str): The name of the TYPE of raster to be used, used to call the file through paths. e.g. "CHM"
-        target_name (str): The name of the target variable (dependent variable).
-        timepoint (str or int): The timepoint for the analysis. string for timepoint e.g. "post1", string for date e.g. 2019
+        buffer (str): The name of the target geopackage dataframe which contains both the geometry and field data.(see align_coords.align_coords()) e.g. "veg_plots_corner_coordinates"
         filtering_logic (function): A function to apply filtering to the data, e.g. gis.clip_below_zero
         proxies (dict): A dictionary of proxy functions to apply to the data, e.g. gis.canopy_openness_proxy
 
     Returns:
         The updated statistic dataframe.
     """
-    zonal_gdf = gis.zonal_statistics(gpkg_path=paths[f'{target_name}_result'],
+    zonal_gdf,_ = gis.zonal_statistics(gpkg_path=paths[f'{buffer}_result'],
                          raster_path=paths[f'{raster_name}_tif'],
                          filtering_logic=filtering_logic,
                          output_zonal_gpkg=paths[f'{raster_name}'],
@@ -116,7 +115,7 @@ def main(paths):
 
     ### VARIABLES ###
     buffer = "veg_plots_corner_coordinates"
-    timepoint = 'post3'  # or 2019 for Palapa June2019 data
+    timepoint = ("2023-1-1", "2024-12-31") # (start_date, end_date) for filtering field data based on date. Alernatives are 2019 as an int for a year, or "post2" by timepoint.
 
 
     buffer_types = {
@@ -126,16 +125,24 @@ def main(paths):
     dataframes = []
 
     for target_name in buffer_types[buffer]:
-        df = getattr(align_coords, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
+        df = getattr(load_field_data, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
         dataframes.append(df)
 
-    align_coords.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'])
-    preprocess_dataset(paths, 'Palapa June2019 CHM', buffer, timepoint=2019, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
-    preprocess_dataset(paths, 'Palapa June2019 GLI', buffer, timepoint=2019, filtering_logic=gis.clip_below_zero)
-    preprocess_dataset(paths, 'Palapa June2019 ExG', buffer, timepoint=2019, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
 
-    # align_coords.canopy_openness(paths['canopy_openness_csv'], paths['veg_plots_corner_coordinates'], paths['canopy_openness_result'], timepoint='post3')
-    # preprocess_dataset(paths, 'Palapa July2025 DEM', 'canopy_openness', timepoint='post3', filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+    ### Only need to run this once when processing a new dataset : 
+
+    # Extracts coordinates for mapping ecological features
+    # getattr(coordinate_extraction, f'extract_{buffer}')(paths['veg_plots_coordinates'], paths[buffer]) # Source path for geopackage needs to be explicitly defined
+
+    # Align coordinates of field data with extracted coordinates
+    # load_field_data.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter=None)  # filter is a regex pattern to match specific point labels e.g. r"OPC|BC" excludes OPE
+
+    # Preprocess each dataset according the geometries and merges with field data 
+    # preprocess_dataset(paths, 'Palapa July2025 DEM', buffer, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+    # preprocess_dataset(paths, 'Palapa July2025 GLI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 ReNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 Clre', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 ortho', buffer, proxies=gis.GLCM)
 
     ### Combining and analyzing data into dataframes ###
     # region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
@@ -145,7 +152,7 @@ def main(paths):
     
     merged_df = statistical_modelling.load_data(
             [#('GLI', paths['GLI']),
-            ('CHM', paths['Palapa July2025 DEM']),
+            ('DEM', paths['Palapa July2025 DEM']),
             ('GLI', paths['Palapa July2025 GLI']),
             ('Clre', paths['Palapa July2025 Clre']),
             ('ReNDVI', paths['Palapa July2025 ReNDVI'])
@@ -228,7 +235,8 @@ paths = {
 
     ## point coordinates
     'veg_plots_coordinates': "Data/Palapa_veg_plots.gpkg", #"Data/Rerta koordinate 2018_09_24.gpkg",
-    'abcd_coordinates': "Data/Palapa_ABCD.gpkg", 
+    'abcd_coordinates': "Data/Palapa_ABCD.gpkg",
+    '100m_transects_coordinates': "Data/Palapa_transects.gpkg",
 
     ## Palapa 2019
     'Palapa June2019 CHM_tif' : "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif",
@@ -290,22 +298,9 @@ paths = {
 'CHM': "Data/Palapa June2019 CHM statistics.gpkg"
 }
 
-buffer = "veg_plots_corner_coordinates"
-timepoint = ("2022-1-1", "2024-12-31")  # 2023  # or 2019 for Palapa June2019 data
+# rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI', 'Palapa July2025 GLI', 'Palapa July2025 Clre', 'Palapa July2025 ReNDVI']
 
+# for raster_name in rasters:
+#     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1])
 
-buffer_types = {
-'veg_plots_corner_coordinates' : ['canopy_openness','erosion_sticks','seed_removal'],
-'100m_transects' : ['frogs']
-}
-dataframes = []
-
-for target_name in buffer_types[buffer]:
-    df = getattr(align_coords, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
-    dataframes.append(df)
-
-align_coords.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter = r"OPC|BC")
-
-
-
-### REMEMBER TO REPROCESS ALL THE STATISTICS
+main(paths)
