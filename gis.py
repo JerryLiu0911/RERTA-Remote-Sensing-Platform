@@ -497,9 +497,21 @@ def plot_index_kde_sampled(raster_path, value, sample_size=10000):
     if len(data_flat) > sample_size:
         data_flat = np.random.choice(data_flat, sample_size, replace=False)
 
+    # Statistics (on finite values)
+    mean_val = float(np.mean(data_flat))
+    std_val = float(np.std(data_flat))
+    count_val = int(data_flat.size)
+
+    stats_text = f"Mean: {mean_val:.2f}\nStd: {std_val:.2f}\nCount: {count_val}"
+
     print(f"Plotting KDE for {value} from {raster_path} with {len(data_flat)} samples")
     plt.figure(figsize=(10, 8))
     sns.kdeplot(data_flat, fill=True, color='skyblue')
+    plt.text(0.02, 0.98, stats_text, transform=plt.gca().transAxes,
+            verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+
+    plt.axvline(mean_val, color='red', linestyle='--', linewidth=2, 
+            label=f"Mean: {mean_val:.2f}")
     plt.title(f"KDE of {value} (sampled) from {raster_path}")
     plt.xlabel(value)
     plt.ylabel("Density")
