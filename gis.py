@@ -109,7 +109,7 @@ def create_buffer(points, buffer_geom = None, buffer_distance=12.5):
 
     return buffered
 
-def canopy_openness_proxy(data, thresh=30):
+def canopy_openness_proxy(data, thresh=35):
     data = np.asarray(data, dtype=float).flatten()
     canopy_openness = float(len(data[data < thresh]) / len(data))
     print(len(data[data < thresh]), "canopy openness pixels out of", len(data), "total pixels")
@@ -117,6 +117,7 @@ def canopy_openness_proxy(data, thresh=30):
         print(" Filtering working correctly!")
     else:
         print(" Canopy openness filtering failed!")
+        return ValueError("Canopy openness filtering failed!")
     return {
         'canopy_openness': canopy_openness # Percentage of positive values
     }
@@ -277,7 +278,7 @@ def zonal_statistics(gpkg_path, raster_path, output_zonal_gpkg, filtering_logic 
                     result_row.update(stats)
                     results.append(result_row)
                     
-                    print(f"Processed buffer {int(idx/16)+1}    {idx+1}/{len(buffered)}")
+                    print(f"Processed buffer {int(idx/16)+1}    {int(idx/16)+1}/{len(buffered)}")
                     
                 except Exception as e:
                     print(f"Error processing buffer {idx}, at {row.get('point.label')} : {e}")
@@ -451,7 +452,7 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
 
-    box_plot = ax.boxplot(data_lists, labels=[f"Treatment {region}" for region in regions], patch_artist=True)
+    box_plot = ax.boxplot(data_lists, labels=[f"Treatment {region}" for region in regions], patch_artist=True,)
 
     # Customize colors
     colors = plt.cm.Set3(np.linspace(0, 1, len(regions)))
@@ -463,11 +464,11 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
     ax.set_ylabel(value, fontsize=12)
     ax.grid(True, alpha=0.3)
  
-    ax.tick_params(axis='x', labelsize=13)
+    ax.tick_params(axis='x', labelsize=8)
     
     # Add sample size annotations
-    for i, (region, data) in enumerate(region_data.items()):
-        ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
+    # for i, (region, data) in enumerate(region_data.items()):
+    #     ax.text(i+1, ax.get_ylim()[0]+0.5, f'number of pixels (n)={len(data)}', ha='center', va='top', fontsize=10)
     
     plt.tight_layout()
     if output_path:
