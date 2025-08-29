@@ -7,13 +7,13 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV, LeaveOneOut
 import statsmodels.api as sm
+from statsmodels.stats.diagnostic import het_breuschpagan
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.gridspec as gridspec
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
-import warnings
 import shap
 
 
@@ -48,17 +48,18 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
     
     # Based on literature, these should be most relevant:
     theory_based_candidates = {
-        'height_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['mean', 'median', 'max'])],
-        'variability_metrics': [col for col in all_possible_features if 'CHM' in col and any(stat in col for stat in ['std', 'range', 'cv'])],
-        'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['Clre', 'ReNDVI', 'GLI']) and any(stat in col for stat in ['std', 'range', 'cv'])],
+        'height_metrics': [col for col in all_possible_features if 'DEM' in col and any(stat in col for stat in ['mean', 'median', 'max', 'canopy_openness'])],
+        'variability_metrics': [col for col in all_possible_features if 'DEM' in col and any(stat in col for stat in ['std', 'range', 'cv'])],
+        'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['Clre', 'ReNDVI', 'GLI', 'NDVI', 'GNDVI']) and any(stat in col for stat in ['mean', 'std', 'range', 'cv'])],
         'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity', 'dissimilarity', 'ASM', 'energy', 'correlation'])]
     }
     # Select BEST representative from each category
     stage1_features = []
     for category, candidates in theory_based_candidates.items():
         if candidates:
-            print(f"  {category}: {len(candidates)} candidates → selecting best {max(3, int(len(candidates)/4))}")
-            
+            num_candidates = max(3, int(round(len(candidates)/4)))
+            print(f"  {category}: {len(candidates)} candidates → selecting best {num_candidates}")
+
             # Calculate target correlations for candidates in this category
             category_corrs = []
             for feat in candidates:
@@ -68,10 +69,10 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
             
             # Take top 1-2 from each category
             category_corrs.sort(key=lambda x: x[1], reverse=True)
-            selected_from_category = [feat for feat, _ in category_corrs[:max(3, int(len(candidates)/4))]]
+            selected_from_category = [feat for feat, _ in category_corrs[:num_candidates]]
             stage1_features.extend(selected_from_category)
 
-            for feat, corr in category_corrs[:int(max(3, len(candidates)/4))]:
+            for feat, corr in category_corrs[:num_candidates]:
                 print(f"     {feat}: {corr:.3f}")
     
     print(f"  Stage 1 result: {len(stage1_features)} features")
@@ -118,7 +119,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
     ratio = n_samples / len(stage2_features) if stage2_features else 0
     print(f"  Sample-to-feature ratio: {ratio:.1f}:1")
     
-    if ratio < 5:
+    if ratio < 8:
         print(f"   Still too many features for dataset size!")
         print(f"  Further reducing to top {min(3, n_samples//5)} features...")
         
@@ -144,450 +145,6 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
     print(f"   Final ratio: {n_samples/len(stage3_features):.1f}:1")
     
     return stage3_features
-
-def data_diagnostics(df, dependent, group, identify_distributions = True, alpha=0.05, make_plots=False):
-    """
-    Run basic checks for one-way ANOVA suitability.
-    Returns dict with diagnostics and a recommendation.
-    """
-
-    out = {}
-    sub = df[[dependent, group]].dropna()
-    if sub.shape[0] == 0:
-        raise ValueError("No data for the requested columns.")
-    
-    # Split groups
-    groups = [g[dependent].astype(float).values for _, g in sub.groupby(group)]
-    labels = list(sub[group].unique())
-    ns = [len(g) for g in groups]
-    out['n_per_group'] = dict(zip(labels, ns))
-    out['total_n'] = sub.shape[0]
-
-    # Requirement checks
-    out['groups_count'] = len(groups)
-    out['independence_note'] = "Check study design: observations must be independent (cannot be tested automatically)."
-
-    # Enhanced descriptive statistics per group
-    desc_stats = {}
-    for i, g in enumerate(groups):
-        name = labels[i] if i < len(labels) else f'G{i}'
-        if len(g) == 0:
-            desc_stats[name] = {'count': 0}
-            continue
-            
-        stats_dict = {
-            'count': len(g),
-            'mean': float(np.mean(g)),
-            'median': float(np.median(g)),
-            'std': float(np.std(g)),
-            'min': float(np.min(g)),
-            'max': float(np.max(g)),
-            'range': float(np.max(g) - np.min(g)),
-            'q1': float(np.percentile(g, 25)),
-            'q3': float(np.percentile(g, 75)),
-            'iqr': float(np.percentile(g, 75) - np.percentile(g, 25)),
-            'skewness': float(stats.skew(g)),
-            'kurtosis': float(stats.kurtosis(g)),
-            'cv': float(np.std(g) / np.mean(g)) if np.mean(g) != 0 else np.nan
-        }
-        desc_stats[name] = stats_dict
-    
-    out['descriptive_stats'] = desc_stats
-    
-    # Print descriptive statistics summary
-    print("\nDESCRIPTIVE STATISTICS BY GROUP:")
-    for group_name, stats_dict in desc_stats.items():
-        print(f"\n{group_name} (n={stats_dict.get('count', 0)}):")
-        print(f"  Mean ± SD: {stats_dict.get('mean', np.nan):.3f} ± {stats_dict.get('std', np.nan):.3f}")
-        print(f"  Median [Q1, Q3]: {stats_dict.get('median', np.nan):.3f} [{stats_dict.get('q1', np.nan):.3f}, {stats_dict.get('q3', np.nan):.3f}]")
-        print(f"  Range: {stats_dict.get('min', np.nan):.3f} - {stats_dict.get('max', np.nan):.3f}")
-        print(f"  Skewness: {stats_dict.get('skewness', np.nan):.3f}")
-        print(f"  Kurtosis: {stats_dict.get('kurtosis', np.nan):.3f}")
-        print(f"  CV: {stats_dict.get('cv', np.nan):.3f}")
-
-    # Normality per group (Shapiro if sample small, D'Agostino for larger)
-    normal_results = {}
-    for i, g in enumerate(groups):
-        name = labels[i] if i < len(labels) else f'G{i}'
-        if len(g) < 3:
-            normal_results[name] = {'test': None, 'pvalue': None, 'normal': None, 'note': 'too few samples'}
-            continue
-        try:
-            if len(g) <= 5000:
-                stat, p = stats.shapiro(g)
-                test_name = 'shapiro'
-            else:
-                stat, p = stats.normaltest(g)
-                test_name = 'normaltest'
-            normal_results[name] = {'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > alpha)}
-        except Exception as e:
-            normal_results[name] = {'test': 'error', 'error': str(e), 'normal': None}
-    out['normality_per_group'] = normal_results
-
-    # Homogeneity of variances - Levene (median is robust)
-    try:
-        lev_stat, lev_p = stats.levene(*groups, center='median')
-        out['levene'] = {'stat': float(lev_stat), 'pvalue': float(lev_p), 'homogeneous': (lev_p > alpha)}
-    except Exception as e:
-        out['levene'] = {'error': str(e)}
-
-    # Outliers via IQR per group
-    outliers = {}
-    for i, g in enumerate(groups):
-        name = labels[i] if i < len(labels) else f'G{i}'
-        if len(g) == 0:
-            outliers[name] = {'count': 0}
-            continue
-        q1, q3 = np.percentile(g, [25,75])
-        iqr = q3 - q1
-        lower, upper = q1 - 1.5*iqr, q3 + 1.5*iqr
-        cnt = np.sum((g < lower) | (g > upper))
-        outliers[name] = {'count': int(cnt), 'lower': float(lower), 'upper': float(upper)}
-    out['outliers_per_group'] = outliers
-
-    # Fit OLS and ANOVA table (type II)
-    formula = f'Q("{(dependent)}") ~ C({group})'
-    model = sm.OLS.from_formula(formula, data=sub).fit()
-    anova_table = sm.stats.anova_lm(model, typ=2)
-    out['anova_table'] = anova_table.to_dict()
-    # residual tests
-    resid = model.resid
-    if len(resid) >= 3:
-        try:
-            r_stat, r_p = stats.shapiro(resid) if len(resid) <= 5000 else stats.normaltest(resid)
-            out['residual_normality'] = {'test': 'shapiro' if len(resid)<=5000 else 'normaltest',
-                                            'stat': float(r_stat), 'pvalue': float(r_p), 'normal': (r_p > alpha)}
-        except Exception as e:
-            out['residual_normality'] = {'error': str(e)}
-    else:
-        out['residual_normality'] = {'note': 'too few residuals for test'}
-
-    # Distribution identification
-    if identify_distributions:
-        warnings.filterwarnings('ignore')  # Suppress distribution fitting warnings
-        
-        distributions = {}
-        # Candidate distributions to test - include both standard and GLM-relevant distributions
-        candidate_dists = [
-            stats.norm, stats.lognorm, stats.expon, stats.gamma, 
-            stats.beta, stats.weibull_min, stats.t, stats.chi2,
-            stats.nbinom, stats.poisson
-        ]
-        dist_names = ['Normal', 'Log-normal', 'Exponential', 'Gamma', 
-                      'Beta', 'Weibull', 'Student\'s t', 'Chi-squared',
-                      'Negative Binomial', 'Poisson']
-        
-        # Map distributions to GLM families
-        glm_family_map = {
-            'Normal': {'family': 'Gaussian', 'default_link': 'identity'},
-            'Log-normal': {'family': 'Gaussian', 'default_link': 'log', 'transform': 'log'},
-            'Gamma': {'family': 'Gamma', 'default_link': 'inverse'},
-            'Exponential': {'family': 'Gamma', 'default_link': 'log'},
-            'Poisson': {'family': 'Poisson', 'default_link': 'log'},
-            'Negative Binomial': {'family': 'NegativeBinomial', 'default_link': 'log'},
-            'Beta': {'family': 'Beta', 'default_link': 'logit'}
-        }
-        
-        for i, g in enumerate(groups):
-            name = labels[i] if i < len(labels) else f'G{i}'
-            if len(g) < 5:  # Need enough data for fitting
-                distributions[name] = {'best_fit': None, 'note': 'too few samples'}
-                continue
-                
-            g_cleaned = g[~np.isnan(g)]  # Remove NaNs
-            if len(g_cleaned) < 3:
-                distributions[name] = {'best_fit': None, 'note': 'too few non-NaN samples'}
-                continue
-                
-            # Check if this is count data
-            is_count = np.all(g_cleaned == np.round(g_cleaned)) and np.all(g_cleaned >= 0)
-            is_binary = np.all(np.isin(g_cleaned, [0, 1]))
-            is_proportion = np.all((g_cleaned >= 0) & (g_cleaned <= 1))
-            
-            # Rescale data for distributions with bounded support
-            g_min, g_max = np.min(g_cleaned), np.max(g_cleaned)
-            g_range = g_max - g_min
-            
-            # Scale to [0,1] for Beta
-            if g_range > 0:
-                g_scaled_01 = (g_cleaned - g_min) / g_range
-            else:
-                g_scaled_01 = np.zeros_like(g_cleaned)
-            
-            # Scale to positive for gamma, lognorm, etc.
-            if g_min <= 0:
-                g_scaled_pos = g_cleaned - g_min + 0.01  # Shift to positive
-            else:
-                g_scaled_pos = g_cleaned
-                
-            # Fit distributions and calculate AIC
-            results = []
-            
-            # Calculate additional GLM-relevant statistics
-            mean_val = np.mean(g_cleaned)
-            var_val = np.var(g_cleaned)
-            dispersion = var_val / mean_val if mean_val > 0 else np.nan
-            zero_prop = np.mean(g_cleaned == 0)
-            
-            for j, dist in enumerate(candidate_dists):
-                try:
-                    # Skip distributions that don't match data characteristics
-                    if is_count and dist not in [stats.poisson, stats.nbinom]:
-                        continue
-                    if is_binary and dist not in [stats.bernoulli, stats.binom]:
-                        continue
-                    if is_proportion and dist not in [stats.beta]:
-                        continue
-                        
-                    # Use appropriate data scaling for each distribution
-                    if dist == stats.beta:
-                        data_to_fit = g_scaled_01
-                    elif dist in [stats.lognorm, stats.gamma, stats.weibull_min, stats.chi2, stats.expon]:
-                        data_to_fit = g_scaled_pos
-                    elif dist == stats.poisson or dist == stats.nbinom:
-                        if not is_count:
-                            continue
-                        data_to_fit = g_cleaned
-                    else:
-                        data_to_fit = g_cleaned
-                        
-                    # Fit distribution
-                    params = dist.fit(data_to_fit)
-                    
-                    # Calculate log-likelihood
-                    log_likelihood = np.sum(dist.logpdf(data_to_fit, *params))
-                    
-                    # Calculate AIC
-                    k = len(params)
-                    aic = 2 * k - 2 * log_likelihood
-                    
-                    # K-S test
-                    ks_stat, ks_p = stats.kstest(data_to_fit, dist.cdf, args=params)
-                    
-                    results.append({
-                        'distribution': dist_names[j],
-                        'params': params,
-                        'aic': aic,
-                        'ks_stat': ks_stat,
-                        'ks_p': ks_p,
-                        'dist_obj': dist,
-                        'scaled_data': data_to_fit
-                    })
-                except Exception as e:
-                    continue  # Skip failed fits
-                    
-            # Find best fit (lowest AIC)
-            if results:
-                results.sort(key=lambda x: x['aic'])
-                best_fit = results[0]
-                
-                # Get GLM family information if available
-                glm_family = glm_family_map.get(best_fit['distribution'], 
-                                              {'family': 'Unknown', 'default_link': 'identity'})
-                
-                # Override family based on data characteristics
-                if is_count and dispersion > 1.5:  # Overdispersion detected
-                    glm_family = {'family': 'Negative Binomial', 'default_link': 'log'}
-                elif is_count:
-                    glm_family = {'family': 'Poisson', 'default_link': 'log'}
-                elif is_binary:
-                    glm_family = {'family': 'Binomial', 'default_link': 'logit'}
-                elif is_proportion:
-                    glm_family = {'family': 'Beta', 'default_link': 'logit'}
-                    
-                # Handle zero-inflation
-                if is_count and zero_prop > 0.3:
-                    glm_family['zero_inflated'] = True
-                    glm_family['family'] = f"Zero-inflated {glm_family['family']}"
-                
-                distributions[name] = {
-                    'best_fit': best_fit['distribution'],
-                    'aic': best_fit['aic'],
-                    'ks_p': best_fit['ks_p'],
-                    'params': best_fit['params'],
-                    'dist_obj': best_fit['dist_obj'],
-                    'all_fits': results,
-                    'scaled_data': best_fit['scaled_data'],
-                    'glm_family': glm_family,
-                    'is_count': is_count,
-                    'is_binary': is_binary,
-                    'is_proportion': is_proportion,
-                    'dispersion': dispersion,
-                    'zero_proportion': zero_prop
-                }
-                
-                # Interpret skewness and kurtosis
-                skew = stats_dict.get('skewness', 0)
-                kurt = stats_dict.get('kurtosis', 0)
-                
-                skew_interp = "approximately symmetric"
-                if skew > 1:
-                    skew_interp = "highly positively skewed"
-                elif skew > 0.5:
-                    skew_interp = "moderately positively skewed"
-                elif skew < -1:
-                    skew_interp = "highly negatively skewed"
-                elif skew < -0.5:
-                    skew_interp = "moderately negatively skewed"
-                    
-                kurt_interp = "mesokurtic (normal-like)"
-                if kurt > 3:
-                    kurt_interp = "leptokurtic (heavy-tailed)"
-                elif kurt < -0.5:
-                    kurt_interp = "platykurtic (light-tailed)"
-                    
-                distributions[name]['shape_interp'] = {
-                    'skewness': skew_interp,
-                    'kurtosis': kurt_interp
-                }
-            else:
-                distributions[name] = {'best_fit': None, 'note': 'fitting failed for all distributions'}
-                
-        out['distributions'] = distributions
-        
-        # Print distribution analysis
-        print("\nDISTRIBUTION AND GLM ANALYSIS:")
-        for group_name, dist_info in distributions.items():
-            print(f"\n{group_name}:")
-            if dist_info.get('best_fit'):
-                print(f"  Best fit: {dist_info['best_fit']}")
-                print(f"  AIC: {dist_info.get('aic', 'N/A'):.3f}")
-                print(f"  KS test p-value: {dist_info.get('ks_p', 'N/A'):.3f}")
-                
-                if 'glm_family' in dist_info:
-                    glm_family = dist_info['glm_family']
-                    print(f"  Recommended GLM family: {glm_family['family']}")
-                    print(f"  Recommended link function: {glm_family['default_link']}")
-                    
-                    # Additional GLM diagnostics
-                    if dist_info.get('is_count'):
-                        print(f"  Data type: Count data")
-                        print(f"  Dispersion: {dist_info.get('dispersion', 'N/A'):.3f}")
-                        if dist_info.get('dispersion', 1) > 1.5:
-                            print(f"   Overdispersion detected - consider Negative Binomial")
-                        if dist_info.get('zero_proportion', 0) > 0.3:
-                            print(f"   Zero-inflation detected ({dist_info.get('zero_proportion', 0)*100:.1f}%)")
-                    elif dist_info.get('is_binary'):
-                        print(f"  Data type: Binary data")
-                    elif dist_info.get('is_proportion'):
-                        print(f"  Data type: Proportion data")
-                        
-                if 'shape_interp' in dist_info:
-                    print(f"  Distribution shape: {dist_info['shape_interp']['skewness']}, {dist_info['shape_interp']['kurtosis']}")
-            else:
-                print(f"  {dist_info.get('note', 'No distribution identified')}")
-
-    # Recommendation logic
-    normals = [v['normal'] for v in normal_results.values() if isinstance(v.get('normal'), (bool, np.bool_))]
-    all_normal = all(normals) if normals else None
-    hom = out.get('levene', {}).get('homogeneous', None)
-
-    if all_normal is True and hom is True:
-        rec = "One-way ANOVA is appropriate (assumptions satisfied)."
-    elif hom is False and all_normal is True:
-        rec = "Variances unequal -> use Welch's ANOVA or robust methods."
-    elif all_normal is False and hom is True:
-        rec = "Non-normal groups -> Kruskal-Wallis may be preferable (nonparametric)."
-    elif all_normal is False and hom is False:
-        rec = "Both normality and homogeneity violated -> consider nonparametric tests or transform data."
-    else:
-        rec = "Insufficient info; inspect plots and group sizes."
-
-    print(f"All normal: {all_normal}, Homogeneous: {hom}")
-
-    out['recommendation'] = rec
-
-    # Optional plots
-    if make_plots:
-
-        
-        # 1. Combined figure with histograms and distribution fits
-        for i, g_name in enumerate(labels):
-            g = groups[i]
-            if len(g) < 3:
-                continue
-                
-            # Create histogram with distribution fit
-            fig = plt.figure(figsize=(12, 8))
-            gs = gridspec.GridSpec(2, 2, height_ratios=[3, 1])
-            
-            # Histogram and density plot
-            ax1 = plt.subplot(gs[0, :])
-            sns.histplot(g, bins=30, kde=True, stat='density', alpha=0.6, ax=ax1)
-            
-            # Add descriptive stats text box
-            stats_text = (
-                f"n = {desc_stats[g_name]['count']}\n"
-                f"Mean ± SD: {desc_stats[g_name]['mean']:.3f} ± {desc_stats[g_name]['std']:.3f}\n"
-                f"Median: {desc_stats[g_name]['median']:.3f}\n"
-                f"Range: [{desc_stats[g_name]['min']:.3f}, {desc_stats[g_name]['max']:.3f}]\n"
-                f"Skewness: {desc_stats[g_name]['skewness']:.3f}\n"
-                f"Kurtosis: {desc_stats[g_name]['kurtosis']:.3f}"
-            )
-            ax1.text(0.02, 0.98, stats_text, transform=ax1.transAxes, 
-                    verticalalignment='top', 
-                    bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-            
-            # Add distribution fits if available
-            if identify_distributions and 'distributions' in out and g_name in out['distributions']:
-                dist_info = out['distributions'][g_name]
-                if dist_info.get('best_fit') and dist_info.get('dist_obj') and dist_info.get('params'):
-                    dist_obj = dist_info['dist_obj']
-                    params = dist_info['params']
-                    scaled_data = dist_info['scaled_data']
-                    
-                    # Generate points for PDF
-                    x = np.linspace(np.min(scaled_data), np.max(scaled_data), 1000)
-                    y = dist_obj.pdf(x, *params)
-                    
-                    ax1.plot(x, y, 'r-', linewidth=2, label=f"Best fit: {dist_info['best_fit']}")
-                    
-                    # Add top 3 distributions
-                    if 'all_fits' in dist_info and len(dist_info['all_fits']) > 1:
-                        colors = ['g-', 'b-', 'm-']
-                        for j, fit_info in enumerate(dist_info['all_fits'][1:4]):  # Next 3 best fits
-                            dist_obj = fit_info['dist_obj']
-                            params = fit_info['params']
-                            
-                            y = dist_obj.pdf(x, *params)
-                            ax1.plot(x, y, colors[j % len(colors)], linewidth=1, alpha=0.7, 
-                                    label=f"{fit_info['distribution']} (AIC: {fit_info['aic']:.1f})")
-            
-            ax1.set_title(f'Distribution Analysis: {g_name}', fontsize=14)
-            ax1.legend()
-            ax1.grid(True, alpha=0.3)
-            
-            # QQ plot
-            ax2 = plt.subplot(gs[1, 0])
-            stats.probplot(g, dist="norm", plot=ax2)
-            ax2.set_title('Normal Q-Q Plot')
-            ax2.grid(True, alpha=0.3)
-            
-            # Boxplot
-            ax3 = plt.subplot(gs[1, 1])
-            sns.boxplot(y=g, ax=ax3)
-            ax3.set_title('Boxplot')
-            ax3.grid(True, alpha=0.3)
-            
-            plt.tight_layout()
-            plt.show()
-        
-        # 2. Group comparison boxplot
-        plt.figure(figsize=(10, 6))
-        sns.boxplot(x=group, y=dependent, data=sub)
-        plt.title('Group Comparison', fontsize=14)
-        plt.grid(True, alpha=0.3)
-        plt.show()
-        
-        # 3. QQ plot of residuals if model exists
-        if 'anova_table' in out:
-            plt.figure(figsize=(8, 6))
-            sm.qqplot(model.resid, line='s')
-            plt.title('Q-Q Plot of Residuals', fontsize=14)
-            plt.grid(True, alpha=0.3)
-            plt.show()
-
-    return out
 
 def load_data(dataframes, dependent_variables, 
 filter = None,):
@@ -724,7 +281,6 @@ def multi_linear_regression_display(df, targets, features, display = False):
         targets = [targets]
 
     for target in targets:
-
         target_df = df[[target]+features].dropna()
         print(target)
         y = np.array(target_df[target])
@@ -732,8 +288,47 @@ def multi_linear_regression_display(df, targets, features, display = False):
         x = np.array(target_df[features])
         print(x.dtype)
 
-        # y = np.array(target_df[target], dtype=float)
-        # x = np.array(target_df[features], dtype=float)
+        print(f"=== ENHANCED REGRESSION ANALYSIS: {target} ===")
+        
+        print(f"\nTARGET VARIABLE DIAGNOSTICS:")
+        print(f"Mean: {y.mean():.3f}")
+        print(f"Median: {np.median(y):.3f}")
+        print(f"Std: {y.std():.3f}")
+        print(f"Skewness: {stats.skew(y):.3f}")
+        print(f"Min: {y.min()}, Max: {y.max()}")
+        print(f"Zeros: {(y == 0).sum()} ({(y == 0).mean()*100:.1f}%)")
+        
+        # Recommend analysis approach
+        is_count = (y == y.astype(int)).all() and (y >= 0).all()
+        is_highly_skewed = abs(stats.skew(y)) > 1.5
+        has_many_zeros = (y == 0).mean() > 0.3
+
+        significance_level = 0.05
+
+        print(f"\nRECOMMENDATIONS:")
+        if is_count:
+            if has_many_zeros:
+                print(" Use Zero-Inflated Poisson or Negative Binomial GLM")
+            else:
+                print(" Use Poisson or Negative Binomial GLM")
+        
+        if is_highly_skewed:
+            print(" Consider log transformation or GLM with appropriate family")
+            if (y == 0).mean() > 0.3:
+                print("  - Zero-Inflated or Hurdle model may be appropriate")
+
+        try:
+            if len(y) <= 5000:
+                stat, p = stats.shapiro(y)
+                test_name = 'shapiro'
+            else:
+                stat, p = stats.normaltest(y)
+                test_name = 'normaltest'
+        except Exception as e:
+            print(f"Error performing normality test: {e}")
+            stat, p, test_name = None, None, 'error'
+
+        print({'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > significance_level)})
 
         print(f"\nStandardizing features...")
         scaler = StandardScaler()
@@ -742,13 +337,25 @@ def multi_linear_regression_display(df, targets, features, display = False):
         results = simple_linear_regression(x, y)
         b, coeffs = results.params[0], results.params[1:]
         print(results.params)
-        y_pred = results.predict(x)
+        y_pred = results.fittedvalues
         mse = mean_squared_error(y, y_pred)
         rmse = np.sqrt(mse)
         r2 = r2_score(y, y_pred)
         print(f"Results for {target}:")
         print(results.summary())
-        
+
+        print(results.resid)
+        if len(results.resid) <= 5000:
+            stat, p = stats.shapiro(np.array(results.resid))
+            test_name = 'shapiro'
+        else:
+            stat, p = stats.normaltest(np.array(results.resid))
+            test_name = 'normaltest'
+
+        bp_stat, bp_pvalue = het_breuschpagan(results.resid, results.model.exog)[:2]
+
+        print({'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > significance_level), 'bp_stat': float(bp_stat), 'bp_pvalue': float(bp_pvalue), 'bp_homogeneous': (bp_pvalue > significance_level)})
+
         if best_model is None:
             best_model = [target, y, x, results]
         elif results.rsquared > best_model[3].rsquared:
@@ -776,7 +383,7 @@ def multi_linear_regression_display(df, targets, features, display = False):
             axes[1].legend()
             axes[1].grid(True, alpha=0.3)
             # Annotate metrics
-            axes[1].text(0.05, 0.95, f'MSE: {mse:.2f}\nRMSE: {rmse:.2f}\nR²: {r2:.2f}',
+            axes[1].text(0.05, 0.95, f'MSE: {mse}\nRMSE: {rmse}\nR²: {r2:.2f}',
                         transform=axes[1].transAxes, fontsize=10,
                         verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
 
@@ -813,7 +420,7 @@ def multi_linear_regression_display(df, targets, features, display = False):
         axes[1].legend()
         axes[1].grid(True, alpha=0.3)
         # Annotate metrics
-        axes[1].text(0.05, 0.95, f'MSE: {mse:.2f}\nRMSE: {rmse:.2f}\nR²: {r2:.2f}',
+        axes[1].text(0.05, 0.95, f'MSE: {mse}\nRMSE: {rmse}\nR²: {r2:.2f}',
                     transform=axes[1].transAxes, fontsize=10,
                     verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
 
