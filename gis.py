@@ -204,7 +204,7 @@ def zonal_statistics(gpkg_path, raster_path, output_zonal_gpkg, filtering_logic 
     
     with rasterio.open(raster_path) as src:
         # Loops through each band, saving as a seperate gpkg file, ignoring the last band (alpha channel for orthomosaics)
-        for band_num in range(1, src.count):
+        for band_num in range(1, max(2,src.count)):
             print(src.count, "bands found in raster, processing band", band_num)
             results = [] # Store results for each buffer, each element being a dictionary
             region_data = defaultdict(list) # Stores all pixels which belong to a region
