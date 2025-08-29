@@ -115,7 +115,7 @@ def main(paths):
 
     ### VARIABLES ###
     buffer = "veg_plots_corner_coordinates"
-    timepoint = ("2023-1-1", "2024-12-31") # (start_date, end_date) for filtering field data based on date. Alernatives are 2019 as an int for a year, or "post2" by timepoint.
+    timepoint = ("2021-1-1", "2024-12-31") # (start_date, end_date) for filtering field data based on date. Alernatives are 2019 as an int for a year, or "post2" by timepoint.
 
 
     buffer_types = {
@@ -130,12 +130,13 @@ def main(paths):
 
     # for target_name in buffer_types[buffer]:
     #     df = getattr(load_field_data, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
+    #     print(df)
     #     dataframes.append(df)
 
     # # Extracts coordinates for mapping ecological features
     # getattr(coordinate_extraction, f'extract_{buffer}')(paths['veg_plots_coordinates'], paths[buffer]) # Source path for geopackage needs to be explicitly defined
 
-    # # Align coordinates of field data with extracted coordinates
+    # # # Align coordinates of field data with extracted coordinates
     # load_field_data.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter=None)  # filter is a regex pattern to match specific point labels e.g. r"OPC|BC" excludes OPE
 
     # # Preprocess each dataset according the geometries and merges with field data 
@@ -143,11 +144,13 @@ def main(paths):
     # preprocess_dataset(paths, 'Palapa July2025 GLI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
     # preprocess_dataset(paths, 'Palapa July2025 ReNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
     # preprocess_dataset(paths, 'Palapa July2025 Clre', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 GNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    # preprocess_dataset(paths, 'Palapa July2025 NDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
     # preprocess_dataset(paths, 'Palapa July2025 ortho', buffer, proxies=gis.GLCM)
 
-    #### Preprocessing finished ####
+    ### Preprocessing finished ####
 
-    ### Combining and analyzing data into dataframes ###
+    ## Combining and analyzing data into dataframes ###
     # region_data = gis.get_region_data(paths['Palapa July2025 DEM'], 'canopy_openness')
     # gis.create_boxplot_from_data(region_data, 'canopy_openness')
     # gis.create_distribution_plots_from_data(region_data, 'canopy_openness')
@@ -155,6 +158,7 @@ def main(paths):
 
     targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']]
 
+    print(load_field_data.gpd.read_file(paths[f'{buffer}_result'])[:102])
     transformations = {
         'proportion': statistical_modelling.arcsinc_sqrt_transform,
         'canopy_openness': statistical_modelling.arcsinc_sqrt_transform,
@@ -164,44 +168,51 @@ def main(paths):
     print(f"Identified target variables: {targets}")
 
     merged_df = statistical_modelling.load_data(
-            [#('GLI', paths['GLI']),
+            [
             ('DEM', paths['Palapa July2025 DEM']),
             ('GLI', paths['Palapa July2025 GLI']),
             ('Clre', paths['Palapa July2025 Clre']),
-            ('ReNDVI', paths['Palapa July2025 ReNDVI'])
-            #('DEM', paths['DEM']),
+            ('ReNDVI', paths['Palapa July2025 ReNDVI']),
+            ('GNDVI', paths['Palapa July2025 GNDVI']),
+            ('NDVI', paths['Palapa July2025 NDVI']),
+            # ('band1', paths['band1']),
+            # ('band2', paths['band2']),
+            # ('band3', paths['band3']),
+            # ('band4', paths['band4']),
+            # ('band5', paths['band5']),
+            # ('band6', paths['band6']),
+            # ('band7', paths['band7']),
             ], targets,
             filter = None)
-
-    all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI'])]
+    all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
 
     print(f"Finished merging columns : {merged_df.columns}")
     print("Final merged dataframe :")
-    print(merged_df.head())
+    print(merged_df[:26])
     print(len(merged_df))
     print(f"Sample size before removing missing values: {len(merged_df)}")
     for col in merged_df.columns:
         if col in targets + all_features:
             print(f"column {col} has dtype {merged_df[col].dtype}")
+            print(merged_df[col].isna().all())
             merged_df[col] = load_field_data.pd.to_numeric(merged_df[col], errors='coerce')
+            if merged_df[col].isna().all():
+                print(f"Warning: Column '{col}' contains only NaN values after conversion to numeric.")
         if any([x in col for x in transformations.keys()]):
             for key in transformations.keys():
                 if key in col:
-                    if 'canopy_openness' in col:
-                        merged_df[col] = merged_df[col]/100  # Convert percentage to proportion
+                    print(merged_df[col])
                     print(f"Applying {transformations[key].__name__} to {col}")
                     merged_df[col] = transformations[key](merged_df[col])
     print(f"Sample size after removing missing values: {len(merged_df)}")
-    # pca_results, interpretation = statistical_modelling.comprehensive_PCA_analysis(merged_df)
     
     # Option 2: Use specific features
-    pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=False)
-
-    statistical_modelling.multi_linear_regression_display(merged_df, targets, all_features, display=False)
-    # Merge first 5 PCs
-    # for i in range(X_pca.shape[1]):
-    #     merged_df[f'PC{i+1}'] = X_pca[:, i]
-    #     print(f"merging PC{i+1} to merged_df")
+    pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=True)
+    print(X_pca.shape[1])
+    # # Merge first 5 PCs
+    # # for i in range(X_pca.shape[1]):
+    # #     merged_df[f'PC{i+1}'] = X_pca[:, i]
+    # #     print(f"merging PC{i+1} to merged_df")
 
     # You can also access specific results:
     print(f"\nKey findings:")
@@ -213,19 +224,19 @@ def main(paths):
         features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
         statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True)
     print(merged_df[[col for col in merged_df.columns if col in features]])
-    pca_results, interpretation, X_pca, _ = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features, display = True)
+    pca_results, interpretation, X_pca, _ = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features, display = False)
     plot_features(merged_df, features, group='treatment')
-    # Merge first 3 PCs
-    for i in range(X_pca.shape[1]):
-        merged_df[f'PC{i+1}'] = X_pca[:, i]
-        print(f"merging PC{i+1} to merged_df")
+    # # Merge first 3 PCs
+    # for i in range(X_pca.shape[1]):
+    #     merged_df[f'PC{i+1}'] = X_pca[:, i]
+    #     print(f"merging PC{i+1} to merged_df")
 
     
-    # You can also access specific results:
-    print(f"\nKey findings:")
-    print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
-    print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
-    print(f"Treatment separation quality: {interpretation['separation_quality']}")
+    # # You can also access specific results:
+    # print(f"\nKey findings:")
+    # print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
+    # print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
+    # print(f"Treatment separation quality: {interpretation['separation_quality']}")
     # plt.figure(figsize=(12, 10))
     # sns.heatmap(merged_df[[column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment']]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
     # plt.show()
@@ -318,13 +329,20 @@ paths = {
 'GLI': "Data/Palapa June2019 GLI statistics.gpkg", # FORMATTING TO BE DISCUSSED
 'ExG': "Data/Palapa June2019 ExG statistics.gpkg",
 'DEM': "Data/Palapa June2019 DEM statistics.gpkg",
-'CHM': "Data/Palapa June2019 CHM statistics.gpkg"
+'CHM': "Data/Palapa June2019 CHM statistics.gpkg",
+'band1': "Data/Palapa July2025 ortho statistics_band1.gpkg",
+'band2': "Data/Palapa July2025 ortho statistics_band2.gpkg",
+'band3': "Data/Palapa July2025 ortho statistics_band3.gpkg",
+'band4': "Data/Palapa July2025 ortho statistics_band4.gpkg",
+'band5': "Data/Palapa July2025 ortho statistics_band5.gpkg",
+'band6': "Data/Palapa July2025 ortho statistics_band6.gpkg",
+'band7': "Data/Palapa July2025 ortho statistics_band7.gpkg"
+
 }
 
 # rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI', 'Palapa July2025 GLI', 'Palapa July2025 Clre', 'Palapa July2025 ReNDVI']
 
 # for raster_name in rasters:
 #     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1], output_path=f"D:/Jerry/{raster_name} Raster Histogram.png")
-
 
 main(paths)
