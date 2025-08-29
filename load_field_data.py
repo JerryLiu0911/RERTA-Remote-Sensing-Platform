@@ -296,46 +296,43 @@ def align_coords(dataframes, coordinates_gdf_path, destination_path, filter = No
     Returns:
         result_gdf (gpd.GeoDataFrame): The aligned erosion sticks data.
     """
-    try:
 
-        coordinates_gdf = gpd.read_file(coordinates_gdf_path)
-        merged_df = coordinates_gdf
-        if 'name' not in coordinates_gdf.columns:
-            print(f"Error: 'name' column not found in coordinates GeoDataFrame")
-            return None
-        else:
-            merged_df = merged_df.rename(columns={'name': 'point.label'})# Drop 'name' columns to prevent redundancy with 'point.label'
-            merged_df['treatment'] = merged_df['point.label'].apply(lambda x: x.split('-')[0] if isinstance(x, str) else None)
-
-        for i, df in enumerate(dataframes):
-            # Perform spatial join or coordinate alignment here
-            # This is a placeholder for the actual alignment logic
-            if 'point.label' not in df.columns:
-                print(f"Error: 'point.label' column not found in DataFrame {i}")
-                continue
-            
-            df = df.drop('treatment', axis=1)
-            merged_df = merged_df.merge(df, on='point.label', how='left')
-
-        if filter:
-            merged_df = merged_df[merged_df['point.label'].str.contains(filter, case=False, na=False)] # Choice to remove erroneous labels
-
-        print('Coordinates merged')
-        print('Final dataframe : \n', merged_df[:32])  # Display the first few rows of the final DataFrame
-        # Create a GeoDataFrame and save as a gpkg file
-        merged_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
-        merged_gdf.to_file(destination_path, driver="GPKG")
-        print(f"Saved to {destination_path}")
-
-        return merged_df
-    
-    except FileNotFoundError:
-        print(f"Error: The file was not found at {coordinates_gdf_path}")
-    except Exception as e:
-        print(f"An error occurred during alignment: {e}")
+    coordinates_gdf = gpd.read_file(coordinates_gdf_path)
+    merged_df = coordinates_gdf
+    if 'name' not in coordinates_gdf.columns:
+        print(f"Error: 'name' column not found in coordinates GeoDataFrame")
         return None
+    else:
+        merged_df = merged_df.rename(columns={'name': 'point.label'})# Drop 'name' columns to prevent redundancy with 'point.label'
+        merged_df['treatment'] = merged_df['point.label'].apply(lambda x: x.split('-')[0] if isinstance(x, str) else None)
 
-# load_frogs("Data/4.3_Frogs.csv", timepoint=None)
+    for i, df in enumerate(dataframes):
+        # Perform spatial join or coordinate alignment here
+        # This is a placeholder for the actual alignment logic
+        if 'point.label' not in df.columns:
+            print(f"Error: 'point.label' column not found in DataFrame {i}")
+            continue
+        
+        df = df.drop('treatment', axis=1)
+        merged_df = merged_df.merge(df, on='point.label', how='left')
+        for col in df.columns:
+            print(len(merged_df.groupby('point.label')),  len(merged_df.groupby('point.label').agg({col: 'first'})[col].dropna()))
+            if merged_df[col].isna().mean() > 0.5 or len(merged_df[col].dropna()) < 32:
+                raise ValueError(f"Column '{col}' in DataFrame {i} has too many missing values.")
+
+    if filter:
+        merged_df = merged_df[merged_df['point.label'].str.contains(filter, case=False, na=False)] # Choice to remove erroneous labels
+
+    print('Coordinates merged')
+    print('Final dataframe : \n', merged_df[:32])  # Display the first few rows of the final DataFrame
+    # Create a GeoDataFrame and save as a gpkg file
+    merged_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
+    merged_gdf.to_file(destination_path, driver="GPKG")
+    print(f"Saved to {destination_path}")
+
+    return merged_df
+
+# load_seed_removal("Data/6.5_Seed-removal.csv", timepoint=None)
 # load_canopy_openness("Data/3.4-canopy.openness.csv", timepoint=None)
 # align_coords([load_canopy_openness("Data/3.4-canopy.openness.csv", "Data/result_data.gpkg", "Data/canopy_openness_result.gpkg", timepoint="post3"), load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")], "Data/Palapa_veg_plots_corners.gpkg")
 # align_coords([load_frogs("Data/4.3_Frogs.csv", timepoint="post3")], "Data/Palapa_transects_buffer.gpkg", "Data/Palapa_transects_buffer_results.gpkg")
