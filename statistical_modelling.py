@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import stats
-from sklearn.metrics import mean_squared_error, r2_score, make_scorer
+from sklearn.metrics import mean_squared_error, r2_score
+from pymer4.models import glmer
 import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -241,6 +242,79 @@ def simple_linear_regression(x, y):
   results = sm.OLS(y, x).fit()  # Fit the model
 
   return results
+
+def generalised_linear_model(y, x, family):
+    """
+    Fits a generalized linear model (GLM) to the data.
+
+    Args:
+        y: The dependent variable (response).
+        x: The independent variable(s) (predictors).
+        family: The GLM family to use (default: Gaussian).
+
+    Returns:
+        The fitted GLM results.
+    """
+    n = len(x)
+    if n != len(y):
+        raise ValueError("Input arrays must have the same length.")
+    
+    model = sm.GLM(y, x, family=family)
+    results = model.fit()
+    return results
+
+def generalised_linear_mixed_model(df, target, features, display=False):
+    """
+    Fits a Generalized Linear Mixed Model (GLMM) with 'treatment' as a random effect.
+    Displays AIC and a predicted vs actual plot.
+    """
+
+    df = df[[target]+features+['treatment']].dropna()
+    features_str = ' + '.join(features)
+    formula = f"{target} ~ {features_str}"
+
+    model = smf.mixedlm(formula, df, groups=df['treatment'])
+    result = model.fit()
+    print(result.summary())
+    print(f"AIC: {result.aic:.2f}")
+    print(f"BIC: {result.bic:.2f}")
+    y_true = df[target]
+    y_pred = result.fittedvalues
+    ss_res = np.sum((y_true - y_pred) ** 2)
+    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+    pseudo_r2 = 1 - ss_res / ss_tot
+    print(f"Pseudo R² (fixed effects): {pseudo_r2:.3f}")
+
+    # Predicted vs Actual plot
+    if display:
+        y_true = df[target]
+        y_pred = result.fittedvalues
+        plt.figure(figsize=(8, 6))
+        plt.scatter(y_true, y_pred, alpha=0.7)
+        plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', label='Ideal fit')
+        plt.xlabel('Actual')
+        plt.ylabel('Predicted')
+        plt.title('GLMM: Actual vs Predicted')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+
+        # Residuals histogram
+        residuals = result.resid
+        plt.figure(figsize=(8, 5))
+        plt.hist(residuals, bins=30, alpha=0.7)
+        plt.title("GLMM Residuals")
+        plt.xlabel("Residual")
+        plt.ylabel("Frequency")
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+
+    return result
+    # except Exception as e:
+    #     print(f"GLMM fitting failed: {e}")
+    #     return None
 
 def log_transform(data):
     """
@@ -576,89 +650,6 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
 
     return model, mse, rmse, r2, y_pred
 
-def random_forest_ensemble(df, target, features, n_estimators=100, test_size=0.2, random_state=42):
-    """
-    This function performs k-fold cross-validation on the training data, training a separate Random Forest model on each fold and recording its validation score. After all models are trained,
-    each one makes predictions on the test set, and these predictions are combined using a weighted average, where the weights are based on the models’ respective validation scores. This results in an ensemble prediction on the test set, with better-performing models (on their own folds) contributing more to the final output.
-
-    # There are big issues with this method. Only a limited number of data are used for training, and they may not generalize well to unseen data.
-
-    Args:
-        df: Pandas DataFrame containing the data.
-        target: Name of the target variable (dependent variable).
-        features: List of independent variable names (features).
-        n_estimators: Number of trees in the forest (default: 100)
-        test_size: Proportion of dataset to include in the test split (default: 0.2)
-        random_state: Random state for reproducibility (default: 42)
-
-    Returns:
-        y_pred_sum: Sum of predicted values from the ensemble model.
-    """
-    # Reshape features to be a 2D array
-    # x = features.reshape(-1, 1)
-    # y = target
-    y = np.array(df[target])
-    x = np.array(df[features])
-
-
-    # Split the data
-    x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=test_size, random_state=random_state
-    )
-
-    # Create and train multiple models
-
-    kf = KFold(n_splits=5, shuffle=True, random_state=42)
-    models = []
-
-    for train_index, val_index in kf.split(x_train):
-        x_train_sub, x_val = x_train[train_index], x_train[val_index]
-        y_train_sub, y_val = y_train[train_index], y_train[val_index]
-
-        model = RandomForestRegressor(max_depth=5, n_estimators=100)
-        model.fit(x_train_sub, y_train_sub)
-        y_val_pred = model.predict(x_val)
-        r2_score_value = r2_score(y_val, y_val_pred)
-        plt.figure()
-        plt.scatter(y_val, y_val_pred, color='red')
-        plt.xlabel('Actual Canopy Openness')
-        plt.ylabel('Predicted Canopy Openness')
-        # Add text annotations for metrics
-        plt.text(0.05, 0.85, f'R-squared: {r2_score_value:.2f}', transform=plt.gca().transAxes, fontsize=10,
-                verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-        plt.title('Random Forest Ensemble Predictions')
-        plt.legend()
-        plt.show()
-        models.append((model, r2_score_value))
-
-    preds = [model.predict(x_test) for model, _ in models]
-
-    val_scores = np.array([r2 for _, r2 in models])
-    weights = val_scores / val_scores.sum()
-
-    y_pred = np.average(np.array(preds), axis=0, weights=weights)
-
-    # Calculate metrics
-    mse = mean_squared_error(y_test, y_pred)
-    rmse = np.sqrt(mse)
-    r2 = r2_score(y_test, y_pred)
-
-    plt.figure()
-    plt.scatter(y_test, y_pred, color='red')
-    plt.xlabel('Actual Canopy Openness')
-    plt.ylabel('Predicted Canopy Openness')
-    # Add text annotations for metrics
-    plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
-            verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-    plt.title('Random Forest Ensemble Predictions')
-    plt.show()
-
-    return models, y_pred, preds
-
 def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     # Define parameter grid
     param_dist = {
@@ -701,60 +692,6 @@ def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
     print(f"Overfitting gap: {train_score - val_score:.4f}")
 
     return rs.best_estimator_, rs.best_score_
-
-def generalised_linear_mixed_model(df, target, features, display=False):
-    """
-    Fits a Generalized Linear Mixed Model (GLMM) with 'treatment' as a random effect.
-    Displays AIC and a predicted vs actual plot.
-    """
-    import statsmodels.formula.api as smf
-    import matplotlib.pyplot as plt
-
-    features_str = ' + '.join(features)
-    formula = f"{target} ~ {features_str}"
-
-    model = smf.mixedlm(formula, df, groups=df['treatment'])
-    result = model.fit()
-    print(result.summary())
-    print(f"AIC: {result.aic:.2f}")
-    print(f"BIC: {result.bic:.2f}")
-    y_true = df[target]
-    y_pred = result.fittedvalues
-    ss_res = np.sum((y_true - y_pred) ** 2)
-    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
-    pseudo_r2 = 1 - ss_res / ss_tot
-    print(f"Pseudo R² (fixed effects): {pseudo_r2:.3f}")
-
-    # Predicted vs Actual plot
-    if display:
-        y_true = df[target]
-        y_pred = result.fittedvalues
-        plt.figure(figsize=(8, 6))
-        plt.scatter(y_true, y_pred, alpha=0.7)
-        plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', label='Ideal fit')
-        plt.xlabel('Actual')
-        plt.ylabel('Predicted')
-        plt.title('GLMM: Actual vs Predicted')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
-
-        # Residuals histogram
-        residuals = result.resid
-        plt.figure(figsize=(8, 5))
-        plt.hist(residuals, bins=30, alpha=0.7)
-        plt.title("GLMM Residuals")
-        plt.xlabel("Residual")
-        plt.ylabel("Frequency")
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
-
-    return result
-    # except Exception as e:
-    #     print(f"GLMM fitting failed: {e}")
-    #     return None
     
 def enhanced_multi_linear_regression_display(df, target, features, display=True):
     """
@@ -903,235 +840,201 @@ def enhanced_multi_linear_regression_display(df, target, features, display=True)
     
     return best_models
 
-def enhanced_multivariate_linear_regression(df, targets, features, log_transform=True, display=True):
-    """
-    Performs true multivariate linear regression with multiple response variables simultaneously.
-    
-    Args:
-        df: Pandas DataFrame containing the data
-        targets: List of target variable names (multiple dependent variables)
-        features: List of independent variable names (features)
-        log_transform: Whether to apply log transformation to target variables
-        display: Whether to display plots and detailed output
-    
-    Returns:
-        dict: Dictionary containing multivariate regression results
-    """
-    
-    print(f"=== TRUE MULTIVARIATE LINEAR REGRESSION ===")
-    print(f"Target variables: {targets}")
-    print(f"Features: {features}")
-    print(f"Sample size: {len(df)}")
-    
-    # Clean data
-    analysis_cols = targets + features
-    df_clean = df[analysis_cols].dropna()
-    
-    if len(df_clean) < len(df):
-        print(f"Removed {len(df) - len(df_clean)} rows with missing values")
-        print(f"Final sample size: {len(df_clean)}")
-    
-    # Log transform target variables if requested
-    if log_transform:
-        print(f"\n=== LOG TRANSFORMATION ===")
-        Y_original = df_clean[targets].copy()
-        Y_transformed = pd.DataFrame(index=df_clean.index)
+def multi_GLM_display(df, targets, features, display = False):
+    '''
+    Performs multiple linear regression and displays the results.
+    Outputs the best model based on R-squared value.
+        Args:
+            df: Pandas DataFrame containing the data.
+            targets (list of str or str): Name(s) of the target variable(s) (dependent variable(s)).
+            features: List of independent variable names (features).
+            display: Whether to display the feature importance plot (default: False).
+
+        Returns:
+            best_model: List containing the best model's variable name, slope, intercept, mse, rmse, and r2.
+        '''
+
+    best_model = None
+    family = sm.families.Gaussian()
+
+    if isinstance(targets, str):
+        targets = [targets]
+
+    for target in targets:
+        target_df = df[[target]+features].dropna()
+        print(target)
+        y = np.array(target_df[target])
+        print(y.dtype)
+        x = np.array(target_df[features])
+        print(x.dtype)
+
+        print(f"=== ENHANCED REGRESSION ANALYSIS: {target} ===")
         
-        for target in targets:
-            min_val = df_clean[target].min()
-            if min_val <= 0:
-                print(f"Using log1p transformation for {target} (has non-positive values)")
-                Y_transformed[target] = np.log1p(df_clean[target])
+        print(f"\nTARGET VARIABLE DIAGNOSTICS:")
+        print(f"Mean: {y.mean():.3f}")
+        print(f"Median: {np.median(y):.3f}")
+        print(f"Std: {y.std():.3f}")
+        print(f"Skewness: {stats.skew(y):.3f}")
+        print(f"Min: {y.min()}, Max: {y.max()}")
+        print(f"Zeros: {(y == 0).sum()} ({(y == 0).mean()*100:.1f}%)")
+        
+        # Recommend analysis approach
+        is_count = (y == y.astype(int)).all() and (y >= 0).all()
+        is_highly_skewed = abs(stats.skew(y)) > 1.5
+        has_many_zeros = (y == 0).mean() > 0.3
+
+        significance_level = 0.05
+
+        print(f"\nRECOMMENDATIONS:")
+        if is_count:
+            if has_many_zeros:
+                print(" Use Zero-Inflated Poisson or Negative Binomial GLM")
             else:
-                print(f"Using natural log transformation for {target}")
-                Y_transformed[target] = np.log(df_clean[target])
+                print(" Use Poisson or Negative Binomial GLM")
         
-        Y = Y_transformed
-    else:
-        Y = df_clean[targets]
-        Y_original = Y.copy()
-    
-    # Standardize features
-    
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(df_clean[features])
-    X_scaled_df = pd.DataFrame(X_scaled, columns=features, index=df_clean.index)
-    
-    # Add constant term
-    X_with_const = sm.add_constant(X_scaled_df)
-    
-    # Fit TRUE multivariate regression using seemingly unrelated regression (SUR)
-    # Or matrix form: Y = XB + E where Y is n×p, X is n×k, B is k×p
-    
-    print(f"\n=== MULTIVARIATE MODEL FITTING ===")
-    
-    # Method 1: Matrix-based multivariate regression
-    X_matrix = X_with_const.values
-    Y_matrix = Y.values
-    
-    # Calculate coefficient matrix: B = (X'X)^(-1)X'Y
-    XtX_inv = np.linalg.inv(X_matrix.T @ X_matrix)
-    B_matrix = XtX_inv @ X_matrix.T @ Y_matrix
-    
-    # Predictions
-    Y_pred_matrix = X_matrix @ B_matrix
-    
-    # Residuals
-    residuals_matrix = Y_matrix - Y_pred_matrix
-    
-    # Calculate multivariate statistics
-    n, p = Y_matrix.shape  # n samples, p response variables
-    k = X_matrix.shape[1]  # k predictors (including intercept)
-    
-    # Residual sum of squares matrix (E'E)
-    E_matrix = residuals_matrix.T @ residuals_matrix
-    
-    # Total sum of squares matrix
-    Y_centered = Y_matrix - Y_matrix.mean(axis=0)
-    T_matrix = Y_centered.T @ Y_centered
-    
-    # Multivariate R-squared (Wilks' Lambda based)
-    try:
-        wilks_lambda = np.linalg.det(E_matrix) / np.linalg.det(T_matrix)
-        multivariate_r2 = 1 - wilks_lambda
-    except:
-        multivariate_r2 = np.nan
-        wilks_lambda = np.nan
-    
-    print(f"Multivariate R²: {multivariate_r2:.4f}")
-    print(f"Wilks' Lambda: {wilks_lambda:.4f}")
-    
-    # Individual response variable statistics
-    individual_r2 = {}
-    coefficients_df = pd.DataFrame(
-        B_matrix, 
-        index=['Intercept'] + features, 
-        columns=targets
-    )
-    
-    print(f"\n=== COEFFICIENT MATRIX ===")
-    print(coefficients_df.round(4))
-    
-    print(f"\n=== INDIVIDUAL RESPONSE STATISTICS ===")
-    for i, target in enumerate(targets):
-        y_true = Y_matrix[:, i]
-        y_pred = Y_pred_matrix[:, i]
-        
-        ss_res = np.sum((y_true - y_pred) ** 2)
-        ss_tot = np.sum((y_true - y_true.mean()) ** 2)
-        r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0
-        
-        individual_r2[target] = r2
-        
-        print(f"{target}:")
-        print(f"  R²: {r2:.4f}")
-        print(f"  Coefficients: {coefficients_df[target].round(4).to_dict()}")
-    
-    # Multivariate hypothesis testing (MANOVA-style)
-    print(f"\n=== MULTIVARIATE HYPOTHESIS TESTING ===")
-    
-    # Calculate F-statistic for overall model significance
-    try:
-        # Degrees of freedom
-        df_model = k - 1  # excluding intercept
-        df_error = n - k
-        df_total = n - 1
-        
-        # Pillai's trace
+        if is_highly_skewed:
+            print(" Consider log transformation or GLM with appropriate family")
+            if (y == 0).mean() > 0.3:
+                print("  - Zero-Inflated or Hurdle model may be appropriate")
+
         try:
-            pillai_trace = np.trace(np.linalg.solve(T_matrix, T_matrix - E_matrix))
-            print(f"Pillai's Trace: {pillai_trace:.4f}")
-        except:
-            pillai_trace = np.nan
-            print(f"Pillai's Trace: Could not calculate")
-        
-        # Roy's largest root
-        try:
-            eigenvals = np.linalg.eigvals(np.linalg.solve(E_matrix, T_matrix - E_matrix))
-            roy_root = np.max(eigenvals.real)
-            print(f"Roy's Largest Root: {roy_root:.4f}")
-        except:
-            roy_root = np.nan
-            print(f"Roy's Largest Root: Could not calculate")
+            if len(y) <= 5000:
+                stat, p = stats.shapiro(y)
+                test_name = 'shapiro'
+            else:
+                stat, p = stats.normaltest(y)
+                test_name = 'normaltest'
+        except Exception as e:
+            print(f"Error performing normality test: {e}")
+            stat, p, test_name = None, None, 'error'
+
+        print({'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > significance_level)})
+
+        if any(x in target for x in ['proportion', 'canopy_openness']):
+            print("Warning: Target variable is a proportion, using Binomial distribution")
+            family = sm.families.Binomial()
+
+        if p <= significance_level:
+            print("Warning: Target variable is not normally distributed.")
+            if is_highly_skewed:
+                print("Considering log transformation or GLM with appropriate family")
+                if (y == 0).mean() > 0.3:
+                    print("  - Zero-Inflated or Hurdle model may be appropriate")
+                if is_count:
+                    if y.std()**2 / y.mean() > 1.5:
+                        print("  - Overdispersed : Negative Binomial model may be appropriate")
+                        family = sm.families.NegativeBinomial()
+                    else:
+                        print("  - Poisson model may be appropriate")
+                        family = sm.families.Poisson()
+
+        print(f"\nStandardizing features...")
+        scaler = StandardScaler()
+        x = scaler.fit_transform(x)
+        x = sm.add_constant(x)  # Add constant term for intercept
+        results = generalised_linear_model(x, y, family)
+        print(results.params)
+        y_pred = results.fittedvalues
+        mse = mean_squared_error(y, y_pred)
+        rmse = np.sqrt(mse)
+        r2 = r2_score(y, y_pred)
+        print(f"Results for {target}:")
+        print(results.summary())
+
+        print(results.resid)
+        if len(results.resid) <= 5000:
+            stat, p = stats.shapiro(np.array(results.resid))
+            test_name = 'shapiro'
+        else:
+            stat, p = stats.normaltest(np.array(results.resid))
+            test_name = 'normaltest'
+
+        bp_stat, bp_pvalue = het_breuschpagan(results.resid, results.model.exog)[:2]
+
+        print({'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > significance_level), 'bp_stat': float(bp_stat), 'bp_pvalue': float(bp_pvalue), 'bp_homogeneous': (bp_pvalue > significance_level)})
+
+        if best_model is None:
+            best_model = [target, y, x, results]
+        elif results.rsquared > best_model[3].rsquared:
+            best_model = [target, y, x, results]
+
+        if display:
+
+            fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+
+            # Bar plot of coefficients (predictor importance)
+            best_coeffs = best_model[3].params[1:]
+            axes[0].barh(features, best_coeffs, color='skyblue')
+            axes[0].set_xlabel('Standardized Coefficient')
+            axes[0].set_title('Predictor Importance')
+            for i, v in enumerate(best_coeffs):
+                axes[0].text(v, i, f'{v:.3f}', va='center', ha='left', fontsize=10)
+            axes[0].grid(True, alpha=0.3)
+
+            # Actual vs Predicted plot
+            axes[1].scatter(y_pred, y, alpha=0.7)
+            axes[1].plot([y.min(), y.max()], [y.min(), y.max()], 'r--', label='Ideal fit')
+            axes[1].set_xlabel(f'Predicted {target}')
+            axes[1].set_ylabel(f'Actual {target}')
+            axes[1].set_title(f'Actual vs Predicted {target}')
+            axes[1].legend()
+            axes[1].grid(True, alpha=0.3)
+            # Annotate metrics
+            axes[1].text(0.05, 0.95, f'MSE: {mse}\nRMSE: {rmse}\nR²: {r2:.2f}',
+                        transform=axes[1].transAxes, fontsize=10,
+                        verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
             
-    except Exception as e:
-        print(f"Multivariate test statistics could not be calculated: {e}")
-    
-    if display:
-        # Visualization
-        n_targets = len(targets)
-        
-        # 1. Actual vs Predicted for each response
-        fig, axes = plt.subplots(2, n_targets, figsize=(5 * n_targets, 8))
-        if n_targets == 1:
-            axes = axes.reshape(-1, 1)
-        
-        for i, target in enumerate(targets):
-            y_true = Y_matrix[:, i]
-            y_pred = Y_pred_matrix[:, i]
-            residuals = residuals_matrix[:, i]
-            
-            # Actual vs Predicted
-            axes[0, i].scatter(y_true, y_pred, alpha=0.6)
-            min_val = min(y_true.min(), y_pred.min())
-            max_val = max(y_true.max(), y_pred.max())
-            axes[0, i].plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=2)
-            
-            title_prefix = f"log({target})" if log_transform else target
-            axes[0, i].set_xlabel(f'Actual {title_prefix}')
-            axes[0, i].set_ylabel(f'Predicted {title_prefix}')
-            axes[0, i].set_title(f'{title_prefix}: R² = {individual_r2[target]:.3f}')
-            axes[0, i].grid(True, alpha=0.3)
-            
-            # Residuals vs Fitted
-            axes[1, i].scatter(y_pred, residuals, alpha=0.6)
-            axes[1, i].axhline(y=0, color='red', linestyle='--')
-            axes[1, i].set_xlabel('Fitted Values')
-            axes[1, i].set_ylabel('Residuals')
-            axes[1, i].set_title(f'{title_prefix}: Residuals')
-            axes[1, i].grid(True, alpha=0.3)
-        
-        plt.suptitle(f'Multivariate Regression Results (Multivariate R² = {multivariate_r2:.3f})')
-        plt.tight_layout()
-        plt.show()
-        
-        # 2. Coefficient heatmap
-        plt.figure(figsize=(10, 6))
-        sns.heatmap(coefficients_df.T, annot=True, cmap='RdBu_r', center=0,
-                   fmt='.3f', cbar_kws={'label': 'Coefficient Value'})
-        plt.title('Multivariate Regression Coefficients')
-        plt.xlabel('Predictors')
-        plt.ylabel('Response Variables')
-        plt.tight_layout()
-        plt.show()
-        
-        # 3. Response correlation matrix
-        if len(targets) > 1:
-            plt.figure(figsize=(8, 6))
-            response_corr = pd.DataFrame(Y_matrix, columns=targets).corr()
-            sns.heatmap(response_corr, annot=True, cmap='coolwarm', center=0,
-                       square=True, fmt='.3f', cbar_kws={"shrink": .8})
-            title_suffix = " (log-transformed)" if log_transform else ""
-            plt.title(f'Response Variable Correlations{title_suffix}')
+            # Residuals vs Fitted plot
+            residuals = y - y_pred
+            axes[2].scatter(y_pred, residuals, alpha=0.7)
+            axes[2].axhline(0, color='red', linestyle='--')
+            axes[2].set_xlabel('Fitted Values')
+            axes[2].set_ylabel('Residuals')
+            axes[2].set_title('Residuals vs Fitted Values')
+            axes[2].grid(True, alpha=0.3)
+
             plt.tight_layout()
             plt.show()
-    
-    return {
-        'coefficient_matrix': coefficients_df,
-        'multivariate_r2': multivariate_r2,
-        'individual_r2': individual_r2,
-        'wilks_lambda': wilks_lambda,
-        'predictions': pd.DataFrame(Y_pred_matrix, columns=targets, index=df_clean.index),
-        'residuals': pd.DataFrame(residuals_matrix, columns=targets, index=df_clean.index),
-        'scaler': scaler,
-        'sample_size': len(df_clean),
-        'log_transformed': log_transform,
-        'Y_matrix': Y_matrix,
-        'X_matrix': X_matrix,
-        'n_predictors': k,
-        'n_responses': p
-    }
-    
+
+    if not display: 
+        y = best_model[1]
+        y_pred = best_model[3].predict(best_model[2])
+        target = best_model[0]
+        mse = mean_squared_error(y, y_pred)
+        rmse = np.sqrt(mse)
+        r2 = r2_score(y, y_pred)
+        coeffs = best_model[3].params[1:]
+
+        print(f"Results for {target}:")
+        print(best_model[3].summary())
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        
+        # Bar plot of coefficients (predictor importance)
+        axes[0].barh(features, coeffs, color='skyblue')
+        axes[0].set_xlabel('Standardized Coefficient')
+        axes[0].set_title('Predictor Importance')
+        for i, v in enumerate(coeffs):
+            axes[0].text(v, i, f'{v:.3f}', va='center', ha='left', fontsize=10)
+        axes[0].grid(True, alpha=0.3)
+
+        # Actual vs Predicted plot
+        axes[1].scatter(y_pred, y, alpha=0.7)
+        axes[1].plot([y.min(), y.max()], [y.min(), y.max()], 'r--', label='Ideal fit')
+        axes[1].set_xlabel(f'Predicted {target}')
+        axes[1].set_ylabel(f'Actual {target}')
+        axes[1].set_title(f'Actual vs Predicted {target}')
+        axes[1].legend()
+        axes[1].grid(True, alpha=0.3)
+        # Annotate metrics
+        axes[1].text(0.05, 0.95, f'MSE: {mse}\nRMSE: {rmse}\nR²: {r2:.2f}',
+                    transform=axes[1].transAxes, fontsize=10,
+                    verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+
+        plt.tight_layout()
+        plt.show()
+
+    print(f"Best model is for target {best_model[0]} with R² = {best_model[3].rsquared:.3f}")
+
 def PCA_analysis(df, target_columns=None, treatment_column='treatment', n_components=None, display=True):
     """
     Performs Principal Component Analysis to investigate relationships between treatments
