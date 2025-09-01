@@ -323,6 +323,8 @@ def align_coords(dataframes, coordinates_gdf_path, destination_path, filter = No
     if filter:
         merged_df = merged_df[merged_df['point.label'].str.contains(filter, case=False, na=False)] # Choice to remove erroneous labels
 
+    # merged_df = merged_df.rename(columns=lambda x: x.replace(' ', '_').replace('.', '_'))
+
     print('Coordinates merged')
     print('Final dataframe : \n', merged_df[:32])  # Display the first few rows of the final DataFrame
     # Create a GeoDataFrame and save as a gpkg file
@@ -335,4 +337,3 @@ def align_coords(dataframes, coordinates_gdf_path, destination_path, filter = No
 # load_seed_removal("Data/6.5_Seed-removal.csv", timepoint=None)
 # load_canopy_openness("Data/3.4-canopy.openness.csv", timepoint=None)
 # align_coords([load_canopy_openness("Data/3.4-canopy.openness.csv", "Data/result_data.gpkg", "Data/canopy_openness_result.gpkg", timepoint="post3"), load_erosion_sticks("Data/1.2_Erosion-sticks.csv", "Data/1.2_Erosion-sticks_aligned.gpkg", timepoint="post3")], "Data/Palapa_veg_plots_corners.gpkg")
-# align_coords([load_frogs("Data/4.3_Frogs.csv", timepoint="post3")], "Data/Palapa_transects_buffer.gpkg", "Data/Palapa_transects_buffer_results.gpkg")

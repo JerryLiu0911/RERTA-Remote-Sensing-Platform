@@ -158,6 +158,8 @@ def main(paths):
 
     targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']]
 
+    print(targets)
+
     print(load_field_data.gpd.read_file(paths[f'{buffer}_result'])[:102])
     transformations = {
         'proportion': statistical_modelling.arcsinc_sqrt_transform,
@@ -205,7 +207,7 @@ def main(paths):
                     print(f"Applying {transformations[key].__name__} to {col}")
                     merged_df[col] = transformations[key](merged_df[col])
     print(f"Sample size after removing missing values: {len(merged_df)}")
-    
+
     # Option 2: Use specific features
     pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=True)
     print(X_pca.shape[1])
@@ -222,10 +224,12 @@ def main(paths):
 
     for target in targets:
         features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
+        plot_features(merged_df, features, group='treatment')
         statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True)
+        statistical_modelling.generalised_linear_mixed_model(merged_df, target, features, display=True)
     print(merged_df[[col for col in merged_df.columns if col in features]])
     pca_results, interpretation, X_pca, _ = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features, display = False)
-    plot_features(merged_df, features, group='treatment')
+    
     # # Merge first 3 PCs
     # for i in range(X_pca.shape[1]):
     #     merged_df[f'PC{i+1}'] = X_pca[:, i]

@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, RandomizedSearchCV, LeaveOneOut
 import statsmodels.api as sm
+import statsmodels.formula.api as smf
 from statsmodels.stats.diagnostic import het_breuschpagan
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -363,7 +364,7 @@ def multi_linear_regression_display(df, targets, features, display = False):
 
         if display:
 
-            fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+            fig, axes = plt.subplots(1, 3, figsize=(20, 6))
 
             # Bar plot of coefficients (predictor importance)
             best_coeffs = best_model[3].params[1:]
@@ -386,6 +387,15 @@ def multi_linear_regression_display(df, targets, features, display = False):
             axes[1].text(0.05, 0.95, f'MSE: {mse}\nRMSE: {rmse}\nR²: {r2:.2f}',
                         transform=axes[1].transAxes, fontsize=10,
                         verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
+            
+            # Residuals vs Fitted plot
+            residuals = y - y_pred
+            axes[2].scatter(y_pred, residuals, alpha=0.7)
+            axes[2].axhline(0, color='red', linestyle='--')
+            axes[2].set_xlabel('Fitted Values')
+            axes[2].set_ylabel('Residuals')
+            axes[2].set_title('Residuals vs Fitted Values')
+            axes[2].grid(True, alpha=0.3)
 
             plt.tight_layout()
             plt.show()
@@ -692,16 +702,60 @@ def tune_random_forest(x_train, y_train, random_state=42, n_iter=20):
 
     return rs.best_estimator_, rs.best_score_
 
-def generalised_linear_model(df, target, features, display=False):
+def generalised_linear_mixed_model(df, target, features, display=False):
     """
-    General linear model function.
+    Fits a Generalized Linear Mixed Model (GLMM) with 'treatment' as a random effect.
+    Displays AIC and a predicted vs actual plot.
     """
-    X = df[features]
-    y = df[target]
-    model = sm.GLM(y, sm.add_constant(X)).fit()
-    print(model.summary())
-    return model
+    import statsmodels.formula.api as smf
+    import matplotlib.pyplot as plt
 
+    features_str = ' + '.join(features)
+    formula = f"{target} ~ {features_str}"
+
+    model = smf.mixedlm(formula, df, groups=df['treatment'])
+    result = model.fit()
+    print(result.summary())
+    print(f"AIC: {result.aic:.2f}")
+    print(f"BIC: {result.bic:.2f}")
+    y_true = df[target]
+    y_pred = result.fittedvalues
+    ss_res = np.sum((y_true - y_pred) ** 2)
+    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+    pseudo_r2 = 1 - ss_res / ss_tot
+    print(f"Pseudo R² (fixed effects): {pseudo_r2:.3f}")
+
+    # Predicted vs Actual plot
+    if display:
+        y_true = df[target]
+        y_pred = result.fittedvalues
+        plt.figure(figsize=(8, 6))
+        plt.scatter(y_true, y_pred, alpha=0.7)
+        plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', label='Ideal fit')
+        plt.xlabel('Actual')
+        plt.ylabel('Predicted')
+        plt.title('GLMM: Actual vs Predicted')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+
+        # Residuals histogram
+        residuals = result.resid
+        plt.figure(figsize=(8, 5))
+        plt.hist(residuals, bins=30, alpha=0.7)
+        plt.title("GLMM Residuals")
+        plt.xlabel("Residual")
+        plt.ylabel("Frequency")
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.show()
+
+    return result
+    # except Exception as e:
+    #     print(f"GLMM fitting failed: {e}")
+    #     return None
+    
 def enhanced_multi_linear_regression_display(df, target, features, display=True):
     """
     Enhanced version of your function with proper diagnostics and model selection
