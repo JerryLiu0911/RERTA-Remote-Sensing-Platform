@@ -200,6 +200,7 @@ def main(paths):
             merged_df[col] = load_field_data.pd.to_numeric(merged_df[col], errors='coerce')
             if merged_df[col].isna().all():
                 print(f"Warning: Column '{col}' contains only NaN values after conversion to numeric.")
+            merged_df = merged_df.rename(columns={col: col.replace(' ', '_').replace('.', '_')})
         if any([x in col for x in transformations.keys()]):
             for key in transformations.keys():
                 if key in col:
@@ -208,6 +209,8 @@ def main(paths):
                     merged_df[col] = transformations[key](merged_df[col])
     print(f"Sample size after removing missing values: {len(merged_df)}")
 
+    all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
+    targets = [col.replace(' ', '_').replace('.', '_') for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']]
     # Option 2: Use specific features
     pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=True)
     print(X_pca.shape[1])
@@ -227,6 +230,7 @@ def main(paths):
         plot_features(merged_df, features, group='treatment')
         statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True)
         statistical_modelling.generalised_linear_mixed_model(merged_df, target, features, display=True)
+        statistical_modelling.random_forest_regression(merged_df, target, features=features, display=True)
     print(merged_df[[col for col in merged_df.columns if col in features]])
     pca_results, interpretation, X_pca, _ = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=features, display = False)
     
