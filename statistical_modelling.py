@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import stats
 from sklearn.metrics import mean_squared_error, r2_score
-from pymer4.models import glmer
+# from pymer4.models import glmer
 import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -263,7 +263,7 @@ def generalised_linear_model(y, x, family):
     results = model.fit()
     return results
 
-def generalised_linear_mixed_model(df, target, features, display=False):
+def linear_mixed_model(df, target, features, display=False):
     """
     Fits a Generalized Linear Mixed Model (GLMM) with 'treatment' as a random effect.
     Displays AIC and a predicted vs actual plot.
@@ -285,31 +285,37 @@ def generalised_linear_mixed_model(df, target, features, display=False):
     pseudo_r2 = 1 - ss_res / ss_tot
     print(f"Pseudo R² (fixed effects): {pseudo_r2:.3f}")
 
+
     # Predicted vs Actual plot
     if display:
         y_true = df[target]
         y_pred = result.fittedvalues
-        plt.figure(figsize=(8, 6))
-        plt.scatter(y_true, y_pred, alpha=0.7)
-        plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', label='Ideal fit')
-        plt.xlabel('Actual')
-        plt.ylabel('Predicted')
-        plt.title('GLMM: Actual vs Predicted')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
+        fig, axes = plt.subplots(1, 2, figsize=(20, 6))
+        treatments = df['treatment'].values
+        unique_treatments = np.unique(treatments)
+        colors = plt.cm.Set1(np.linspace(0, 1, len(unique_treatments)))
+
+        for treatment, color in zip(unique_treatments, colors):
+            mask = treatments == treatment
+            axes[0].scatter(y_pred[mask], y_true[mask], alpha=0.7, c=[color], label=str(treatment))
+        axes[0].plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', label='Ideal fit')
+        axes[0].set_xlabel(f'Predicted {target}')
+        axes[0].set_ylabel(f'Actual {target}')
+        axes[0].set_title(f'LMM: Actual vs Predicted {target}')
+        axes[0].legend()
+        axes[0].grid(True, alpha=0.3)
+
 
         # Residuals histogram
         residuals = result.resid
-        plt.figure(figsize=(8, 5))
-        plt.hist(residuals, bins=30, alpha=0.7)
-        plt.title("GLMM Residuals")
-        plt.xlabel("Residual")
-        plt.ylabel("Frequency")
-        plt.grid(True, alpha=0.3)
+        axes[1].hist(residuals, bins=30, alpha=0.7)
+        axes[1].set_title("LMM Residuals")
+        axes[1].set_xlabel("Residual")
+        axes[1].set_ylabel("Frequency")
+        axes[1].grid(True, alpha=0.3)
         plt.tight_layout()
-        plt.show()
+        # plt.savefig(f'Results/lmm_diagnostics_{target}.png', dpi=300)
+        # plt.show()
 
     return result
     # except Exception as e:
@@ -472,7 +478,8 @@ def multi_linear_regression_display(df, targets, features, display = False):
             axes[2].grid(True, alpha=0.3)
 
             plt.tight_layout()
-            plt.show()
+            # plt.savefig(f'Results/regression_diagnostics_{target}.png', dpi=300)
+            # plt.show()
 
     if not display: 
         y = best_model[1]
@@ -509,7 +516,9 @@ def multi_linear_regression_display(df, targets, features, display = False):
                     verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
 
         plt.tight_layout()
-        plt.show()
+        # plt.savefig(f'Results/regression_diagnostics_{target}.png', dpi=300)
+        # plt.show()
+
 
     print(f"Best model is for target {best_model[0]} with R² = {best_model[3].rsquared:.3f}")
 
@@ -535,6 +544,7 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
             - y_pred: Predicted values
     """
     # Split by treatment
+    df = df[[target]+features+['treatment']].dropna()
     treatment_data = {treatment: data for treatment, data in df.groupby('treatment')}
     x_train = []
     x_test = []
@@ -604,40 +614,26 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
 
     if display:
       # Plot fit
-      plt.figure()
-      plt.scatter(y_test, y_pred_test, color='red')
-      plt.xlabel('Actual Frog Abundance')
-      plt.ylabel('Predicted Frog Abundance')
+      fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+      axes[0].scatter(y_test, y_pred_test, color='red')
+      axes[0].set_xlabel(f'Actual {target}')
+      axes[0].set_ylabel(f'Predicted {target}')
       # Add text annotations for metrics
-      plt.text(0.05, 0.95, f'MSE: {mse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+      axes[0].text(0.05, 0.95, f'MSE: {mse:.2f}', transform=axes[0].transAxes, fontsize=10,
               verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=plt.gca().transAxes, fontsize=10,
+      axes[0].text(0.05, 0.90, f'RMSE: {rmse:.2f}', transform=axes[0].transAxes, fontsize=10,
               verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=plt.gca().transAxes, fontsize=10,
+      axes[0].text(0.05, 0.85, f'R-squared: {r2:.2f}', transform=axes[0].transAxes, fontsize=10,
               verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
-      plt.title('Random Forest Ensemble Predictions')
-      plt.legend()
-      plt.show()
-      # Plot feature importances
-      plt.figure(figsize=(10,6))
-      bars = plt.barh(features, importances)
-      for bar in bars:
-          width = bar.get_width()
-          plt.text(width, 
-                  bar.get_y() + bar.get_height()/2,
-                  f'{width:.3f}',
-                  ha='left',
-                  va='center',
-                  fontsize=10)
-      plt.xlabel('Importance Score SHAP')
-      plt.title(f'Feature Relevance to {target}')
-      plt.tight_layout()
+      axes[0].set_title('Random Forest Ensemble Predictions')
+      axes[0].legend()
 
-      plt.figure(figsize=(10,6))
-      bars = plt.barh(features, shap_importance)
+      # Plot feature importances
+
+      bars = axes[1].barh(features, importances)
       for bar in bars:
           width = bar.get_width()
-          plt.text(width, 
+          axes[1].text(width, 
                   bar.get_y() + bar.get_height()/2,
                   f'{width:.3f}',
                   ha='left',
@@ -646,7 +642,21 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
       plt.xlabel('Importance Score')
       plt.title(f'Feature Relevance to {target}')
       plt.tight_layout()
-      plt.show()
+
+      bars = axes[2].barh(features, shap_importance)
+      for bar in bars:
+          width = bar.get_width()
+          axes[2].text(width, 
+                  bar.get_y() + bar.get_height()/2,
+                  f'{width:.3f}',
+                  ha='left',
+                  va='center',
+                  fontsize=10)
+      axes[1].set_xlabel('Importance Score SHAP')
+      axes[1].set_title(f'Feature Relevance to {target}')
+      plt.tight_layout()
+    #  plt.savefig(f'Results/random_forest_diagnostics_{target}.png', dpi=300)
+    #   plt.show()
 
     return model, mse, rmse, r2, y_pred
 
