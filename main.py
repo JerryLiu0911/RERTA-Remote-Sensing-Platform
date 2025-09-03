@@ -1,5 +1,6 @@
 import os
 
+from scipy import stats
 from shapely import buffer
 import load_field_data
 import coordinate_extraction
@@ -92,7 +93,7 @@ def preprocess_dataset(paths, raster_name, buffer, filtering_logic = None, proxi
 
 def plot_features(df, features, target, group=None):
     n_features = len(features)
-    n_cols = min(3, n_features)
+    n_cols = min(2, n_features)
     n_rows = (n_features + n_cols - 1) // n_cols
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(5 * n_cols, 4 * n_rows))
     axes = axes.flatten() if n_features > 1 else [axes]
@@ -111,7 +112,7 @@ def plot_features(df, features, target, group=None):
         else:
             axes[i].set_visible(False)
     plt.tight_layout()
-    plt.savefig(f'Results/feature_distributions_{target}.png', dpi=300)
+    # plt.savefig(f'Results/feature_distributions_{target}.png', dpi=300)
     plt.show()
 
 def main(paths):
@@ -129,27 +130,27 @@ def main(paths):
 
     ###=================== Only need to run this once when processing a new dataset :  ========================= ###
 
-    # dataframes = []
+    dataframes = []
 
-    # for target_name in buffer_types[buffer]:
-    #     df = getattr(load_field_data, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
-    #     print(df)
-    #     dataframes.append(df)
+    for target_name in buffer_types[buffer]:
+        df = getattr(load_field_data, f'load_{target_name}')(paths[f'{target_name}_csv'], timepoint=timepoint)
+        print(df)
+        dataframes.append(df)
 
-    # # Extracts coordinates for mapping ecological features
-    # getattr(coordinate_extraction, f'extract_{buffer}')(paths['veg_plots_coordinates'], paths[buffer]) # Source path for geopackage needs to be explicitly defined
+    # Extracts coordinates for mapping ecological features
+    getattr(coordinate_extraction, f'extract_{buffer}')(paths['veg_plots_coordinates'], paths[buffer]) # Source path for geopackage needs to be explicitly defined
 
-    # # Align coordinates of field data with extracted coordinates  
-    # load_field_data.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter=None)  # filter is a regex pattern to match specific point labels e.g. r"OPC|BC" excludes OPE
+    # Align coordinates of field data with extracted coordinates  
+    load_field_data.align_coords(dataframes, paths[buffer], paths[f'{buffer}_result'], filter=None)  # filter is a regex pattern to match specific point labels e.g. r"OPC|BC" excludes OPE
 
-    # # Preprocess each dataset according the geometries and merges with field data 
-    # preprocess_dataset(paths, 'Palapa July2025 DEM', buffer, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
-    # preprocess_dataset(paths, 'Palapa July2025 GLI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # preprocess_dataset(paths, 'Palapa July2025 ReNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # preprocess_dataset(paths, 'Palapa July2025 Clre', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # preprocess_dataset(paths, 'Palapa July2025 GNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # preprocess_dataset(paths, 'Palapa July2025 NDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
-    # preprocess_dataset(paths, 'Palapa July2025 ortho', buffer, proxies=gis.GLCM)
+    # Preprocess each dataset according the geometries and merges with field data 
+    preprocess_dataset(paths, 'Palapa July2025 DEM', buffer, filtering_logic=gis.clip_below_zero, proxies=gis.canopy_openness_proxy)
+    preprocess_dataset(paths, 'Palapa July2025 GLI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    preprocess_dataset(paths, 'Palapa July2025 ReNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    preprocess_dataset(paths, 'Palapa July2025 Clre', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    preprocess_dataset(paths, 'Palapa July2025 GNDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    preprocess_dataset(paths, 'Palapa July2025 NDVI', buffer, filtering_logic=gis.remove_outliers, proxies=gis.GLCM)
+    preprocess_dataset(paths, 'Palapa July2025 ortho', buffer, proxies=gis.GLCM)
 
     ###=================== Preprocessing finished ==================== ###
 
@@ -169,6 +170,8 @@ def main(paths):
     print(targets)
 
     # Option 1: Use UAV derived data / vegetation indexes
+    option = 'vi_selected'
+
     merged_df = statistical_modelling.load_data( # Merging each index  
             [
             ('DEM', paths['Palapa July2025 DEM']),
@@ -188,11 +191,11 @@ def main(paths):
             filter = None)
     
     all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
-    print(f"Identified target variables: {targets}")
-    print(f"Finished merging columns : {merged_df.columns}")
-    print("Final merged dataframe :")
-    print(merged_df[:26])
-    print(len(merged_df))
+    # print(f"Identified target variables: {targets}")
+    # print(f"Finished merging columns : {merged_df.columns}")
+    # print("Final merged dataframe :")
+    # print(merged_df[:26])
+    # print(len(merged_df))
 
 
 
@@ -218,8 +221,8 @@ def main(paths):
         if any([x in col for x in transformations.keys()]):
             for key in transformations.keys():
                 if key in col:
-                    print(merged_df[col])
-                    print(f"Applying {transformations[key].__name__} to {col}") # Apply transformation
+                    # print(merged_df[col])
+                    # print(f"Applying {transformations[key].__name__} to {col}") # Apply transformation
                     merged_df[col] = transformations[key](merged_df[col])
 
     print(f"Sample size after removing missing values: {len(merged_df)}")
@@ -236,9 +239,9 @@ def main(paths):
     for target in targets:
         features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
         plot_features(merged_df, features, target, group='treatment')
-        statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True)
-        statistical_modelling.linear_mixed_model(merged_df, target, features, display=True)
-        statistical_modelling.random_forest_regression(merged_df, target, features=features, display=True)
+        statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True, option=option)
+        statistical_modelling.linear_mixed_model(merged_df, target, features, display=True, option=option)
+        statistical_modelling.random_forest_regression(merged_df, target, features=features, display=True, option=option)
 
 
 
@@ -247,6 +250,7 @@ def main(paths):
 
 
     print("OPTION 2")
+    option = 'bands'
     targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']] # Removes repeated columns when merging datasets. 
     # Option 2: Use band data
     merged_df = statistical_modelling.load_data(
@@ -293,8 +297,8 @@ def main(paths):
         if any([x in col for x in transformations.keys()]):
             for key in transformations.keys():
                 if key in col:
-                    print(merged_df[col])
-                    print(f"Applying {transformations[key].__name__} to {col}") # Apply transformation
+                    # print(merged_df[col])
+                    # print(f"Applying {transformations[key].__name__} to {col}") # Apply transformation
                     merged_df[col] = transformations[key](merged_df[col])
 
     print(f"Sample size after removing missing values: {len(merged_df)}")
@@ -303,7 +307,7 @@ def main(paths):
 
     ###======================= Post-processing finished =======================
     
-    pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=True)
+    pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=False)
     print(f'Number of PCA components: {X_pca.shape[1]}')
 
     for i in range(4):             # Add to merged dataframe
@@ -316,9 +320,9 @@ def main(paths):
     for target in targets:
         # features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
         # plot_features(merged_df, all_features, target, group='treatment')
-        statistical_modelling.multi_linear_regression_display(merged_df, target, all_features, display=True)
-        statistical_modelling.linear_mixed_model(merged_df, target, all_features, display=True)
-        statistical_modelling.random_forest_regression(merged_df, target, features=all_features, display=True)
+        statistical_modelling.multi_linear_regression_display(merged_df, target, all_features, display=True, option=option)
+        statistical_modelling.linear_mixed_model(merged_df, target, all_features, display=True, option=option)
+        statistical_modelling.random_forest_regression(merged_df, target, features=all_features, display=True, option=option)
 
     # You can also access specific results:
     print(f"\nKey findings:")
@@ -328,25 +332,86 @@ def main(paths):
     
 
 
+    print("OPTION 3")
+    option = 'bands+vi'
+    targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']] # Removes repeated columns when merging datasets. 
+    # Option 2: Use band data
+    merged_df = statistical_modelling.load_data(
+        [
+        ('DEM', paths['Palapa July2025 DEM']),
+        ('GLI', paths['Palapa July2025 GLI']),
+        ('Clre', paths['Palapa July2025 Clre']),
+        ('ReNDVI', paths['Palapa July2025 ReNDVI']),
+        ('GNDVI', paths['Palapa July2025 GNDVI']),
+        ('NDVI', paths['Palapa July2025 NDVI']),
+        ('band1', paths['band1']),
+        ('band2', paths['band2']),
+        ('band3', paths['band3']),
+        ('band4', paths['band4']),
+        ('band5', paths['band5']),
+        ('band6', paths['band6']),
+        ('band7', paths['band7']),
+        ], targets,
+            filter = None)
     
-    # # You can also access specific results:
-    # print(f"\nKey findings:")
-    # print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
-    # print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
-    # print(f"Treatment separation quality: {interpretation['separation_quality']}")
-    # plt.figure(figsize=(12, 10))
-    # sns.heatmap(merged_df[[column for column in merged_df.columns if column not in ['geometry', 'point.label', 'treatment']]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
-    # plt.show()
+    
+    ###================ Post-processing after merging, renaming for conventions and transformations ====================
 
 
+    all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
+    
 
-    ### Statistical Modelling ###
+    transformations = {
+        'proportion': statistical_modelling.arcsinc_sqrt_transform,
+        'canopy_openness': statistical_modelling.arcsinc_sqrt_transform,
+        'abundance': statistical_modelling.log_transform,
+        'richness' : statistical_modelling.log_transform
+    }
 
-    # statistical_modelling.random_forest_regression(merged_df, 'average_canopy_openness', features=all_features, display=True)
-    # statistical_modelling.multi_linear_regression_display(merged_df, 'average_canopy_openness', [column for column in merged_df.columns if'CHM' in column and column != 'geometry_CHM' and column != 'name_CHM'], display=False)
-    # statistical_modelling.multi_linear_regression_display(merged_df, 'Frog.abundance', features, display=False)
-    # print(statistical_modelling.enhanced_multivariate_linear_regression(merged_df, ['Frog.abundance','Frog.richness'], features=features , display=True))
+    print(f"Sample size before removing missing values: {len(merged_df)}")
+    for col in merged_df.columns:
+        if col in targets + all_features:   # Chooses all meaningful columns (aka excluding any geometric parameters or identifiers)
+            merged_df[col] = load_field_data.pd.to_numeric(merged_df[col], errors='coerce')
 
+            if merged_df[col].isna().all():
+                print(f"Warning: Column '{col}' contains only NaN values after conversion to numeric.")
+
+            merged_df = merged_df.rename(columns={col: col.replace(' ', '_').replace('.', '_')}) # Convert column names to snake_case as to not break any downstream processing from parsing
+        if any([x in col for x in transformations.keys()]):
+            for key in transformations.keys():
+                if key in col:
+                    # print(merged_df[col])
+                    # print(f"Applying {transformations[key].__name__} to {col}") # Apply transformation
+                    merged_df[col] = transformations[key](merged_df[col])
+
+    print(f"Sample size after removing missing values: {len(merged_df)}")
+
+    targets = [col.replace(' ', '_').replace('.', '_') for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']]
+
+    ###======================= Post-processing finished =======================
+    
+    pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=False)
+    print(f'Number of PCA components: {X_pca.shape[1]}')
+
+    for i in range(4):             # Add to merged dataframe
+        merged_df[f'PC{i+1}'] = X_pca[:, i]
+        print(f"merging PC{i+1} to merged_df")
+
+    all_features = [col for col in merged_df.columns if 'PC' in col] # Using PCA components as features
+
+        # Statistical modelling for each target/response variable
+    for target in targets:
+        # features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
+        # plot_features(merged_df, all_features, target, group='treatment')
+        statistical_modelling.multi_linear_regression_display(merged_df, target, all_features, display=True, option=option)
+        statistical_modelling.linear_mixed_model(merged_df, target, all_features, display=True, option=option)
+        statistical_modelling.random_forest_regression(merged_df, target, features=all_features, display=True, option=option)
+
+    # You can also access specific results:
+    print(f"\nKey findings:")
+    print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
+    print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
+    print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
 paths = {
 # Raw files
@@ -434,4 +499,153 @@ paths = {
 # for raster_name in rasters:
 #     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1], output_path=f"D:/Jerry/{raster_name} Raster Histogram.png")
 
-main(paths)
+# main(paths)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buffer = "veg_plots_corner_coordinates"
+
+targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']] # Removes repeated columns when merging datasets. 
+
+print(targets)
+
+# Option 1: Use UAV derived data / vegetation indexes
+option = 'vi'
+
+merged_df = statistical_modelling.load_data( # Merging each index  
+        [
+        ('DEM', paths['Palapa July2025 DEM']),
+        ('GLI', paths['Palapa July2025 GLI']),
+        ('Clre', paths['Palapa July2025 Clre']),
+        ('ReNDVI', paths['Palapa July2025 ReNDVI']),
+        ('GNDVI', paths['Palapa July2025 GNDVI']),
+        ('NDVI', paths['Palapa July2025 NDVI']),
+        # ('band1', paths['band1']),
+        # ('band2', paths['band2']),
+        # ('band3', paths['band3']),
+        # ('band4', paths['band4']),
+        # ('band5', paths['band5']),
+        # ('band6', paths['band6']),
+        # ('band7', paths['band7']),
+        ], targets,
+        filter = None)
+
+all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
+# print(f"Identified target variables: {targets}")
+# print(f"Finished merging columns : {merged_df.columns}")
+# print("Final merged dataframe :")
+# print(merged_df[:26])
+# print(len(merged_df))
+
+
+
+
+###================ Post-processing after merging, renaming for conventions and transformations ====================
+
+transformations = {
+    'proportion': statistical_modelling.arcsinc_sqrt_transform,
+    'canopy_openness': statistical_modelling.arcsinc_sqrt_transform,
+    'abundance': statistical_modelling.log_transform,
+    'richness' : statistical_modelling.log_transform
+}
+
+print(f"Sample size before removing missing values: {len(merged_df)}")
+for col in merged_df.columns:
+    if col in targets + all_features:   # Chooses all meaningful columns (aka excluding any geometric parameters or identifiers)
+        merged_df[col] = load_field_data.pd.to_numeric(merged_df[col], errors='coerce')
+        if col in targets:
+            try:
+                y = np.array(merged_df[col].dropna())
+                if len(y) <= 5000:
+                    stat, p = statistical_modelling.stats.shapiro(y)
+                    test_name = 'shapiro'
+                else:
+                    stat, p = statistical_modelling.stats.normaltest(y)
+                    test_name = 'normaltest'
+            except Exception as e:
+                print(f"Error performing normality test: {e}")
+                stat, p, test_name = None, None, 'error'
+
+            print({'target' : col, 'test': test_name, 'stat': float(stat), 'pvalue': float(p), 'normal': (p > 0.05)})
+
+        if merged_df[col].isna().all():
+            print(f"Warning: Column '{col}' contains only NaN values after conversion to numeric.")
+
+        merged_df = merged_df.rename(columns={col: col.replace(' ', '_').replace('.', '_')}) # Convert column names to snake_case as to not break any downstream processing from parsing
+    if any([x in col for x in transformations.keys()]):
+        for key in transformations.keys():
+            if key in col:
+                # print(merged_df[col])
+                # print(f"Applying {transformations[key].__name__} to {col}") # Apply transformation
+                merged_df[col] = transformations[key](merged_df[col])
+
+print(f"Sample size after removing missing values: {len(merged_df)}")
+
+
+
+###======================= Post-processing finished =======================
+
+
+
+# Refreshes all_features and targets after post-processing to match column names (prevents key errors)
+all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
+targets = [col.replace(' ', '_').replace('.', '_') for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']]
+
+# Statistical modelling for each target/response variable
+stage1_features = all_features.copy()
+
+print(f"\n STAGE 2: VIF-BASED MULTICOLLINEARITY FILTERING")
+# Remove features with high VIF (> 5 is a common threshold)
+if len(stage1_features) > 1:
+    X = merged_df[stage1_features].dropna()
+    vif_data = statistical_modelling.pd.DataFrame()
+    vif_data["feature"] = X.columns
+    vif_data["VIF"] = [statistical_modelling.variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+    print(vif_data)
+    # Iteratively remove the feature with the highest VIF above threshold
+    features_vif = stage1_features.copy()
+    while True:
+        X = merged_df[features_vif].dropna()
+        vifs = [statistical_modelling.variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+        print(f"  Current VIFs: {dict(zip(features_vif, vifs))}")
+        max_vif = max(vifs)
+        if max_vif > 5 and len(features_vif) > 1:
+            remove_idx = vifs.index(max_vif)
+            print(f"  Removing {features_vif[remove_idx]} (VIF={max_vif:.2f})")
+            features_vif.pop(remove_idx)
+        else:
+            break
+    stage2_features = features_vif
+else:
+    stage2_features = stage1_features
+print(f"  Stage 2 result: {len(stage2_features)} features")
+print(stage2_features)
+plot_features(merged_df, stage2_features, 'target', group='treatment')
+
+# for target in targets:
+#     # features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
+#     # plot_features(merged_df, all_features, target, group='treatment')
+#     statistical_modelling.multi_linear_regression_display(merged_df, target, stage2_features, display=True)
+#     statistical_modelling.linear_mixed_model(merged_df, target, stage2_features, display=True)
+#     statistical_modelling.random_forest_regression(merged_df, target, features=stage2_features, display=True)

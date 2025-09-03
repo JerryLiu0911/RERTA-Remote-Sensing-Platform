@@ -308,7 +308,7 @@ def linear_mixed_model(df, target, features, display=False, option=''):
         axes[1].set_ylabel("Frequency")
         axes[1].grid(True, alpha=0.3)
         plt.tight_layout()
-        plt.savefig(f'Results/lmm_diagnostics_{target}_{option}.png', dpi=300)
+        plt.savefig(f'Results_{option}/lmm_diagnostics_{target}.png', dpi=300)
         # plt.show()
 
     return result
@@ -471,7 +471,7 @@ def multi_linear_regression_display(df, targets, features, display = False, opti
             axes[2].grid(True, alpha=0.3)
 
             plt.tight_layout()
-            plt.savefig(f'Results/regression_diagnostics_{target}_{option}.png', dpi=300)
+            plt.savefig(f'Results_{option}/regression_diagnostics_{target}.png', dpi=300)
             # plt.show()
 
     if not display: 
@@ -509,7 +509,7 @@ def multi_linear_regression_display(df, targets, features, display = False, opti
                     verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
 
         plt.tight_layout()
-        plt.savefig(f'Results/regression_diagnostics_{target}_{option}.png', dpi=300)
+        plt.savefig(f'Results_{option}/regression_diagnostics_{target}.png', dpi=300)
         # plt.show()
 
 
@@ -648,7 +648,7 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
       axes[1].set_xlabel('Importance Score SHAP')
       axes[1].set_title(f'Feature Relevance to {target}')
       plt.tight_layout()
-      plt.savefig(f'Results/random_forest_diagnostics_{target}_{option}.png', dpi=300)
+      plt.savefig(f'Results_{option}/random_forest_diagnostics_{target}.png', dpi=300)
     #   plt.show()
 
     return model, mse, rmse, r2, y_pred

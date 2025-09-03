@@ -9,6 +9,7 @@ import seaborn as sns
 from collections import defaultdict
 import pandas as pd
 from skimage.feature import graycomatrix, graycoprops
+from scipy.stats import mannwhitneyu
 
 
 def clip_below_zero(data):
@@ -37,7 +38,7 @@ def clip_above_num(data, upper_bound=20):
     #     print(" Filtering failed!")
     return data[data <= upper_bound]
 
-def remove_outliers(data, thresh=3):
+def remove_outliers(data, thresh=2):
     """
     Clips the input data array to remove negative values.
     """
@@ -143,11 +144,9 @@ def GLCM(data, levels = 32):
     glcm = graycomatrix(data, distances=[1], angles=[0], levels=levels, symmetric=True, normed=True)
     return {
         'contrast': graycoprops(glcm, 'contrast')[0, 0],
-        'dissimilarity': graycoprops(glcm, 'dissimilarity')[0, 0],
         'homogeneity': graycoprops(glcm, 'homogeneity')[0, 0],
         'energy': graycoprops(glcm, 'energy')[0, 0],
         'correlation': graycoprops(glcm, 'correlation')[0, 0],
-        'ASM': graycoprops(glcm, 'ASM')[0, 0]
     }
 
 def zonal_statistics(gpkg_path, raster_path, output_zonal_gpkg, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='index', save_plots=False): 
@@ -239,7 +238,6 @@ def zonal_statistics(gpkg_path, raster_path, output_zonal_gpkg, filtering_logic 
 
                     # Apply your custom clipping
                     clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
-                    check_below_zero(clipped_data)
 
 
                     if len(clipped_data) > 0:
@@ -329,7 +327,7 @@ def get_region_data(source, value_column):
 
     region_data = defaultdict(list)
     for index, row in gdf.iterrows():
-        region_name = row.get('treatment', f'Treatment {index}')
+        region_name = row.get('treatment') or row.get('name') or f'Region {index}'
         region_data[region_name].append(row[value_column])
 
     region_data = {k: region_data[k] for k in sorted(region_data.keys())}
@@ -523,21 +521,216 @@ def plot_index_kde_sampled(raster_path, value, sample_size=10000, output_path=No
     else:
         plt.show()
 
+
+def zonal_statistics_without_points(raster_path, output_zonal_gpkg, gpkg_path = None, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='index', save_plots=False): 
+    '''
+    
+    Performs zonal statistics on a raster file using buffered geometries from a GeoPackage.
+    There are three ways of creating the buffer geometries: 
+    1. Create a buffer around each point in the GeoPackage.
+    2. Use a pre-defined points outlining the buffers from another GeoPackage (Convex Hulls).
+    3. Import a GeoPackage with pre-defined buffer geometries.
+
+    Args:
+        gpkg_path (str): Path to the GeoPackage containing point data.
+        raster_path (str): Path to the raster file for which statistics are calculated.
+        output_buffer_path (str): Path to save the buffered geometries.
+        output_zonal_gpkg (str): Path to save the zonal statistics results.
+        filtering_logic (function) : A function that takes a DataFrame and returns a filtered DataFrame.
+        proxies (func): A function which returns a dictionary of proxy functions to apply to the data, e.g. gis.canopy_openness_proxy
+        buffer_geom_path (str, optional): Path to a GeoPackage containing pre-defined buffer geometries.
+        value (str) : Name of the variable being plotted.
+        create_plots (bool): Whether to create distribution plots by treatment region.
+        save_plots (bool): Whether to save the distribution plots.
+
+    Returns:
+        gpd.GeoDataFrame: A GeoDataFrame containing the zonal statistics results.
+
+    '''
+
+    #--- Load and reproject point data ---
+    if gpkg_path:
+        points = gpd.read_file(gpkg_path)
+        if points.crs.is_geographic:
+            points = points.to_crs(points.estimate_utm_crs())
+
+
+    print(f"\n \n Calculating Zonal Statistics for {output_zonal_gpkg}")
+    #--- Create buffer around each point ---
+    try:
+        if buffer_geom_path and (gpd.read_file(buffer_geom_path).geometry.type=="MultiPolygon").all():
+            if gpkg_path:
+                points = points.drop(columns='geometry')
+                buffered = gpd.read_file(buffer_geom_path)
+                buffered = buffered.merge(points, left_on='name', right_on='point.label', how='inner') #Merges columns in vector geopackage if contains data (e.g. Canopy openness)
+                buffered.drop(columns='name', inplace=True)
+            else:
+                buffered = gpd.read_file(buffer_geom_path)
+        else:
+            print("WARNING No buffer geometry entered, creating buffer around each point...")
+            buffered = create_buffer(points, buffer_geom=gpd.read_file(buffer_geom_path) if buffer_geom_path else None)
+
+    except Exception as e:
+        print(f"Error creating buffer geometries: {e}")
+        return None
+    
+    
+    with rasterio.open(raster_path) as src:
+        # Loops through each band, saving as a seperate gpkg file, ignoring the last band (alpha channel for orthomosaics)
+        for band_num in range(1, max(2,src.count)):
+            print(src.count, "bands found in raster, processing band", band_num)
+            results = [] # Store results for each buffer, each element being a dictionary
+            region_data = defaultdict(list) # Stores all pixels which belong to a region
+            for idx, row in buffered.iterrows():
+                try:
+                    region_name = row.get('treatment', f'Treatment {idx}')
+
+                    # Clip raster to just an individual buffer
+                    masked_data, masked_transform = rasterio.mask.mask(
+                        src, [row.geometry], crop=True, nodata=src.nodata, indexes=band_num, filled=False
+                    )
+
+                    # masked_data = masked_data.compressed()
+
+                    # # Flatten the array and remove nodata, vectorising for better performance
+                    valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
+
+                    valid_data = np.asarray(valid_data, dtype=float)  # Ensure data is 1D
+                    finite_mask = np.isfinite(valid_data)
+                    valid_data = valid_data[finite_mask]
+            
+
+                    # Apply your custom clipping
+                    clipped_data = filtering_logic(valid_data) if filtering_logic else valid_data
+                    check_below_zero(clipped_data)
+
+
+                    if len(clipped_data) > 0:
+                        region_data[region_name].extend(clipped_data)
+
+                        stats = {
+                            'mean': float(np.mean(clipped_data)),
+                            #'min': float(np.min(clipped_data)),
+                            #'max': float(np.max(clipped_data)),
+                            #'std': float(np.std(clipped_data)),
+                            #'median': float(np.median(clipped_data)),
+                            'range': float(np.max(clipped_data) - np.min(clipped_data)),
+                            #'count': len(clipped_data),
+                            'cv': float(np.std(clipped_data) / np.mean(clipped_data)) if np.mean(clipped_data) != 0 else 0
+                        }
+                        if proxies:
+                            try:
+                                stats = stats | proxies(masked_data)
+                            except Exception as e:
+                                print(f"Error applying proxies: {e}")
+                                try:
+                                    stats = stats | proxies(clipped_data)
+                                except Exception as e:
+                                    print(f"Error applying proxies: {e}")
+                    else:
+                        # No valid data in this buffer
+                        stats = {
+                            'mean': np.nan, 'min': np.nan, 'max': np.nan,
+                            'std': np.nan, 'median': np.nan, 'range': np.nan, 'count': 0
+                        }
+
+                        print(f"No valid data in buffer {idx} {row.get('point.label')}, skipping...")
+
+                    # Combine with original row data
+                    result_row = row.to_dict()
+                    result_row.update(stats)
+                    results.append(result_row)
+                    
+                    print(f"Processed buffer {int(idx/16)+1}    {int(idx/16)+1}/{len(buffered)}")
+                    
+                except Exception as e:
+                    print(f"Error processing buffer {idx}, at {row.get('point.label')} : {e}")
+                    continue
+
+            zonal_gdf = gpd.GeoDataFrame(results, crs=buffered.crs)
+            region_data = {k: region_data[k] for k in sorted(region_data.keys())}
+
+            # --- Save result ---
+            output_file = f"{output_zonal_gpkg.split('.')[0]}_band{band_num}.gpkg" if src.count > 1 else output_zonal_gpkg
+            # zonal_gdf.to_file(output_file, driver="GPKG", overwrite=True)
+            print(f"Saved zonal statistics to: {output_file}")
+
+            # Create plots if requested
+            figures = []
+            if (show_plots or save_plots) and region_data:
+                print("\nCreating distribution plots...")
+                
+                # Create plots using pre-processed data
+                fig1 = create_distribution_plots_from_data(region_data, value, output_path=output_file, save_plots=save_plots)
+                if fig1:
+                    figures.append(fig1)
+
+                fig2 = create_boxplot_from_data(region_data, value, output_path=output_file, save_plots=save_plots)
+                if fig2:
+                    figures.append(fig2)
+
+                if show_plots:
+                    plt.show()
+
+    return zonal_gdf, figures
 # Example usage - Comment out when not testing
 # Test the plotting functions
 # print("Creating CHM distribution plots...")
 
 # # Use optimized functions for better performance
-# zonal_gdf, figures = zonal_statistics(
-#     gpkg_path="Frogs_result.gpkg",
+# zonal_gdf, figures = zonal_statistics_without_points(
 #     raster_path="D:/Jerry/Palapa July2025 Clre.tif", 
-#     output_buffer_path=0, 
 #     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Data/Palapa June2025 Clre Statistics.gpkg", 
-#     buffer_geom_path="Data/Palapa_transects_buffer.gpkg",
+#     output_zonal_gpkg="Treatment2/Palapa June2025 Clre Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
 #     #proxies=canopy_openness_proxy,
-#     show_plots=True
-#     #save_plots=True
+#     show_plots=False,
+#     save_plots=True
+# )
+# zonal_gdf, figures = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 NDVI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment2/Palapa June2025 NDVI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# zonal_gdf, figures = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 ReNDVI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment2/Palapa June2025 ReNDVI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# zonal_gdf, figures = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 GNDVI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment2/Palapa June2025 GNDVI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# zonal_gdf, figures = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 GLI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment2/Palapa June2025 GLI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# zonal_gdf, figures = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 DEM.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment2/Palapa June2025 DEM Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
 # )
 
 # print("Plots created and saved successfully!")
