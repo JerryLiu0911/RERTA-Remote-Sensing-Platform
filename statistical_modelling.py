@@ -54,6 +54,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
         'height_metrics': [col for col in all_possible_features if 'DEM' in col and any(stat in col for stat in ['mean', 'median', 'max', 'canopy_openness'])],
         'variability_metrics': [col for col in all_possible_features if 'DEM' in col and any(stat in col for stat in ['std', 'range', 'cv'])],
         'greenness_metrics': [col for col in all_possible_features if any(index in col for index in ['Clre', 'ReNDVI', 'GLI', 'NDVI', 'GNDVI']) and any(stat in col for stat in ['mean', 'std', 'range', 'cv'])],
+        'spectral_metrics': [col for col in all_possible_features if 'band' in col and any(stat in col for stat in ['mean', 'std', 'range', 'cv'])],
         'texture_metrics': [col for col in all_possible_features if any(tex in col for tex in ['contrast', 'entropy', 'homogeneity', 'dissimilarity', 'ASM', 'energy', 'correlation'])]
     }
     # Select BEST representative from each category
