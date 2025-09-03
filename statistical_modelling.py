@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score, Ra
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from statsmodels.stats.diagnostic import het_breuschpagan
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 import matplotlib.pyplot as plt
 import seaborn as sns
 import matplotlib.gridspec as gridspec
@@ -79,37 +80,30 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
     
     print(f"  Stage 1 result: {len(stage1_features)} features")
     
-    # STAGE 2: Correlation-based refinement
-    print(f"\n STAGE 2: CORRELATION-BASED REFINEMENT")
-    
-    # Remove highly correlated features within our selected set
+    # STAGE 2: VIF-based refinement
+    print(f"\n STAGE 2: VIF-BASED MULTICOLLINEARITY FILTERING")
+    # Remove features with high VIF (> 5 is a common threshold)
     if len(stage1_features) > 1:
-
-        # Find and remove redundant features
-        feature_corr_matrix = merged_df[stage1_features].corr()
-        
-        # Find and remove redundant features
-        to_remove = set()
-        for i, feat1 in enumerate(stage1_features):
-            for j, feat2 in enumerate(stage1_features[i+1:], i+1):
-                if feat1 not in to_remove and feat2 not in to_remove:
-                    corr = abs(feature_corr_matrix.iloc[i, j])
-                    if corr > 0.8:  # High correlation threshold
-                        # Keep the one with higher target correlation
-                        target_corr1 = abs(merged_df[target].corr(merged_df[feat1]))
-                        target_corr2 = abs(merged_df[target].corr(merged_df[feat2]))
-                        
-                        if target_corr1 >= target_corr2:
-                            to_remove.add(feat2)
-                            print(f"  Removing {feat2} (corr with {feat1}: {corr:.3f})")
-                        else:
-                            to_remove.add(feat1)
-                            print(f"  Removing {feat1} (corr with {feat2}: {corr:.3f})")
-        
-        stage2_features = [f for f in stage1_features if f not in to_remove]
+        X = merged_df[stage1_features].dropna()
+        vif_data = pd.DataFrame()
+        vif_data["feature"] = X.columns
+        vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+        print(vif_data)
+        # Iteratively remove the feature with the highest VIF above threshold
+        features_vif = stage1_features.copy()
+        while True:
+            X = merged_df[features_vif].dropna()
+            vifs = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+            max_vif = max(vifs)
+            if max_vif > 5 and len(features_vif) > 1:
+                remove_idx = vifs.index(max_vif)
+                print(f"  Removing {features_vif[remove_idx]} (VIF={max_vif:.2f})")
+                features_vif.pop(remove_idx)
+            else:
+                break
+        stage2_features = features_vif
     else:
         stage2_features = stage1_features
-    
     print(f"  Stage 2 result: {len(stage2_features)} features")
 
     if display:
@@ -263,7 +257,7 @@ def generalised_linear_model(y, x, family):
     results = model.fit()
     return results
 
-def linear_mixed_model(df, target, features, display=False):
+def linear_mixed_model(df, target, features, display=False, option=''):
     """
     Fits a Generalized Linear Mixed Model (GLMM) with 'treatment' as a random effect.
     Displays AIC and a predicted vs actual plot.
@@ -274,7 +268,7 @@ def linear_mixed_model(df, target, features, display=False):
     formula = f"{target} ~ {features_str}"
 
     model = smf.mixedlm(formula, df, groups=df['treatment'])
-    result = model.fit()
+    result = model.fit(method='bfgs', reml=False)
     print(result.summary())
     print(f"AIC: {result.aic:.2f}")
     print(f"BIC: {result.bic:.2f}")
@@ -314,7 +308,7 @@ def linear_mixed_model(df, target, features, display=False):
         axes[1].set_ylabel("Frequency")
         axes[1].grid(True, alpha=0.3)
         plt.tight_layout()
-        # plt.savefig(f'Results/lmm_diagnostics_{target}.png', dpi=300)
+        plt.savefig(f'Results/lmm_diagnostics_{target}_{option}.png', dpi=300)
         # plt.show()
 
     return result
@@ -342,7 +336,7 @@ def arcsinc_sqrt_transform(data):
     data = np.clip(data, 0, None)  # Clip negative values
     return np.arcsin(np.sqrt(data))
 
-def multi_linear_regression_display(df, targets, features, display = False):
+def multi_linear_regression_display(df, targets, features, display = False, option = ''):
     '''
     Performs multiple linear regression and displays the results.
     Outputs the best model based on R-squared value.
@@ -425,7 +419,6 @@ def multi_linear_regression_display(df, targets, features, display = False):
         print(f"Results for {target}:")
         print(results.summary())
 
-        print(results.resid)
         if len(results.resid) <= 5000:
             stat, p = stats.shapiro(np.array(results.resid))
             test_name = 'shapiro'
@@ -478,7 +471,7 @@ def multi_linear_regression_display(df, targets, features, display = False):
             axes[2].grid(True, alpha=0.3)
 
             plt.tight_layout()
-            # plt.savefig(f'Results/regression_diagnostics_{target}.png', dpi=300)
+            plt.savefig(f'Results/regression_diagnostics_{target}_{option}.png', dpi=300)
             # plt.show()
 
     if not display: 
@@ -516,13 +509,13 @@ def multi_linear_regression_display(df, targets, features, display = False):
                     verticalalignment='top', bbox=dict(boxstyle='round,pad=0.5', fc='wheat', alpha=0.5))
 
         plt.tight_layout()
-        # plt.savefig(f'Results/regression_diagnostics_{target}.png', dpi=300)
+        plt.savefig(f'Results/regression_diagnostics_{target}_{option}.png', dpi=300)
         # plt.show()
 
 
     print(f"Best model is for target {best_model[0]} with R² = {best_model[3].rsquared:.3f}")
 
-def random_forest_regression(df, target, features, display=True, test_size=0.2, random_state=42):
+def random_forest_regression(df, target, features, display=True, test_size=0.2, random_state=42, option = ''):
     """
     Performs random forest regression using scikit-learn.
 
@@ -655,7 +648,7 @@ def random_forest_regression(df, target, features, display=True, test_size=0.2, 
       axes[1].set_xlabel('Importance Score SHAP')
       axes[1].set_title(f'Feature Relevance to {target}')
       plt.tight_layout()
-    #  plt.savefig(f'Results/random_forest_diagnostics_{target}.png', dpi=300)
+      plt.savefig(f'Results/random_forest_diagnostics_{target}_{option}.png', dpi=300)
     #   plt.show()
 
     return model, mse, rmse, r2, y_pred
@@ -1457,20 +1450,20 @@ def comprehensive_PCA_analysis(df, display=True, target_columns=None, treatment_
 # n = 100
 # x = np.random.uniform(-10, 10, n)
 # y = np.random.uniform(-10, 10, n)
-# z = x**2 + 100*np.sin(y)
+# z = x + 30
 
 # # Create DataFrame
-# df = pd.DataFrame({'x': x, 'y': y, 'z': z})
+# df = pd.DataFrame({'x': x, 'z': z})
 
 # # Optionally add some noise
 # # z = x**2 + y**2 + np.random.normal(0, 10, n)
 # # df['z'] = z
 
 # # Add squared terms for linear regression
-# df['x2'] = df['x']**2
-# df['y2'] = np.sin(df['y'])
+# df['x2'] = df['x']
+# # df['y2'] = np.sin(df['y'])
 
 # # Test the function
-# features = ['x2', 'y2']
+# features = ['x2']# , 'y2']
 # targets = ['z']
 # multi_linear_regression_display(df, targets, features, display=True)
