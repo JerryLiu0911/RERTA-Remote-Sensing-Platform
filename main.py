@@ -238,9 +238,9 @@ def main(paths):
     # Statistical modelling for each target/response variable
     for target in targets:
         features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
-        plot_features(merged_df, features, target, group='treatment')
-        statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True, option=option)
-        statistical_modelling.linear_mixed_model(merged_df, target, features, display=True, option=option)
+#        plot_features(merged_df, features, target, group='treatment')
+#        statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True, option=option)
+#        statistical_modelling.linear_mixed_model(merged_df, target, features, display=True, option=option)
         statistical_modelling.random_forest_regression(merged_df, target, features=features, display=True, option=option)
 
 
@@ -320,15 +320,15 @@ def main(paths):
     for target in targets:
         # features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
         # plot_features(merged_df, all_features, target, group='treatment')
-        statistical_modelling.multi_linear_regression_display(merged_df, target, all_features, display=True, option=option)
-        statistical_modelling.linear_mixed_model(merged_df, target, all_features, display=True, option=option)
+        # statistical_modelling.multi_linear_regression_display(merged_df, target, all_features, display=True, option=option)
+        # statistical_modelling.linear_mixed_model(merged_df, target, all_features, display=True, option=option)
         statistical_modelling.random_forest_regression(merged_df, target, features=all_features, display=True, option=option)
 
     # You can also access specific results:
-    print(f"\nKey findings:")
-    print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
-    print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
-    print(f"Treatment separation quality: {interpretation['separation_quality']}")
+    # print(f"\nKey findings:")
+    # print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
+    # print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
+    # print(f"Treatment separation quality: {interpretation['separation_quality']}")
     
 
 
@@ -390,28 +390,16 @@ def main(paths):
 
     ###======================= Post-processing finished =======================
     
-    # pca_results, interpretation, X_pca, treatments = statistical_modelling.comprehensive_PCA_analysis(merged_df, target_columns=all_features, display=False)
-    # print(f'Number of PCA components: {X_pca.shape[1]}')
-
-    # for i in range(4):             # Add to merged dataframe
-    #     merged_df[f'PC{i+1}'] = X_pca[:, i]
-    #     print(f"merging PC{i+1} to merged_df")
 
     all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
 
         # Statistical modelling for each target/response variable
     for target in targets:
         features = statistical_modelling.smart_feature_selection_pipeline(merged_df, target, all_features)
-        plot_features(merged_df, features, target, group='treatment')
-        statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True, option=option)
-        statistical_modelling.linear_mixed_model(merged_df, target, features, display=True, option=option)
+        # plot_features(merged_df, features, target, group='treatment')
+        # statistical_modelling.multi_linear_regression_display(merged_df, target, features, display=True, option=option)
+        # statistical_modelling.linear_mixed_model(merged_df, target, features, display=True, option=option)
         statistical_modelling.random_forest_regression(merged_df, target, features=features, display=True, option=option)
-
-    # You can also access specific results:
-    # print(f"\nKey findings:")
-    # print(f"PC1 explains {pca_results['explained_variance_ratio'][0]*100:.1f}% of variance")
-    # print(f"Most important variables for PC1: {interpretation['pc1_key_variables'][:3]}")
-    # print(f"Treatment separation quality: {interpretation['separation_quality']}")
 
 
 paths = {
@@ -525,7 +513,7 @@ main(paths)
 
 
 
-# buffer = "veg_plots_corner_coordinates"
+buffer = "veg_plots_corner_coordinates"
 
 # targets = [col for col in load_field_data.gpd.read_file(paths[f'{buffer}_result']).columns if col not in ['geometry', 'point.label', 'treatment']] # Removes repeated columns when merging datasets. 
 
@@ -553,11 +541,11 @@ main(paths)
 #         filter = None)
 
 # all_features = [col for col in merged_df.columns if any(x in col for x in ['DEM', 'GLI', 'Clre', 'ReNDVI', 'GNDVI', 'NDVI', 'band'])]
-# # print(f"Identified target variables: {targets}")
-# # print(f"Finished merging columns : {merged_df.columns}")
-# # print("Final merged dataframe :")
-# # print(merged_df[:26])
-# # print(len(merged_df))
+# print(f"Identified target variables: {targets}")
+# print(f"Finished merging columns : {merged_df.columns}")
+# print("Final merged dataframe :")
+# print(merged_df[:26])
+# print(len(merged_df))
 
 
 
@@ -650,3 +638,4 @@ main(paths)
 #     statistical_modelling.multi_linear_regression_display(merged_df, target, stage2_features, display=True)
 #     statistical_modelling.linear_mixed_model(merged_df, target, stage2_features, display=True)
 #     statistical_modelling.random_forest_regression(merged_df, target, features=stage2_features, display=True)
+# preprocess_dataset(paths, 'Palapa July2025 ortho', buffer, proxies=gis.GLCM)

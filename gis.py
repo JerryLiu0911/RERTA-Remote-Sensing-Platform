@@ -522,6 +522,11 @@ def plot_index_kde_sampled(raster_path, value, sample_size=10000, output_path=No
         plt.show()
 
 
+
+
+
+
+
 def zonal_statistics_without_points(raster_path, output_zonal_gpkg, gpkg_path = None, filtering_logic = None, proxies = None, buffer_geom_path = None, show_plots=False, value='index', save_plots=False): 
     '''
     
@@ -594,6 +599,14 @@ def zonal_statistics_without_points(raster_path, output_zonal_gpkg, gpkg_path = 
 
                     # # Flatten the array and remove nodata, vectorising for better performance
                     valid_data = masked_data[masked_data != src.nodata] if src.nodata is not None else masked_data.flatten()
+                    
+                    if idx < 3:  # Only show for first 3 buffers
+                        plt.figure(figsize=(6, 6))
+                        plt.imshow(masked_data, cmap='gray')
+                        plt.title(f"Masked Data for Buffer {idx} ({region_name})")
+                        plt.colorbar()
+                        plt.axis('off')
+                        plt.show()
 
                     valid_data = np.asarray(valid_data, dtype=float)  # Ensure data is 1D
                     finite_mask = np.isfinite(valid_data)
@@ -672,65 +685,161 @@ def zonal_statistics_without_points(raster_path, output_zonal_gpkg, gpkg_path = 
                 if show_plots:
                     plt.show()
 
-    return zonal_gdf, figures
+    return zonal_gdf, figures, region_data
+
 # Example usage - Comment out when not testing
 # Test the plotting functions
 # print("Creating CHM distribution plots...")
 
+# all_bands = {'NDVI':{}, 'GNDVI':{}, 'ReNDVI':{}, 'GLI':{}, 'Clre':{}, 'DEM':{}}
+
 # # Use optimized functions for better performance
-# zonal_gdf, figures = zonal_statistics_without_points(
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
 #     raster_path="D:/Jerry/Palapa July2025 Clre.tif", 
 #     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Treatment2/Palapa June2025 Clre Statistics.gpkg", 
-#     buffer_geom_path="Data/TreatmentRegions.gpkg",
-#     #proxies=canopy_openness_proxy,
-#     show_plots=False,
-#     save_plots=True
-# )
-# zonal_gdf, figures = zonal_statistics_without_points(
-#     raster_path="D:/Jerry/Palapa July2025 NDVI.tif", 
-#     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Treatment2/Palapa June2025 NDVI Statistics.gpkg", 
-#     buffer_geom_path="Data/TreatmentRegions.gpkg",
-#     #proxies=canopy_openness_proxy,
-#     show_plots=False,
-#     save_plots=True
-# )
-# zonal_gdf, figures = zonal_statistics_without_points(
-#     raster_path="D:/Jerry/Palapa July2025 ReNDVI.tif", 
-#     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Treatment2/Palapa June2025 ReNDVI Statistics.gpkg", 
-#     buffer_geom_path="Data/TreatmentRegions.gpkg",
-#     #proxies=canopy_openness_proxy,
-#     show_plots=False,
-#     save_plots=True
-# )
-# zonal_gdf, figures = zonal_statistics_without_points(
-#     raster_path="D:/Jerry/Palapa July2025 GNDVI.tif", 
-#     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Treatment2/Palapa June2025 GNDVI Statistics.gpkg", 
-#     buffer_geom_path="Data/TreatmentRegions.gpkg",
-#     #proxies=canopy_openness_proxy,
-#     show_plots=False,
-#     save_plots=True
-# )
-# zonal_gdf, figures = zonal_statistics_without_points(
-#     raster_path="D:/Jerry/Palapa July2025 GLI.tif", 
-#     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Treatment2/Palapa June2025 GLI Statistics.gpkg", 
-#     buffer_geom_path="Data/TreatmentRegions.gpkg",
-#     #proxies=canopy_openness_proxy,
-#     show_plots=False,
-#     save_plots=True
-# )
-# zonal_gdf, figures = zonal_statistics_without_points(
-#     raster_path="D:/Jerry/Palapa July2025 DEM.tif", 
-#     filtering_logic=remove_outliers,
-#     output_zonal_gpkg="Treatment2/Palapa June2025 DEM Statistics.gpkg", 
+#     output_zonal_gpkg="Treatment/Palapa June2025 Clre Statistics.gpkg", 
 #     buffer_geom_path="Data/TreatmentRegions.gpkg",
 #     #proxies=canopy_openness_proxy,
 #     show_plots=False,
 #     save_plots=True
 # )
 
+# all_bands['Clre'] = region_data
+
+
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 NDVI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment/Palapa June2025 NDVI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# all_bands['NDVI'] = region_data
+
+
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 ReNDVI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment/Palapa June2025 ReNDVI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# all_bands['ReNDVI'] = region_data
+
+
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 GNDVI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment/Palapa June2025 GNDVI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+
+# all_bands['GNDVI'] = region_data
+
+
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 GLI.tif", 
+#     filtering_logic=remove_outliers,
+#     output_zonal_gpkg="Treatment/Palapa June2025 GLI Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+# all_bands['GLI'] = region_data
+
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 DEM.tif", 
+#     filtering_logic=clip_below_zero,
+#     output_zonal_gpkg="Treatment/Palapa June2025 DEM Statistics.gpkg", 
+#     buffer_geom_path="Data/TreatmentRegions.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )
+
+# def create_overlayed_boxplot(region_band_data, value, bands, figsize=(12, 8), output_path=None, save_plots=False):
+#     """
+#     Create overlayed boxplots for each treatment region, with each band colour-coded.
+
+#     Args:
+#         region_band_data (dict): Nested dict {band: {region: [values]}}.
+#         value (str): The name of the variable being plotted.
+#         bands (list): List of band names (keys in region_band_data).
+#         figsize (tuple): Size of the figure.
+#         output_path (str): Path to save the figure.
+#         save_plots (bool): Whether to save the plot.
+
+#     Returns:
+#         matplotlib.figure.Figure: The created figure.
+#     """
+#     import matplotlib.pyplot as plt
+#     import numpy as np
+
+#     # Get all regions (assume all bands have same regions)
+#     regions = sorted({region for band in bands for region in region_band_data.get(band, {})})
+#     n_regions = len(regions)
+#     n_bands = len(bands)
+#     colors = plt.cm.Set2(np.linspace(0, 1, n_bands))
+
+#     fig, ax = plt.subplots(figsize=figsize)
+
+#     box_width = 0.7 / n_bands  # total width per region is 0.7, split among bands
+#     positions = np.arange(n_regions)
+
+#     for i, band in enumerate(bands):
+#         data_lists = [region_band_data.get(band, {}).get(region, []) for region in regions]
+#         # Offset positions for each band
+#         offset = (i - n_bands/2) * box_width + box_width/2
+#         box_pos = positions + offset
+#         bp = ax.boxplot(
+#             data_lists,
+#             positions=box_pos,
+#             widths=box_width,
+#             patch_artist=True,
+#             boxprops=dict(facecolor=colors[i], alpha=0.7),
+#             medianprops=dict(color='black'),
+#             showfliers=False
+#         )
+#         for patch in bp['boxes']:
+#             patch.set_facecolor(colors[i])
+#             patch.set_alpha(0.7)
+#         # Add legend entry
+#         ax.plot([], [], color=colors[i], label=band, linewidth=10)
+
+#     ax.set_xticks(positions)
+#     ax.set_xticklabels([f"Treatment {region}" for region in regions], fontsize=10)
+#     ax.set_xlabel('Treatment Region', fontsize=12)
+#     ax.set_ylabel(value, fontsize=12)
+#     ax.grid(True, alpha=0.3)
+#     ax.legend(title="Band", fontsize=10)
+#     plt.tight_layout()
+#     if output_path:
+#         ax.set_title(f'Overlayed Boxplots of {value} Across Treatment Regions', fontsize=14, fontweight='bold')
+#         if save_plots:
+#             plt.savefig(output_path, dpi=300, bbox_inches='tight')
+#             print(f"Overlayed boxplot saved to: {output_path}")
+#     return fig
+
+# bands = ["Clre", "NDVI", "ReNDVI", "GNDVI", "GLI", "DEM"]
+# # region_band_data should be structured as: {band: {region: [values]}}
+# fig = create_overlayed_boxplot(all_bands, value="Index Value", bands=bands, save_plots=True, output_path="overlayed_boxplot.png")
+
 # print("Plots created and saved successfully!")
+
+# zonal_gdf, figures, region_data = zonal_statistics_without_points(
+#     raster_path="D:/Jerry/Palapa July2025 DEM.tif", 
+#     filtering_logic=clip_below_zero,
+#     output_zonal_gpkg="Treatment/Palapa June2025 DEM Statistics.gpkg", 
+#     buffer_geom_path="Data/Palapa_veg_plots_corners.gpkg",
+#     #proxies=canopy_openness_proxy,
+#     show_plots=False,
+#     save_plots=True
+# )

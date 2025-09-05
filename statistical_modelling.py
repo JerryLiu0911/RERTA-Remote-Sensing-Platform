@@ -62,7 +62,7 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
     for category, candidates in theory_based_candidates.items():
         if candidates:
             num_candidates = max(3, int(round(len(candidates)/4)))
-            print(f"  {category}: {len(candidates)} candidates → selecting best {num_candidates}")
+            #print(f"  {category}: {len(candidates)} candidates → selecting best {num_candidates}")
 
             # Calculate target correlations for candidates in this category
             category_corrs = []
@@ -76,20 +76,20 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
             selected_from_category = [feat for feat, _ in category_corrs[:num_candidates]]
             stage1_features.extend(selected_from_category)
 
-            for feat, corr in category_corrs[:num_candidates]:
-                print(f"     {feat}: {corr:.3f}")
+            # for feat, corr in category_corrs[:num_candidates]:
+            #     print(f"     {feat}: {corr:.3f}")
     
-    print(f"  Stage 1 result: {len(stage1_features)} features")
+   # print(f"  Stage 1 result: {len(stage1_features)} features")
     
     # STAGE 2: VIF-based refinement
-    print(f"\n STAGE 2: VIF-BASED MULTICOLLINEARITY FILTERING")
+    # print(f"\n STAGE 2: VIF-BASED MULTICOLLINEARITY FILTERING")
     # Remove features with high VIF (> 5 is a common threshold)
     if len(stage1_features) > 1:
         X = merged_df[stage1_features].dropna()
         vif_data = pd.DataFrame()
         vif_data["feature"] = X.columns
         vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-        print(vif_data)
+        # print(vif_data)
         # Iteratively remove the feature with the highest VIF above threshold
         features_vif = stage1_features.copy()
         while True:
@@ -98,23 +98,23 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
             max_vif = max(vifs)
             if max_vif > 5 and len(features_vif) > 1:
                 remove_idx = vifs.index(max_vif)
-                print(f"  Removing {features_vif[remove_idx]} (VIF={max_vif:.2f})")
+                # print(f"  Removing {features_vif[remove_idx]} (VIF={max_vif:.2f})")
                 features_vif.pop(remove_idx)
             else:
                 break
         stage2_features = features_vif
     else:
         stage2_features = stage1_features
-    print(f"  Stage 2 result: {len(stage2_features)} features")
+    # print(f"  Stage 2 result: {len(stage2_features)} features")
 
     if display:
         sns.heatmap(merged_df[[column for column in merged_df.columns if column in stage2_features]].corr(method='spearman'), annot=True, fmt='.2f', cmap='coolwarm')
         plt.show()
     # STAGE 3: Sample size validation
-    print(f"\n STAGE 3: SAMPLE SIZE VALIDATION")
+    # print(f"\n STAGE 3: SAMPLE SIZE VALIDATION")
     
     ratio = n_samples / len(stage2_features) if stage2_features else 0
-    print(f"  Sample-to-feature ratio: {ratio:.1f}:1")
+    # print(f"  Sample-to-feature ratio: {ratio:.1f}:1")
     
     if ratio < 8:
         print(f"   Still too many features for dataset size!")
@@ -130,16 +130,16 @@ def smart_feature_selection_pipeline(merged_df, target, all_possible_features, d
         max_features = min(3, n_samples//5, len(final_rankings))
         stage3_features = [feat for feat, _ in final_rankings[:max_features]]
         
-        print(f"  Final selection:")
-        for feat, corr in final_rankings[:max_features]:
-            print(f"     {feat}: {corr:.3f}")
+        # print(f"  Final selection:")
+        # for feat, corr in final_rankings[:max_features]:
+        #     print(f"     {feat}: {corr:.3f}")
     else:
         stage3_features = stage2_features
-        print(f"   Feature count appropriate for dataset size")
+    #     print(f"   Feature count appropriate for dataset size")
     
-    print(f"\n FINAL RESULT: {len(stage3_features)} high-quality features")
-    print(f"   Features: {stage3_features}")
-    print(f"   Final ratio: {n_samples/len(stage3_features):.1f}:1")
+    # print(f"\n FINAL RESULT: {len(stage3_features)} high-quality features")
+    # print(f"   Features: {stage3_features}")
+    # print(f"   Final ratio: {n_samples/len(stage3_features):.1f}:1")
     
     return stage3_features
 
@@ -170,8 +170,8 @@ filter = None,):
 
         # df = df.dropna() # Remove rows with NaN values
 
-        print(f"Loaded data from {name}")
-        print(df.head())
+        # print(f"Loaded data from {name}")
+        # print(df.head())
 
         if filter != None:
             df = df[df['point.label'].str.contains(filter, case=False, na=False)] # Choice to remove erroneous labels
@@ -195,8 +195,8 @@ filter = None,):
                 for column in dependent_variables:
                     if f'{column}_{name}' in df.columns:
                         df = df.drop(columns=[f'{column}_{name}'], axis=1)
-                        print(f"dropping columns {column}")
-                        print("remaining columns : ", df.columns)
+                        # print(f"dropping columns {column}")
+                        # print("remaining columns : ", df.columns)
                     else:
                         print(f"Warning !!!!! : {column} not found in merged_df columns.")
                 df = df.drop(columns=[f'geometry_{name}', f'treatment_{name}'], axis=1)  # Drop geometry and treatment columns from df
