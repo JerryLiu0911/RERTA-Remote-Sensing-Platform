@@ -4,6 +4,8 @@ A comprehensive Python-based platform for analyzing ecological relationships usi
 
 ## 🌳 Project Overview
 
+### For an example workflow and tutorial, please look at the Project Playground.ipynb jupyter notebook ###
+
 The RERTA (Remote Environmental Research and Technology Applications) platform enables researchers to:
 
 - **Integrate multi-source ecological data** from field measurements, UAV remote sensing, and biodiversity surveys
@@ -18,11 +20,12 @@ The RERTA (Remote Environmental Research and Technology Applications) platform e
 
 ```
 ├── main.py                     # Main execution script and workflow orchestration
+├── project_playground.ipynb    # Example and tutorial for implementation
 ├── statistical_modelling.py    # Statistical analysis and machine learning tools
 ├── gis.py                      # Geospatial analysis and zonal statistics
 ├── coordinate_extraction.py    # GPS coordinate processing and standardization
-├── align_coords.py            # Data alignment and merging utilities
-└── README.md                  # This comprehensive guide
+├── align_coords.py             # Data alignment and merging utilities
+└── README.md                   # This comprehensive guide
 ```
 
 ### **Data Processing Pipeline**
