@@ -246,13 +246,6 @@ main.main(paths)
    - Feature importance rankings
    - Cross-validation scores
 
-### **Interpretation Guidelines**
-
-- **R² > 0.7**: Strong predictive relationship
-- **R² 0.3-0.7**: Moderate relationship, useful for understanding patterns
-- **R² < 0.3**: Weak relationship, may indicate complex or non-linear patterns
-- **p < 0.05**: Statistically significant relationship
-
 ## 🔧 Advanced Features
 
 ### **Custom Filtering Functions**
