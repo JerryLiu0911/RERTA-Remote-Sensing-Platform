@@ -6,7 +6,7 @@ A comprehensive Python-based platform for analyzing ecological relationships usi
 
 ### For an example workflow and tutorial, please look at the Project Playground.ipynb jupyter notebook ###
 
-The RERTA (Remote Environmental Research and Technology Applications) platform enables researchers to:
+The RERTA (Riparian Ecosystem Restoration in Tropical Agriculture) platform enables researchers to:
 
 - **Integrate multi-source ecological data** from field measurements, UAV remote sensing, and biodiversity surveys
 - **Perform spatial analysis** using zonal statistics and buffer-based calculations
