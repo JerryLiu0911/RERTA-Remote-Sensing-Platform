@@ -348,7 +348,7 @@ def create_distribution_plots_from_data(region_data, value, figsize=(15, 10), ou
         matplotlib.figure.Figure: The created figure.
 
     """
-    output_path = output_path.replace('Data', 'Results') if output_path else None
+    output_path = output_path.replace('data/processed', 'results') if output_path else None
     n_regions = len(region_data)
     if n_regions == 0:
         return None
@@ -440,7 +440,7 @@ def create_boxplot_from_data(region_data, value,figsize=(12, 8), output_path=Non
         matplotlib.figure.Figure: The created figure.
     """
 
-    output_path = output_path.replace('Data', 'Results') if output_path else None
+    output_path = output_path.replace('data/processed', 'results') if output_path else None
     if not region_data:
         return None
     

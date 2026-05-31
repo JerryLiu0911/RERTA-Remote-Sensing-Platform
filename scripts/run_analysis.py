@@ -1,15 +1,29 @@
+"""
+Main analysis script for the RERTA Remote Sensing Platform.
+
+Run from the project root:
+    python scripts/run_analysis.py
+
+The one-time preprocessing block (coordinate extraction + zonal statistics)
+is commented out. Uncomment it once per new dataset before running the
+modelling section.
+"""
+
 import os
+import sys
+
+# Allow running from the project root without installing the package
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scipy import stats
 from shapely import buffer
-import load_field_data
-import coordinate_extraction
-import statistical_modelling
-import gis as gis
+from rerta import load_field_data
+from rerta import coordinate_extraction
+from rerta import statistical_modelling
+from rerta import gis
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 
@@ -115,7 +129,7 @@ def plot_features(df, features, target, group=None):
         else:
             axes[i].set_visible(False)
     plt.tight_layout()
-    plt.savefig(f'Results/feature_distributions_{target}.png', dpi=300)
+    plt.savefig(f'results/feature_distributions_{target}.png', dpi=300)
     # plt.show()
 
 def main(paths):
@@ -405,90 +419,75 @@ def main(paths):
         statistical_modelling.random_forest_regression(merged_df, target, features=features, display=True, option=option)
 
 
+# ── Path registry ──────────────────────────────────────────────────────────────
 paths = {
-# Raw files
-    ## Field data (csv)
-    'canopy_openness_csv': "Data/3.4-canopy.openness.csv", # USE WITH buffered_points !! According to protocol
-    'frogs_csv': "Data/4.3_Frogs.csv", # USE WITH 100m_transects !! According to protocol
-    'erosion_sticks_csv': "Data/1.2_Erosion-sticks.csv", # USE WITH buffered_points !! According to protocol
-    'seed_removal_csv': "Data/6.5_Seed-removal.csv", # USE WITH buffered_points !! According to protocol
+    # Field data CSVs (data/raw/field/)
+    'canopy_openness_csv': "data/raw/field/3.4-canopy.openness.csv",   # use with veg_plots_corner_coordinates
+    'frogs_csv':           "data/raw/field/4.3_Frogs.csv",             # use with 100m_transects
+    'erosion_sticks_csv':  "data/raw/field/1.2_Erosion-sticks.csv",    # use with veg_plots_corner_coordinates
+    'seed_removal_csv':    "data/raw/field/6.5_Seed-removal.csv",      # use with veg_plots_corner_coordinates
 
-    ## point coordinates
-    'veg_plots_coordinates': "Data/Palapa_veg_plots.gpkg", #"Data/Rerta koordinate 2018_09_24.gpkg",
-    'abcd_coordinates': "Data/Palapa_ABCD.gpkg",
-    '100m_transects_coordinates': "Data/Palapa_transects.gpkg",
+    # Spatial reference files (data/spatial/)
+    'veg_plots_coordinates':        "data/spatial/Palapa_veg_plots.gpkg",
+    'abcd_coordinates':             "data/spatial/Palapa_ABCD.gpkg",
+    '100m_transects_coordinates':   "data/spatial/Palapa_transects.gpkg",
+    'veg_plots_centre_coordinates': "data/spatial/Palapa_veg_plots_centres.gpkg",
+    'veg_plots_corner_coordinates': "data/spatial/Palapa_veg_plots_corners.gpkg",
+    'treatment_buffers':            "data/spatial/TreatmentRegions.gpkg",
+    '100m_transects':               "data/spatial/Palapa_transects_buffer.gpkg",
 
-    ## Palapa 2019
-    'Palapa June2019 CHM_tif' : "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif",
-    'Palapa June2019 ExG_tif' : "G:/My Drive/UROP/UROP Rerta Palapa June2019 ExG.tif",
-    'Palapa June2019 GLI_tif' : "G:/My Drive/UROP/UROP Rerta Palapa June2019 GLI.tif",
-    'Palapa June2019 DTM_tif' : "G:/My Drive/UROP/UROP Rerta Palapa June2019 DTM.tif",
+    # External rasters — stored on Google Drive / local drive, not in repo
+    'Palapa June2019 CHM_tif':    "G:/My Drive/UROP/UROP Rerta Palapa June2019 CHM.tif",
+    'Palapa June2019 ExG_tif':    "G:/My Drive/UROP/UROP Rerta Palapa June2019 ExG.tif",
+    'Palapa June2019 GLI_tif':    "G:/My Drive/UROP/UROP Rerta Palapa June2019 GLI.tif",
+    'Palapa June2019 DTM_tif':    "G:/My Drive/UROP/UROP Rerta Palapa June2019 DTM.tif",
+    'Palapa July2025 GLI_tif':    "D:/Jerry/Palapa July2025 GLI.tif",
+    'Palapa July2025 NDVI_tif':   "D:/Jerry/Palapa July2025 NDVI.tif",
+    'Palapa July2025 DEM_tif':    "D:/Jerry/Palapa July2025 DEM.tif",
+    'Palapa July2025 Clre_tif':   "D:/Jerry/Palapa July2025 Clre.tif",
+    'Palapa July2025 ReNDVI_tif': "D:/Jerry/Palapa July2025 ReNDVI.tif",
+    'Palapa July2025 GNDVI_tif':  "D:/Jerry/Palapa July2025 GNDVI.tif",
+    'Palapa July2025 ortho_tif':  "D:/Jerry/UROP Rerta Palapa July2025 orthomosaic.tif",
+    'Kandista July2025 GLI_tif':  "D:/Jerry/Kandista July2025 GLI.tif",
+    'Kandista July2025 NDVI_tif': "D:/Jerry/Kandista July2025 NDVI.tif",
+    'Kandista July2025 DEM_tif':  "D:/Jerry/Kandista July2025 DEM.tif",
+    'Kandista July2025 Clre_tif': "D:/Jerry/Kandista July2025 Clre.tif",
+    'Kandista July2025 ReNDVI_tif': "D:/Jerry/Kandista July2025 ReNDVI.tif",
+    'Kandista July2025 GNDVI_tif':  "D:/Jerry/Kandista July2025 GNDVI.tif",
+    'Kandista July2025 ortho_tif':  "D:/Jerry/Kandista July2025 ortho.tif",
 
-    ## Palapa 2025
-    'Palapa July2025 GLI_tif' : "D:/Jerry/Palapa July2025 GLI.tif",
-    'Palapa July2025 NDVI_tif' : "D:/Jerry/Palapa July2025 NDVI.tif",
-    'Palapa July2025 DEM_tif' : "D:/Jerry/Palapa July2025 DEM.tif",
-    'Palapa July2025 Clre_tif' : "D:/Jerry/Palapa July2025 Clre.tif",
-    'Palapa July2025 ReNDVI_tif' : "D:/Jerry/Palapa July2025 ReNDVI.tif",
-    'Palapa July2025 GNDVI_tif' : "D:/Jerry/Palapa July2025 GNDVI.tif",
-    'Palapa July2025 ortho_tif' : "D:/Jerry/UROP Rerta Palapa July2025 orthomosaic.tif",
+    # Processed zonal statistics GeoPackages (data/processed/)
+    'Palapa June2019 CHM': "data/processed/Palapa June2019 CHM statistics.gpkg",
+    'Palapa June2019 ExG': "data/processed/Palapa June2019 ExG statistics.gpkg",
+    'Palapa June2019 GLI': "data/processed/Palapa June2019 GLI statistics.gpkg",
+    'Palapa June2019 DEM': "data/processed/Palapa June2019 DEM statistics.gpkg",
+    'Palapa July2025 DEM':    "data/processed/Palapa July2025 DEM statistics.gpkg",
+    'Palapa July2025 GLI':    "data/processed/Palapa July2025 GLI statistics.gpkg",
+    'Palapa July2025 ReNDVI': "data/processed/Palapa July2025 ReNDVI statistics.gpkg",
+    'Palapa July2025 Clre':   "data/processed/Palapa July2025 Clre statistics.gpkg",
+    'Palapa July2025 GNDVI':  "data/processed/Palapa July2025 GNDVI statistics.gpkg",
+    'Palapa July2025 NDVI':   "data/processed/Palapa July2025 NDVI statistics.gpkg",
+    'Palapa July2025 ortho':  "data/processed/Palapa July2025 ortho statistics.gpkg",
 
-    ## Kandista 2025
-    'Kandista July2025 GLI_tif' : "D:/Jerry/Kandista July2025 GLI.tif",
-    'Kandista July2025 NDVI_tif' : "D:/Jerry/Kandista July2025 NDVI.tif",
-    'Kandista July2025 DEM_tif' : "D:/Jerry/Kandista July2025 DEM.tif",
-    'Kandista July2025 Clre_tif' : "D:/Jerry/Kandista July2025 Clre.tif",
-    'Kandista July2025 ReNDVI_tif' : "D:/Jerry/Kandista July2025 ReNDVI.tif",
-    'Kandista July2025 GNDVI_tif' : "D:/Jerry/Kandista July2025 GNDVI.tif",
-    'Kandista July2025 ortho_tif' : "D:/Jerry/Kandista July2025 ortho.tif",
+    # Per-band orthomosaic statistics
+    'band1': "data/processed/Palapa July2025 ortho statistics_band1.gpkg",
+    'band2': "data/processed/Palapa July2025 ortho statistics_band2.gpkg",
+    'band3': "data/processed/Palapa July2025 ortho statistics_band3.gpkg",
+    'band4': "data/processed/Palapa July2025 ortho statistics_band4.gpkg",
+    'band5': "data/processed/Palapa July2025 ortho statistics_band5.gpkg",
+    'band6': "data/processed/Palapa July2025 ortho statistics_band6.gpkg",
+    'band7': "data/processed/Palapa July2025 ortho statistics_band7.gpkg",
 
-# Buffer geometries
-'veg_plots_centre_coordinates': "Data/Palapa_veg_plots_centres.gpkg",
-'veg_plots_corner_coordinates': "Data/Palapa_veg_plots_corners.gpkg",
-'treatment_buffers' : "Data/TreatmentRegions.gpkg",
-'100m_transects' : "Data/Palapa_transects_buffer.gpkg",
-
-# Zonal statistics
-
-    ## Palapa 2019
-    'Palapa June2019 CHM': "Data/Palapa June2019 CHM statistics.gpkg",
-    'Palapa June2019 ExG': "Data/Palapa June2019 ExG statistics.gpkg",
-    'Palapa June2019 GLI': "Data/Palapa June2019 GLI statistics.gpkg",
-    'Palapa June2019 DTM': "Data/Palapa June2019 DTM statistics.gpkg",
-    ## Palapa 2025
-    'Palapa July2025 CHM': "Data/Palapa July2025 CHM statistics.gpkg",
-    'Palapa July2025 GLI': "Data/Palapa July2025 GLI statistics.gpkg",
-    'Palapa July2025 ExG': "Data/Palapa July2025 ExG statistics.gpkg",
-    'Palapa July2025 DEM': "Data/Palapa July2025 DEM statistics.gpkg",
-    'Palapa July2025 ReNDVI': "Data/Palapa July2025 ReNDVI statistics.gpkg",
-    'Palapa July2025 GNDVI': "Data/Palapa July2025 GNDVI statistics.gpkg",
-    'Palapa July2025 NDVI': "Data/Palapa July2025 NDVI statistics.gpkg",
-    'Palapa July2025 ortho': "Data/Palapa July2025 ortho statistics.gpkg",
-    'Palapa July2025 Clre': "Data/Palapa July2025 Clre statistics.gpkg",
-
-# Processed files
-'result_data': "result_data.gpkg",
-'veg_plots_corner_coordinates_result': "Data/Palapa_veg_plots_result.gpkg",
-'100m_transects_result': "Data/Palapa_100m_transects_result.gpkg",
-# 'canopy_openness_result': "canopy_openness_result.gpkg",
-# 'frogs_result': "Frogs_result.gpkg",
-'GLI': "Data/Palapa June2019 GLI statistics.gpkg", # FORMATTING TO BE DISCUSSED
-'ExG': "Data/Palapa June2019 ExG statistics.gpkg",
-'DEM': "Data/Palapa June2019 DEM statistics.gpkg",
-'CHM': "Data/Palapa June2019 CHM statistics.gpkg",
-'band1': "Data/Palapa July2025 ortho statistics_band1.gpkg",
-'band2': "Data/Palapa July2025 ortho statistics_band2.gpkg",
-'band3': "Data/Palapa July2025 ortho statistics_band3.gpkg",
-'band4': "Data/Palapa July2025 ortho statistics_band4.gpkg",
-'band5': "Data/Palapa July2025 ortho statistics_band5.gpkg",
-'band6': "Data/Palapa July2025 ortho statistics_band6.gpkg",
-'band7': "Data/Palapa July2025 ortho statistics_band7.gpkg"
-
+    # Aligned field+geometry result files
+    'result_data':                         "data/processed/result_data.gpkg",
+    'veg_plots_corner_coordinates_result': "data/processed/Palapa_veg_plots_result.gpkg",
+    '100m_transects_result':               "data/processed/Palapa_100m_transects_result.gpkg",
+    'GLI': "data/processed/Palapa June2019 GLI statistics.gpkg",
+    'ExG': "data/processed/Palapa June2019 ExG statistics.gpkg",
+    'DEM': "data/processed/Palapa June2019 DEM statistics.gpkg",
+    'CHM': "data/processed/Palapa June2019 CHM statistics.gpkg",
 }
 
-# rasters = ['Palapa July2025 NDVI', 'Palapa July2025 GNDVI', 'Palapa July2025 GLI', 'Palapa July2025 Clre', 'Palapa July2025 ReNDVI']
 
-# for raster_name in rasters:
-#     gis.plot_index_kde_sampled(paths[f'{raster_name}_tif'], value=raster_name.split(' ')[-1], output_path=f"D:/Jerry/{raster_name} Raster Histogram.png")
-
-main(paths)
+if __name__ == "__main__":
+    main(paths)

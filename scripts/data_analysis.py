@@ -75,4 +75,4 @@ def add_file_extension_fls(folder_path):
     print(f"  Files renamed: {files_renamed}")
     print(f"  Errors: {errors}")
     print(f"  Total files processed: {files_renamed + errors}")
-add_file_extension_fls(r"D:\Jerry\Lidar Data from Becky\LiDAR\LiDAR-Scans-2025-02")
+# add_file_extension_fls(r"D:\Jerry\Lidar Data from Becky\LiDAR\LiDAR-Scans-2025-02")

@@ -2,240 +2,172 @@ import geopandas as gpd
 import pandas as pd
 import re
 
-def extract_veg_plots_central_coordinates(source_path, destination_path):
-  """
-  Extracts the central coordinates of vegetation plots OPcore, OPedge and Buffercore from a GeoPackage file, filters rows based on specific patterns in the 'name' column,
-  and standardizes the 'name' column.
 
-  Args:
-    source_path (str): Path to the source GeoPackage file.
-    destination_path (str): Path to save the filtered and standardized GeoDataFrame.
-
-  Returns:
-    gpd.GeoDataFrame: A GeoDataFrame containing the filtered and standardized data.
-  """
-  gpkg_path = source_path
-  try:
-    gdf = gpd.read_file(gpkg_path)
-  except Exception as e :
-    print("Error reading files")
-    return
-
-  def standardize_names_for_extract_central_coords(name):
-    """
-    Standardizes the 'name' column in the GeoDataFrame by replacing specific patterns. 
-    ***SPECIFICALLY FOR Rerta koordinate 2018_09_24.gpkg***
-    """
-    identifier = name.split('-')
+def _standardize_side(identifier):
+    """Replace single-letter cardinal codes with full words."""
     if identifier[1] == 'E':
-      identifier[1] = 'EAST'
-    elif identifier[1] == 'W':
-      identifier[1] = 'WEST'
-    
-    identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
-    
-    if re.search("OPc", identifier[3], re.IGNORECASE):
-      identifier[3] = 'OPC'
-    elif re.search("OPe", identifier[3], re.IGNORECASE):
-      identifier[3] = 'OPE'
-    elif re.search("buffercore", identifier[3], re.IGNORECASE):
-      identifier[3] = 'BC'
-
-    # temp = identifier[2]
-    # identifier[2] = identifier[1]
-    # identifier[1] = temp
-
-    name = '-'.join(identifier)
-    return name
-
-
-  # Filter rows where the 'name' column contains "OP" (case-insensitive)
-  result_gdf = gdf[gdf['name'].str.contains("core|edge", case=False, na=False)]
-  result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_central_coords)
-
-  # Display the result
-  result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
-  result_gdf.to_file(destination_path, driver="GPKG")
-
-  print(f"Centre points of vegetation plots saved to: {destination_path}")
-
-  return result_gdf
-
-def extract_veg_plots_corner_coordinates(source_path, destination_path):
-  """
-  Extracts the corner coordinates of the vegetation plots from a GeoPackage file, filters rows based on specific patterns in the 'name' column,
-  and standardizes the 'name' column.
-  
-  Args:
-    source_path (str): Path to the source GeoPackage file.
-    destination_path (str): Path to save the filtered and standardized GeoDataFrame.
-
-  Returns:
-    gpd.GeoDataFrame: A GeoDataFrame containing the filtered and standardized data.
-  """
-  gpkg_path = source_path
-  try:
-    gdf = gpd.read_file(gpkg_path)
-  except Exception as e :
-    print("Error reading files")
-    return
-
-  def standardize_names_for_extract_corner_coords(name):
-    """
-    Standardizes the 'name' column in the GeoDataFrame by replacing specific patterns. 
-    ***SPECIFICALLY FOR Rerta koordinate 2018***
-    """
-    identifier = name.split('-')
-    if identifier[1] == 'E':
-      identifier[1] = 'EAST'
-    elif identifier[1] == 'W':
-      identifier[1] = 'WEST'
-    
-    identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
-    
-    if re.search("OPC", identifier[3], re.IGNORECASE):
-      edge_number = re.findall(r'\d+', identifier[3])
-      identifier[3] = 'OPC'
-    elif re.search("OPE", identifier[3], re.IGNORECASE):
-      identifier[3] = 'OPE'
-    elif re.search("BC", identifier[3], re.IGNORECASE):
-      identifier[3] = 'BC'
-
-    # temp = identifier[2]
-    # identifier[2] = identifier[1]
-    # identifier[1] = temp
-
-    name = '-'.join(identifier)
-    return name
-
-  # Filter rows where the 'name' column contains "veg" (case-insensitive)
-  result_gdf = gdf[gdf['name'].str.contains("veg", case=False, na=False)]
-  result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_corner_coords)
-
-  # Display the result
-  result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
-  result_gdf.to_file(destination_path, driver="GPKG")
-
-  print(f"Corner points of vegetation plots saved to: {destination_path}")
-
-  return result_gdf
-
-def extract_ABCD_coords(source_path, destination_path):
-  """
-  Extracts the corner coordinates of the vegetation plots from a GeoPackage file, filters rows based on specific patterns in the 'name' column,
-  and standardizes the 'name' column.
-  
-  Args:
-      source_path (str): Path to the source GeoPackage file.
-      destination_path (str): Path to save the filtered and standardized GeoDataFrame.
-
-  Returns:
-      gpd.GeoDataFrame: A GeoDataFrame containing the filtered and standardized data.
-  """
-  gpkg_path = source_path
-  try:
-      gdf = gpd.read_file(gpkg_path)
-  except Exception as e:
-      print("Error reading files")
-      return
-      
-  def standardize_names_for_extract_ABCD_coords(name):
-    """
-    Standardizes the 'name' column in the GeoDataFrame by replacing specific patterns. 
-    ***SPECIFICALLY FOR Rerta koordinate 2018***
-    """
-    identifier = name.split('-')
-    if identifier[1] == 'E':
-      identifier[1] = 'EAST'
-    elif identifier[1] == 'W':
-      identifier[1] = 'WEST'
-    
-    identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
-    
-    if re.search("OPC", identifier[3], re.IGNORECASE):
-      edge_number = re.findall(r'\d+', identifier[3])
-      identifier[3] = 'OPC'
-    elif re.search("OPE", identifier[3], re.IGNORECASE):
-      identifier[3] = 'OPE'
-    elif re.search("BC", identifier[3], re.IGNORECASE):
-      identifier[3] = 'BC'
-
-    # temp = identifier[2]
-    # identifier[2] = identifier[1]
-    # identifier[1] = temp
-
-    name = '-'.join(identifier)
-    return name
-
-  # Filter rows where the 'name' column contains "veg" (case-insensitive)
-  result_gdf = gdf[gdf['name'].str.contains("veg", case=False, na=False)]
-  result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_ABCD_coords)
-
-  # Display the result
-  result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
-  result_gdf.to_file(destination_path, driver="GPKG")
-  
-  print(f"Coordinates of each treatment region is saved to : {destination_path}")
-
-  return result_gdf
-
-def extract_100m_transect_coords(source_path, destination_path):
-  """
-  Extracts the 100m transect coordinates from a GeoPackage file, filters rows based on specific patterns in the 'name' column,
-  and standardizes the 'name' column.
-
-  Args:
-      source_path (str): Path to the source GeoPackage file.
-      destination_path (str): Path to save the filtered and standardized GeoDataFrame.
-
-  Returns:
-      gpd.GeoDataFrame: A GeoDataFrame containing the filtered and standardized data.
-  """
-  gpkg_path = source_path
-  try:
-      result_gdf = gpd.read_file(gpkg_path)
-  except Exception as e:
-      print("Error reading files")
-      return
-  
-  def standardize_names_for_extract_100m_transect_coords(name):
-      """
-      Standardizes the 'name' column in the GeoDataFrame by replacing specific patterns. 
-      ***SPECIFICALLY FOR Rerta koordinate 2018***
-      """
-      identifier = name[:-5]
-
-      identifier = identifier.split('-')
-      if identifier[1] == 'E':
         identifier[1] = 'EAST'
-      elif identifier[1] == 'W':
+    elif identifier[1] == 'W':
         identifier[1] = 'WEST'
+    identifier[2] = re.findall(r'\d+', identifier[2])[0]
+    return identifier
 
-      identifier[2] = re.findall(r'\d+', identifier[2])[0]  # Only keep the numeric part
 
-      if re.search("OPC", identifier[3], re.IGNORECASE):
-        edge_number = re.findall(r'\d+', identifier[3])
+def standardize_names_for_extract_central_coords(name):
+    """
+    Standardize a raw GPS waypoint name into treatment-EAST/WEST-transect-BC/OPE/OPC format.
+    Specifically for the Palapa vegetation-plot centre points.
+
+    Example: "A-E-12m-OPc" -> "A-EAST-12-OPC"
+    """
+    identifier = _standardize_side(name.split('-'))
+    if re.search("OPc", identifier[3], re.IGNORECASE):
         identifier[3] = 'OPC'
-      elif re.search("OPE", identifier[3], re.IGNORECASE):
+    elif re.search("OPe", identifier[3], re.IGNORECASE):
         identifier[3] = 'OPE'
-      elif re.search("BC", identifier[3], re.IGNORECASE):
+    elif re.search("buffercore", identifier[3], re.IGNORECASE):
         identifier[3] = 'BC'
-      elif re.search("river", identifier[3], re.IGNORECASE):
-          identifier[3] = "RV"
+    return '-'.join(identifier)
 
-      # temp = identifier[2]
-      # identifier[2] = identifier[1]
-      # identifier[1] = temp
 
-      name = '-'.join(identifier)
-      return name
+def standardize_names_for_extract_corner_coords(name):
+    """Standardize raw GPS waypoint names for vegetation-plot corner points."""
+    identifier = _standardize_side(name.split('-'))
+    if re.search("OPC", identifier[3], re.IGNORECASE):
+        identifier[3] = 'OPC'
+    elif re.search("OPE", identifier[3], re.IGNORECASE):
+        identifier[3] = 'OPE'
+    elif re.search("BC", identifier[3], re.IGNORECASE):
+        identifier[3] = 'BC'
+    return '-'.join(identifier)
 
-  # Filter rows where the 'name' column contains "transect" (case-insensitive)
-  result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_100m_transect_coords)
-  # Display the result
-  result_gdf = result_gdf.drop([column for column in result_gdf.columns if column not in ['name', 'geometry']], axis=1)
-  result_gdf.to_file(destination_path, driver="GPKG")
 
-  print(f"Transect coordinates saved to: {destination_path}")
+def standardize_names_for_extract_100m_transect_coords(name):
+    """Standardize raw GPS waypoint names for 100 m transect lines."""
+    identifier = _standardize_side(name[:-5].split('-'))
+    if re.search("OPC", identifier[3], re.IGNORECASE):
+        identifier[3] = 'OPC'
+    elif re.search("OPE", identifier[3], re.IGNORECASE):
+        identifier[3] = 'OPE'
+    elif re.search("BC", identifier[3], re.IGNORECASE):
+        identifier[3] = 'BC'
+    elif re.search("river", identifier[3], re.IGNORECASE):
+        identifier[3] = 'RV'
+    return '-'.join(identifier)
 
-  return result_gdf
+
+def extract_veg_plots_central_coordinates(source_path, destination_path=None):
+    """
+    Extract vegetation-plot centre points (OPcore, OPedge, Buffercore) from a GeoPackage,
+    standardize the name column, and optionally save the result.
+
+    Args:
+        source_path (str): Path to the source GeoPackage.
+        destination_path (str | None): If provided, save the result here as GPKG.
+
+    Returns:
+        gpd.GeoDataFrame: Filtered and standardized GeoDataFrame.
+    """
+    try:
+        gdf = gpd.read_file(source_path)
+    except Exception:
+        print("Error reading files")
+        return
+
+    result_gdf = gdf[gdf['name'].str.contains("core|edge", case=False, na=False)].copy()
+    result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_central_coords)
+    result_gdf = result_gdf[['name', 'geometry']]
+
+    if destination_path:
+        result_gdf.to_file(destination_path, driver="GPKG")
+        print(f"Centre points of vegetation plots saved to: {destination_path}")
+
+    return result_gdf
+
+
+# Alias used in tests and scripts
+extract_central_coords = extract_veg_plots_central_coordinates
+
+
+def extract_veg_plots_corner_coordinates(source_path, destination_path=None):
+    """
+    Extract vegetation-plot corner points from a GeoPackage and standardize names.
+
+    Args:
+        source_path (str): Path to the source GeoPackage.
+        destination_path (str | None): If provided, save the result here as GPKG.
+
+    Returns:
+        gpd.GeoDataFrame: Filtered and standardized GeoDataFrame.
+    """
+    try:
+        gdf = gpd.read_file(source_path)
+    except Exception:
+        print("Error reading files")
+        return
+
+    result_gdf = gdf[gdf['name'].str.contains("veg", case=False, na=False)].copy()
+    result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_corner_coords)
+    result_gdf = result_gdf[['name', 'geometry']]
+
+    if destination_path:
+        result_gdf.to_file(destination_path, driver="GPKG")
+        print(f"Corner points of vegetation plots saved to: {destination_path}")
+
+    return result_gdf
+
+
+def extract_ABCD_coords(source_path, destination_path=None):
+    """
+    Extract ABCD treatment region coordinates from a GeoPackage and standardize names.
+
+    Args:
+        source_path (str): Path to the source GeoPackage.
+        destination_path (str | None): If provided, save the result here as GPKG.
+
+    Returns:
+        gpd.GeoDataFrame: Filtered and standardized GeoDataFrame.
+    """
+    try:
+        gdf = gpd.read_file(source_path)
+    except Exception:
+        print("Error reading files")
+        return
+
+    result_gdf = gdf[gdf['name'].str.contains("veg", case=False, na=False)].copy()
+    result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_corner_coords)
+    result_gdf = result_gdf[['name', 'geometry']]
+
+    if destination_path:
+        result_gdf.to_file(destination_path, driver="GPKG")
+        print(f"Coordinates of each treatment region saved to: {destination_path}")
+
+    return result_gdf
+
+
+def extract_100m_transect_coords(source_path, destination_path=None):
+    """
+    Extract 100 m transect line coordinates from a GeoPackage and standardize names.
+
+    Args:
+        source_path (str): Path to the source GeoPackage.
+        destination_path (str | None): If provided, save the result here as GPKG.
+
+    Returns:
+        gpd.GeoDataFrame: Filtered and standardized GeoDataFrame.
+    """
+    try:
+        result_gdf = gpd.read_file(source_path)
+    except Exception:
+        print("Error reading files")
+        return
+
+    result_gdf = result_gdf.copy()
+    result_gdf['name'] = result_gdf['name'].apply(standardize_names_for_extract_100m_transect_coords)
+    result_gdf = result_gdf[['name', 'geometry']]
+
+    if destination_path:
+        result_gdf.to_file(destination_path, driver="GPKG")
+        print(f"Transect coordinates saved to: {destination_path}")
+
+    return result_gdf

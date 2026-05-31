@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "rerta"
+version = "0.1.0"
+description = "Riparian Ecosystem Restoration in Tropical Agriculture — remote sensing analysis platform"
+requires-python = ">=3.8"
+dependencies = [
+    "fiona>=1.10",
+    "geopandas>=1.0",
+    "rasterio>=1.4",
+    "rasterstats>=0.20",
+    "Shapely>=2.0",
+    "numpy>=2.0",
+    "pandas>=2.0",
+    "scikit-learn>=1.7",
+    "matplotlib>=3.10",
+    "seaborn>=0.11",
+    "scipy>=1.9",
+    "statsmodels>=0.13",
+    "shap>=0.41",
+    "scikit-image>=0.19",
+]
+
+[project.scripts]
+rerta-run = "scripts.run_analysis:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rerta*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
