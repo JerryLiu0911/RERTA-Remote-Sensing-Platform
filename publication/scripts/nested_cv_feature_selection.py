@@ -45,12 +45,13 @@ _REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
-import statistical_modelling as sm  # safe: no top-level side effects
+from rerta import statistical_modelling as sm  # safe: no top-level side effects
 
 # ---------------------------------------------------------------------------
-# CONFIG — mirrors main.py (vi / bands / bands+vi). Keep in sync.
+# CONFIG — mirrors scripts/run_analysis.py (vi / bands / bands+vi). Keep in sync.
+# Post-refactor layout: package under rerta/, zonal-stat GeoPackages in data/processed/.
 # ---------------------------------------------------------------------------
-DATA = os.path.join(_REPO_ROOT, "Data")
+DATA = os.path.join(_REPO_ROOT, "data", "processed")
 
 VI_SOURCES = [
     ("DEM",    os.path.join(DATA, "Palapa July2025 DEM statistics.gpkg")),

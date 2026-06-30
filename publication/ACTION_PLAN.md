@@ -1,20 +1,53 @@
 # RERTA UAV Paper — Action Plan
 
-**Target framing (agreed):** Hybrid A+B. Prediction of ecological *function* from UAV metrics is the
-central aim and is reported honestly (weak, R² < 0.4). Treatment *discrimination* via structure/texture
-is the bridge, deliberately framed as **expected** (treatments differ by visibly different vegetation),
-not as a novel finding. The contribution is the **structure-visible / function-unpredictable gap**, made
-*informative* by fixing validity bugs and quantifying statistical power.
+**Target framing (current — operational asymmetry):** UAV recovers the **static, coarse** manipulation
+signal (plot-level treatment discrimination confirmed: 20/39 metrics FDR<0.05, η² up to 0.65, via
+vegetation texture/spectral range) but does **not** predict **dynamic, fine-scale** ecological function
+(honest out-of-sample R² ≤ baseline; canopy openness marginal ~0.15). Framed as differential exposure to
+temporal/spatial misalignment — **operational**, not a structure–function decoupling in nature (that
+claim is retired). Contribution = rigorous characterisation of the asymmetry + a fair-test prescription
+(contemporaneous, co-located capture).
 
-**Target journal (primary):** Scientific Reports. **Realistic fallbacks:** Frontiers in Forests and Global
-Change (sister RERTA papers live here — Woodham 2019, Drewer 2024), Remote Sensing in Ecology and
-Conservation, Drones (MDPI). PLOS ONE as safety net.
+**Target journal:** the methodological/operational pole makes **Frontiers in Forests & Global Change**
+(sister RERTA papers — Woodham 2019, Drewer 2024), **Drones (MDPI)**, or **PLOS ONE** as strong as
+**Scientific Reports**. Decide with supervisor.
 
 **One-line thesis to defend:**
-> "High-resolution UAV imagery captures the visible structural signature of riparian restoration
-> treatments in mature oil palm, but this signal does not extend to predicting ecological function
-> variables; we quantify why (power, resolution, temporal/spatial misalignment) and provide a
-> reproducible workflow."
+> "From the same plots, high-resolution UAV imagery robustly recovers which restoration treatment a plot
+> belongs to, yet does not predict ecological function under realistic, non-contemporaneous field-data
+> conditions — an asymmetry driven by exposure to temporal/spatial misalignment, not by a structure–
+> function decoupling. We quantify it and prescribe the data regime needed to test the relationship fairly."
+
+---
+
+## CURRENT STATUS (June 2026): statistics frozen → writing phase
+
+Per agreed scope, **no new statistical tests** beyond what is done. Remaining stats work is *finalisation
+only*:
+- [ ] **Finalise prediction numbers** — full-settings re-run (`run_tuned_validation.py --repeats 5
+  --n-iter 20`); verify and own the output (Lane 1). *(Running now; refreshes `nested_cv_results.md`.)*
+- [x] **Power statement** — `compute_power.py` → `power_statement.md` (n=48: r≥0.39/R²≥0.16; n=32:
+  r≥0.48/R²≥0.23).
+- [x] **Plot-level discrimination (D2)** — `plot_level_discrimination.py` → results saved.
+- [ ] **Temporal-gap table** — descriptive (imagery vs field dates); not a test.
+
+**Dropped to honour minimum-stats:** nested mixed-model for D2 (keep KW + a disclosed-nesting sentence);
+temporal-stability gradient (make it a qualitative Discussion argument, not a test).
+
+Consolidated numbers for the write-up: **`publication/WRITEUP_NUMBERS.md`**.
+
+### Writing checklist (you write prose; AI copy-edits only — Lane 1)
+- [ ] **Abstract** — re-cast to operational asymmetry; drop "R²<0.4 / ecology" claims.
+- [ ] **Methods** — add: unit of analysis = plot; feature selection inside CV folds; DEM-is-a-DSM (DTM
+  discarded); SfM/Metashape params; power method. Complete the bare-link Appendix.
+- [ ] **Results — revise existing** — drop the 0.36; report honest nested R² + baseline; replace
+  pixel-pooled Figs 4–6 with plot-level versions; add the D2 discrimination result; add power/MDES.
+- [ ] **Results — model-complexity note** — OLS ≥ tuned RF; leaky-vs-nested optimism (small fig).
+- [ ] **Discussion (new)** — the asymmetry (static/coarse recoverable vs dynamic/fine not); differential
+  exposure to misalignment; retire decoupling; limitations (n, single site, misalignment, DSM); design
+  recommendations.
+- [ ] **Conclusion (new)** — operational bounded negative + reproducible workflow + fair-test prescription.
+- [ ] **Data/code availability** — repo + Zenodo DOI; raster-deposit decision (see below).
 
 ---
 
